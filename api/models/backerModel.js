@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const backerSchema = mongoose.Schema({
+const backerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -9,6 +9,11 @@ const backerSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Project",
+    required: true,
+  },
 });
 
-module.exports = mongoose.model("backers", backerSchema);
+export default mongoose.model("Backer", backerSchema);

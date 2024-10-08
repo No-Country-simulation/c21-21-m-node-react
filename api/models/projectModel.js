@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
-const projectSchema = mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
+const projectSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -12,11 +8,16 @@ const projectSchema = mongoose.Schema({
   description: {
     type: String,
     required: true,
-    default: "",
   },
   creator: {
-    type: String,
-    required: true,
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
   },
   goal_amount: {
     type: Number,
@@ -25,6 +26,7 @@ const projectSchema = mongoose.Schema({
   current_amount: {
     type: Number,
     required: true,
+    default: 0,
   },
   deadline: {
     type: Date,
@@ -32,9 +34,21 @@ const projectSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    required: true,
-    enum: ["active", "inactive", "pending", "finally"],
+    enum: ["active", "inactive", "pending", "completed"],
+    default: "pending",
   },
+  /* backers: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      contribution: {
+        type: Number,
+        required: true,
+      },
+    },
+  ], */
   rewards: [
     {
       name: {
@@ -44,13 +58,13 @@ const projectSchema = mongoose.Schema({
       description: {
         type: String,
         required: true,
-        default: "",
       },
       min_contribution: {
         type: Number,
+        required: true,
       },
     },
   ],
 });
 
-module.exports = mongoose.model("project", projectSchema);
+export default mongoose.model("Project", projectSchema);
