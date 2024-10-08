@@ -30,3 +30,16 @@ export const getUsers = async (req, res) => {
       .json({ message: "Error al obtener los usuarios", e });
   }
 };
+
+export const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) return res(404).json({ message: "El user no existe" });
+
+    return res.status(200).json({ message: "Usuario eliminado" });
+  } catch (e) {
+    res.status(500).json({ message: "Error al borrar el usuario " });
+  }
+};
