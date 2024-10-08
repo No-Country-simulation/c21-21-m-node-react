@@ -3,8 +3,7 @@ import { connectDb } from "./config/dataBase.js";
 import * as dotenv from "dotenv";
 
 import projectRoute from "./routes/projectRoute.js";
-
-import User from "./models/userModel.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const PORT = 3000;
 dotenv.config();
@@ -21,5 +20,6 @@ app.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}`);
 });
 
-//rutas
-app.use(projectRoute);
+//routes
+app.use("/users", userRoutes);
+app.use("/projects", projectRoute);
