@@ -20,6 +20,25 @@ export const createUser = async (req, res) => {
   }
 };
 
+export const getUserById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id).populate("projects");
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Error al obtener el usuario", error: error.message });
+  }
+};
+
 export const getUsers = async (req, res) => {
   try {
     const usuarios = await User.find();
