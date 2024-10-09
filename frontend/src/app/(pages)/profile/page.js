@@ -1,8 +1,7 @@
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 export default function Profile() {
-    // Suponiendo que tienes autenticación implementada
     const user = { name: 'John Doe', email: 'john@example.com' };
 
     return (
