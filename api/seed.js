@@ -77,11 +77,7 @@ const seedData = async () => {
 
     // Actualizar los usuarios para incluir los proyectos creados
     await User.findByIdAndUpdate(user1._id, {
-      $push: { projects: project1._id },
-    });
-
-    await User.findByIdAndUpdate(user1._id, {
-      $push: { projects: project2._id },
+      $push: { projects: { $each: [project1._id, project2._id] } },
     });
 
     const backer1 = new Backer({
@@ -100,6 +96,17 @@ const seedData = async () => {
     await backer2.save();
 
     console.log("Backers creados con éxito");
+
+    // Actualizar los proyectos para incluir los backers creados
+    await Project.findByIdAndUpdate(project1._id, {
+      $push: { backers: backer1._id },
+    });
+
+    await Project.findByIdAndUpdate(project2._id, {
+      $push: { backers: backer2._id },
+    });
+
+    console.log("Proyectos actualizados con los backers");
 
     console.log("Base de datos rellenada exitosamente");
     process.exit();
