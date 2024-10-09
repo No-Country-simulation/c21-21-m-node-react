@@ -1,11 +1,20 @@
-import Project from "./models/projectModel.js";
+import Project from "../models/projectModel.js";
 
-app.post("/create-project", async (req, res) => {
+const createProject = async (req, callback) => {
   try {
-    const project = new Project(req.body);
-    const savedProject = await project.save();
-    res.status(201).json(savedProject);
+    const project = await Project.findOne({ $where: req.name });
+    if (project) return callback({ message: "El proyecto ya existe." });
+
+    const newProject = new Project(req);
+    const savedProject = await newProject.save();
+
+    return callback(false, savedProject);
   } catch (error) {
-    res.status(500).json({ message: "Error al crear el proyecto", error });
+    return callback({
+      errMessage: "Algo salió mal.",
+      details: error.message,
+    });
   }
-});
+};
+
+export default createProject;
