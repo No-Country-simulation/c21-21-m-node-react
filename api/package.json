@@ -13,7 +13,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "start": "nodemon node api/index.js"
+=======
+    "start": "nodemon node api/index.js",
+    "seed": "node seed.js"
+>>>>>>> develop
 =======
     "start": "nodemon node api/index.js",
     "seed": "node seed.js"

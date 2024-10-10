@@ -37,4 +37,8 @@ startServer();
 
 //routes
 app.use("/users", userRoutes);
+<<<<<<< HEAD
 app.use("/projects", projectRoute);
+=======
+app.use("/projects", projectRoute);
+>>>>>>> develop
