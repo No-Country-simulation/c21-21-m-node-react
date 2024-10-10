@@ -37,18 +37,18 @@ const projectSchema = new mongoose.Schema({
     enum: ["active", "inactive", "pending", "completed"],
     default: "pending",
   },
-  /* backers: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      contribution: {
-        type: Number,
-        required: true,
-      },
+  backers:[{
+    name: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Backer",
     },
-  ], */
+    contribution: {
+      type: Number,
+    },
+    contribution_date: {
+      type: Date,
+    },
+  }],
   rewards: [
     {
       name: {
@@ -65,6 +65,11 @@ const projectSchema = new mongoose.Schema({
       },
     },
   ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 export default mongoose.model("Project", projectSchema);
