@@ -3,27 +3,23 @@ import User from "../models/userModel.js";
 
 const createProject = async (data, callback) => {
   try {
-    const { name, creatorId, goal_amount, description, deadline, rewards } =
-      data;
+    const { name, owner, goal_amount, description, deadline, rewards } = data;
 
     const existingProject = await Project.findOne({ name });
     if (existingProject) {
       return callback({ message: "El proyecto ya existe." });
     }
 
-    const creator = await User.findById(creatorId);
-    if (!creator) {
+    const ownerId = await User.findById(owner);
+    if (!ownerId) {
       return callback({ message: "El creador/usuario no existe." });
     }
 
-    //asignar al creador del proyecto
+    //crear proyecto
     const newProject = new Project({
       name,
       description,
-      creator: {
-        name: creator.name,
-        email: creator.email,
-      },
+      owner, //solo el ID del owner (a cabmiar dependiendo del front y auth0)
       goal_amount,
       deadline,
       rewards,

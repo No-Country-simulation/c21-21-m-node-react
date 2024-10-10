@@ -9,15 +9,10 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  creator: {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
+  category: {
+    type: String,
+    enum: ["Fintech", "HealthTech", "EdTech", "Social Media", "HRTech", "Videogames", "e-Commerce", "Others"],
+    required: true
   },
   goal_amount: {
     type: Number,
@@ -37,18 +32,20 @@ const projectSchema = new mongoose.Schema({
     enum: ["active", "inactive", "pending", "completed"],
     default: "pending",
   },
-  backers:[{
-    name: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Backer",
+  backers: [
+    {
+      name: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Backer",
+      },
+      contribution: {
+        type: Number,
+      },
+      contribution_date: {
+        type: Date,
+      },
     },
-    contribution: {
-      type: Number,
-    },
-    contribution_date: {
-      type: Date,
-    },
-  }],
+  ],
   rewards: [
     {
       name: {
@@ -70,6 +67,12 @@ const projectSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  updates: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UpdateProject",
+    },
+  ],
 });
 
 export default mongoose.model("Project", projectSchema);
