@@ -1,11 +1,34 @@
 import Project from "../models/projectModel.js";
+import User from "../models/userModel.js";
 
-const createProject = async (req, callback) => {
+const createProject = async (data, callback) => {
   try {
-    const project = await Project.findOne({ name: req.name });
-    if (project) return callback({ message: "El proyecto ya existe." });
+    const { name, creatorId, goal_amount, description, deadline, rewards } =
+      data;
 
-    const newProject = new Project(req);
+    const existingProject = await Project.findOne({ name });
+    if (existingProject) {
+      return callback({ message: "El proyecto ya existe." });
+    }
+
+    const creator = await User.findById(creatorId);
+    if (!creator) {
+      return callback({ message: "El creador/usuario no existe." });
+    }
+
+    //asignar al creador del proyecto
+    const newProject = new Project({
+      name,
+      description,
+      creator: {
+        name: creator.name,
+        email: creator.email,
+      },
+      goal_amount,
+      deadline,
+      rewards,
+    });
+
     const savedProject = await newProject.save();
 
     return callback(false, savedProject);
@@ -17,4 +40,4 @@ const createProject = async (req, callback) => {
   }
 };
 
-export default createProject;
+export default { createProject };
