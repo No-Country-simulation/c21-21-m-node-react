@@ -30,3 +30,4 @@ const create = async (req, res) => {
 };
 
 export default { create };
+export default { create };
