@@ -1,16 +1,24 @@
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Container from './components/Container';
+import backgroundImage from './assets/images/background.jpg';
 
-export default function Home() {
+const Home = () => {
     return (
-        <>
+        <div 
+            className="flex flex-col min-h-screen bg-cover" 
+            style={{ backgroundImage: `url(${backgroundImage.src})`, backgroundPosition: '20% 0' }}> 
             <Navbar />
-            <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-                <h1 className="text-5xl font-bold mb-6">Bienvenido a CrowdStart</h1>
-                <p className="text-lg text-gray-700 mb-6">Apoya a nuevas empresas innovadoras y haz realidad tus ideas.</p>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded">Explorar proyectos</button>
-            </main>
+            <Container className="flex flex-col justify-center items-center flex-1 text-center">
+                <div className="flex flex-col justify-center items-center text-center h-full">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-6 pt-4 md:pt-20">Bienvenido a CrowdStart</h1>
+                    <p className="text-lg md:text-xl font-bold mb-6">Apoya a nuevas empresas innovadoras y haz realidad sus ideas.</p>
+                    <button className="bg-customGreen text-white font-bold px-8 py-3 rounded-full">Explorar proyectos</button>
+                </div>
+            </Container>
             <Footer />
-        </>
+        </div>
     );
-}
+};
+
+export default Home;

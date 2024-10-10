@@ -1,8 +1,8 @@
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-white py-4 mt-8">
-            <div className="container mx-auto text-center">
-                <p>&copy; 2024 CrowdStart. Reservados todos los derechos.</p>
+        <footer className="bg-customBlue text-customLightgray mt-8 box-border">
+            <div className="container mx-auto text-center px-4 py-2"> 
+                <p className="text-sm">&copy; 2024 CrowdStart. Reservados todos los derechos.</p>
             </div>
         </footer>
     );
