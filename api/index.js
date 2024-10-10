@@ -1,25 +1,38 @@
 import express from "express";
 import { connectDb } from "./config/dataBase.js";
 import * as dotenv from "dotenv";
-
 import projectRoute from "./routes/projectRoute.js";
 
-import User from "./models/userModel.js";
-
-const PORT = 3000;
+//cargar configuraciones desde .env
 dotenv.config();
 
-//express config
+//configuración de express
 const app = express();
 app.use(express.json());
 
-//llamado a la DB
-connectDb();
+//función asíncrona para levantar el servidor y manejar errores
+const startServer = async () => {
+  try {
+    await connectDb();
 
-//levantar el server
-app.listen(PORT, () => {
-  console.log(`The server is running on port ${PORT}`);
-});
+    const PORT = process.env.PORT || 3000;
+
+    //levantar el servidor
+    const server = app.listen(PORT, () => {
+      console.log(`El servidor esta corriendo en el puerto ${PORT}`);
+    });
+
+    server.on("error", (err) => {
+      console.error("Error al iniciar el servidor:", err.message);
+    });
+  } catch (error) {
+    console.error("Error al levantar el servidor:", error.message);
+    process.exit(1); //interrumpir proceso si no puede conectarse a la DB
+  }
+};
+
+//función para iniciar el servidor
+startServer();
 
 //rutas
 app.use(projectRoute);
