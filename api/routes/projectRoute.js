@@ -8,12 +8,8 @@ const router = express.Router();
 router.post("/create-project", projectController.create);
 
 //get
-router.get("/get-projects", getAllProjects);
-router.get("/get-project/:id", getProjectById);
-
-//Patch
-router.patch("/update-project", updateProject);
-
+router.get("/get-projects", projectController.getAllProjects);
+router.get("/get-project/:id", projectController.getProjectById);
 
 //update
 router.put("/update-project/:id", projectController.update);

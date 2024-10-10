@@ -33,7 +33,7 @@ const createProject = async (data, callback) => {
 };
 
 //Función que devuelve una lista de proyectos
-export const getProjects = async () =>{
+const getProjects = async () =>{
   try {
     const projects = await Project.find()
     return projects;
@@ -52,11 +52,38 @@ export const getProjectByID = async (id)=>{
   }
 }
 
-export const updateProjectID = async(id) =>{
+const updateProject = async (id, updateObj, callback) => {
   try {
-    
+    /*
+    crear un validator user, para que solo el owner pueda actualizar el proyecto
+    */
+
+    const projectUpdate = await Project.findById(id);
+    if (!projectUpdate)
+      return callback({ message: "El proyecto asociado a esa Id, no existe." });
+
+    //actualizar proyecto
+    let updatedProject = {
+      name: project.name,
+      description: project.description,
+      goal_amount: project.goal_amount,
+      deadline: project.deadline,
+      rewards: project.rewards,
+    };
+
+    await projectUpdate.updateOne(updatedProject);
+    await projectUpdate.save();
+
+    return callback(false, {
+      message: "El proyecto se ha acualizado exitosamente!",
+    });
   } catch (error) {
-    throw new Error("Error al actualizar el proyecto por ID.");
+    return callback({
+      errMessage: "Algo salió mal.",
+      details: error.message,
+    });
   }
-}
+};
+
+export default { createProject, updateProject,getProjects, getProjectByID};
 
