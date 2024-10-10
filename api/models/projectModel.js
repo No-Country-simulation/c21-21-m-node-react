@@ -9,6 +9,11 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    enum: ["Fintech", "HealthTech", "EdTech", "Social Media", "HRTech", "Videogames", "e-Commerce", "Others"],
+    required: true
+  },
   goal_amount: {
     type: Number,
     required: true,
@@ -62,6 +67,12 @@ const projectSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  updates: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UpdateProject",
+    },
+  ],
 });
 
 export default mongoose.model("Project", projectSchema);
