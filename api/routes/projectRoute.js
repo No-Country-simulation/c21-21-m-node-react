@@ -1,4 +1,3 @@
-import {create, getAllProjects, getProjectById, updateProject} from "../controllers/projectController.js";
 import projectController from "../controllers/projectController.js";
 import express from "express";
 
