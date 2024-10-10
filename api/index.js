@@ -2,14 +2,9 @@ import express from "express";
 import { connectDb } from "./config/dataBase.js";
 import * as dotenv from "dotenv";
 import projectRoute from "./routes/projectRoute.js";
-<<<<<<< HEAD
-
-//cargar configuraciones desde .env
-=======
 import userRoutes from "./routes/userRoutes.js";
 
 const PORT = 3000;
->>>>>>> b39d8c077330a11c4aacb0949a92a8929a8a5562
 dotenv.config();
 
 //configuración de express

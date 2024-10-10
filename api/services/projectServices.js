@@ -3,7 +3,6 @@ import User from "../models/userModel.js";
 
 const createProject = async (data, callback) => {
   try {
-<<<<<<< HEAD
     const { name, creatorId, goal_amount, description, deadline, rewards } =
       data;
 
@@ -29,10 +28,6 @@ const createProject = async (data, callback) => {
       deadline,
       rewards,
     });
-=======
-    const project = await Project.findOne({ name: req.name });
-    if (project) return callback({ message: "El proyecto ya existe." });
->>>>>>> b39d8c077330a11c4aacb0949a92a8929a8a5562
 
     const savedProject = await newProject.save();
 
