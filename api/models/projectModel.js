@@ -9,16 +9,6 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  creator: {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-  },
   goal_amount: {
     type: Number,
     required: true,
@@ -37,18 +27,20 @@ const projectSchema = new mongoose.Schema({
     enum: ["active", "inactive", "pending", "completed"],
     default: "pending",
   },
-  backers:[{
-    name: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Backer",
+  backers: [
+    {
+      name: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Backer",
+      },
+      contribution: {
+        type: Number,
+      },
+      contribution_date: {
+        type: Date,
+      },
     },
-    contribution: {
-      type: Number,
-    },
-    contribution_date: {
-      type: Date,
-    },
-  }],
+  ],
   rewards: [
     {
       name: {
