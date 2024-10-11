@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from "./Button";
 import Modal from "./Modal";
+import Table from './Table';
 
 const Card = ({ imgSrc, title, percentage, description }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,6 +10,22 @@ const Card = ({ imgSrc, title, percentage, description }) => {
     const openModal = (title) => {
         setTitleModal(title)
         setIsModalOpen(true)
+    };
+
+    const projectInvestors = {
+        projectId: 1,
+        projectTitle: "Proyecto 1",
+        investors: [
+            {
+                name: "Juan Pérez",
+                email: "juan@example.com",
+                phone: "+123456789",
+                totalInvestment: 1500,
+                investmentDate: "2023-01-15",
+                status: "Active",
+                comments: "First investor",
+            },
+        ]
     };
 
     return (
@@ -46,7 +63,7 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                     </div>
                     <div className="flex mb-2"> 
                         <Button
-                            onClick={() => openModal("Inversores")} 
+                            onClick={() => openModal(`Inversores del proyecto: ${projectInvestors.projectTitle}`)} 
                             className="flex-1 bg-blue-500 text-white rounded-full px-2 
                             py-1 hover:bg-blue-600 transition duration-200 text-sm">
                             Ver inversores
@@ -57,8 +74,9 @@ const Card = ({ imgSrc, title, percentage, description }) => {
             <Modal
                 isOpen={isModalOpen}        
                 onClose={() => setIsModalOpen(false)}
-                title={titleModal}
-            />
+                title={titleModal}>
+                <Table investors={projectInvestors.investors} />
+            </Modal>
         </div>  
     );
 };
