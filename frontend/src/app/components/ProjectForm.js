@@ -1,4 +1,37 @@
-const ProjectForm = () => {
+import React, { useState, useEffect } from 'react';
+import Button from './Button';
+
+const ProjectForm = ({ projectDetails }) => {
+    const [editData, setEditData] = useState({
+        title: '',
+        description: '',
+        goal: '',
+        country: '',
+        category: '',
+        status: '',
+        accountHolder: '',
+        accountNumber: '',
+        bankName: '',
+        swiftCode: '',
+    });
+
+    useEffect(() => {
+        if (projectDetails) {
+            setEditData({
+                title: projectDetails.projectTitle,
+                description: projectDetails.description,
+                goal: projectDetails.goal,
+                country: projectDetails.country,
+                category: projectDetails.category,
+                status: projectDetails.status,
+                accountHolder: projectDetails.accountHolder,
+                accountNumber: projectDetails.accountNumber,
+                bankName: projectDetails.bankName,
+                swiftCode: projectDetails.swiftCode,
+            });
+        }
+    }, [projectDetails]);
+
     return (
         <form className="space-y-6 px-1">
             <div>
@@ -6,6 +39,7 @@ const ProjectForm = () => {
                 <input
                     type="text"
                     name="title"
+                    value={editData.title}
                     className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Introduce el título"
                     required
@@ -15,6 +49,7 @@ const ProjectForm = () => {
                 <label className="block font-semibold mb-2">Descripción</label>
                 <textarea
                     name="description"
+                    value={editData.description}
                     className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     rows="3"
                     placeholder="Describe el proyecto"
@@ -23,13 +58,14 @@ const ProjectForm = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label htmlFor="meta" className="block font-semibold mb-2">Meta</label>
+                    <label htmlFor="goal" className="block font-semibold mb-2">Meta</label>
                     <div className="relative">
                         <span className="absolute left-3 top-2.5 text-gray-500">$</span>
                         <input
                             type="number"
-                            name="meta"
-                            id="meta"
+                            name="goal"
+                            value={editData.goal}
+                            id="goal"
                             className="w-full border border-gray-300 rounded-md p-2 pl-8 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Introduce la meta"
                             min="0"
@@ -42,6 +78,7 @@ const ProjectForm = () => {
                     <input
                         type="text"
                         name="country"
+                        value={editData.country}
                         className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         placeholder="Introduce el país"
                         required
@@ -53,6 +90,7 @@ const ProjectForm = () => {
                     <label className="block font-semibold mb-2">Categoría</label>
                     <select
                         name="category"
+                        value={editData.category}
                         className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         defaultValue=""
                         required
@@ -69,6 +107,7 @@ const ProjectForm = () => {
                     <label className="block font-semibold mb-2">Estatus</label>
                     <select
                         name="status"
+                        value={editData.status}
                         className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         defaultValue=""
                         required
@@ -103,6 +142,7 @@ const ProjectForm = () => {
                         <input
                             type="text"
                             name="accountHolder"
+                            value={editData.accountHolder}
                             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Nombre del titular de la cuenta"
                         />
@@ -112,6 +152,7 @@ const ProjectForm = () => {
                         <input
                             type="text"
                             name="accountNumber"
+                            value={editData.accountNumber}
                             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Ej: DE89370400440532013000"
                             required
@@ -122,6 +163,7 @@ const ProjectForm = () => {
                         <input
                             type="text"
                             name="bankName"
+                            value={editData.bankName}
                             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Introduce el nombre del banco"
                         />
@@ -131,18 +173,19 @@ const ProjectForm = () => {
                         <input
                             type="text"
                             name="swiftCode"
+                            value={editData.swiftCode}
                             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Introduce el código SWIFT"
                         />
                     </div>
                 </div>
             </div>
-            <button
+            <Button
                 type="submit"
                 className="w-full sm:w-auto bg-blue-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200 mt-6"
             >
                 Crear Proyecto
-            </button>
+            </Button>
         </form>
     );
 };

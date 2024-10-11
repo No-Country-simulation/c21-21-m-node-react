@@ -2,19 +2,31 @@ import React, { useState } from 'react';
 import Button from "./Button";
 import Modal from "./Modal";
 import Table from './Table';
+import ProjectForm from './ProjectForm';
 
 const Card = ({ imgSrc, title, percentage, description }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [titleModal, setTitleModal] = useState("");
+    const [modalContent, setModalContent] = useState(null);
 
-    const openModal = (title) => {
+    const openModal = (title, content) => {
         setTitleModal(title)
+        setModalContent(content)
         setIsModalOpen(true)
     };
 
-    const projectInvestors = {
+    const projectDetails = {
         projectId: 1,
         projectTitle: "Proyecto 1",
+        description: "Descripción del proyecto",
+        goal: 2000,
+        country: "País",
+        category: "Tecnología",
+        status: "Activo",
+        accountHolder: "Titular de la cuenta",
+        accountNumber: "DE89370400440532013000",
+        bankName: "Banco Ejemplo",
+        swiftCode: "SWIFT1234",
         investors: [
             {
                 name: "Juan Pérez",
@@ -49,7 +61,10 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                     <hr className="border-gray-300 mb-4" />
                     <div className="flex space-x-2 mb-2">
                         <Button
-                            onClick={() => openModal("Editar campaña")} 
+                            onClick={() => openModal(`Editar la campaña 
+                                ${projectDetails.projectTitle}`, 
+                                <ProjectForm projectDetails={projectDetails} />
+                            )} 
                             className="flex-1 bg-yellow-500 text-white rounded-full 
                             px-2 py-1 hover:bg-yellow-600 transition duration-200 text-sm">
                             Editar
@@ -63,7 +78,10 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                     </div>
                     <div className="flex mb-2"> 
                         <Button
-                            onClick={() => openModal(`Inversores del proyecto: ${projectInvestors.projectTitle}`)} 
+                            onClick={() => openModal(`Inversores del proyecto 
+                                ${projectDetails.projectTitle}`, 
+                                <Table investors={projectDetails.investors} />
+                            )} 
                             className="flex-1 bg-blue-500 text-white rounded-full px-2 
                             py-1 hover:bg-blue-600 transition duration-200 text-sm">
                             Ver inversores
@@ -75,7 +93,7 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                 isOpen={isModalOpen}        
                 onClose={() => setIsModalOpen(false)}
                 title={titleModal}>
-                <Table investors={projectInvestors.investors} />
+                {modalContent}
             </Modal>
         </div>  
     );
