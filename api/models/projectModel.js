@@ -11,8 +11,17 @@ const projectSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["Fintech", "HealthTech", "EdTech", "Social Media", "HRTech", "Videogames", "e-Commerce", "Others"],
-    required: true
+    enum: [
+      "Fintech",
+      "HealthTech",
+      "EdTech",
+      "Social Media",
+      "HRTech",
+      "Videogames",
+      "e-Commerce",
+      "Others",
+    ],
+    required: true,
   },
   goal_amount: {
     type: Number,
@@ -23,6 +32,7 @@ const projectSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  //DESDE EL FRONT NO LO VAN A USAR
   deadline: {
     type: Date,
     required: true,
@@ -44,22 +54,14 @@ const projectSchema = new mongoose.Schema({
       contribution_date: {
         type: Date,
       },
+      //AGREGAR VISIBILIDAD DE LOS BACKERS
     },
   ],
   rewards: [
     {
-      name: {
-        type: String,
-        required: true,
-      },
-      description: {
-        type: String,
-        required: true,
-      },
-      min_contribution: {
-        type: Number,
-        required: true,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Reward",
+      required: true,
     },
   ],
   owner: {

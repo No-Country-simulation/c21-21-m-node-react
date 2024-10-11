@@ -37,30 +37,27 @@ const create = async (req, res) => {
 };
 
 //Cualquier Consulta sobre esta función preguntar a David De Vito
-const getAllProjects = async (req,res) =>{
+const getAllProjects = async (req, res) => {
   try {
-
     const projects = await projectServices.getProjects();
 
     //Si la lista esta vacia se lanza un msm de error
-    if(projects.length === 0){
-      return res.status(404).send({errMessage: "No se encontraron proyectos."})
+    if (projects.length === 0) {
+      return res
+        .status(404)
+        .send({ errMessage: "No se encontraron proyectos." });
     }
 
     return res.status(200).json(projects);
-
   } catch (error) {
-
     return res.status(500).send({
       errMessage: "No se pudo obtener la lista de proyectos.",
       details: error.Message,
     });
-    
   }
+};
 
-}
-
-const getProjectById = async(req, res)=>{
+const getProjectById = async (req, res) => {
   try {
     const { id } = req.params;
     const project = await projectServices.getProjectByID(id);
@@ -77,10 +74,9 @@ const getProjectById = async(req, res)=>{
     return res.status(500).send({
       errMessage: "No se pudo obtener el proyecto.",
       details: error.Message,
-    })
+    });
   }
-
-}
+};
 
 const update = async (req, res) => {
   const { id } = req.params;
@@ -113,4 +109,4 @@ const update = async (req, res) => {
   }
 };
 
-export default { create, update, getAllProjects, getProjectById};
+export default { create, update, getAllProjects, getProjectById };
