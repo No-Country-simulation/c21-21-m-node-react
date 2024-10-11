@@ -2,7 +2,7 @@ import Button from "./Button";
 
 const Card = ({ imgSrc, title, percentage, description }) => {
     return (
-        <div className="w-64 mx-auto"> 
+        <div className="w-full mx-auto">  
             <div className="bg-white shadow-md rounded-lg border border-gray-200 p-0">
                 <img 
                     src={imgSrc} 
@@ -30,7 +30,7 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                             Eliminar
                         </Button>
                     </div>
-                    <div className="flex"> 
+                    <div className="flex mb-2"> 
                         <Button className="flex-1 bg-blue-500 text-white rounded-full px-2 
                             py-1 hover:bg-blue-600 transition duration-200 text-sm">
                             Ver inversores

@@ -5,11 +5,13 @@ import Dashboard from '@/app/components/Dashboard';
 
 const DashboardPage = () => {
     return (
-        <Container>
+        <>
             <Navbar />
-            <Dashboard />
+            <Container>
+                <Dashboard />
+            </Container>
             <Footer />
-        </Container>
+        </>
     );
 };
 
