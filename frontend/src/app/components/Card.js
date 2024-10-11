@@ -18,7 +18,7 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                             style={{ width: `${percentage}%` }} 
                         ></div>
                     </div>
-                    <p className="font-bold text-sm mb-5">{description}</p> 
+                    <p className="font-bold text-sm mb-5">${description} recaudados</p> 
                     <hr className="border-gray-300 mb-4" />
                     <div className="flex space-x-2 mb-2">
                         <Button className="flex-1 bg-yellow-500 text-white rounded-full 
