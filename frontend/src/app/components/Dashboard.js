@@ -3,11 +3,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Button from "./Button";
 import Card from "./Card";
+import Modal from './Modal';
+import ProjectForm from './ProjectForm';
 
 const Dashboard = () => {
     const [projects, setProjects] = useState([]);
     const [totalProjects, setTotalProjects] = useState(0);
     const [totalAmountRaised, setTotalAmountRaised] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,13 +27,15 @@ const Dashboard = () => {
         fetchData();
       }, []);
 
+      const openModal = () => setIsModalOpen(true)
+
     return (
         <div className="flex flex-col px-4 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-start lg:items-center 
                 mb-4 space-y-4 md:space-y-0">
                 <h1 className="text-3xl lg:text-4xl pb-2 lg:pb-0 font-bold">Tus Proyectos</h1>
                 <div className="w-full md:w-auto">
-                    <Button className="w-full bg-customGreen text-white font-bold px-6 py-3 rounded-full">
+                    <Button onClick={openModal} className="w-full bg-customGreen text-white font-bold px-6 py-3 rounded-full">
                         Crear campaña
                     </Button>
                 </div>
@@ -53,6 +58,12 @@ const Dashboard = () => {
                     ))
                 }
             </div>
+            <Modal
+                isOpen={isModalOpen}        
+                onClose={() => setIsModalOpen(false)}
+                title={'Crear campaña'}>
+                <ProjectForm />
+            </Modal>
         </div>
     );
 };
