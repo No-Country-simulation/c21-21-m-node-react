@@ -3,10 +3,23 @@ import projectServices from "../services/projectServices.js";
 const create = async (req, res) => {
   const { name, owner, goal_amount, description, deadline, rewards } = req.body;
 
-  if (!(name && owner && goal_amount && description && deadline)) {
+  if (
+    !(
+      name &&
+      owner &&
+      img &&
+      category &&
+      current_amount &&
+      creation_date &&
+      goal_amount &&
+      description &&
+      deadline &&
+      rewards
+    )
+  ) {
     return res.status(400).send({
       errMessage:
-        "El nombre, owner, meta, descripción y fecha límite son obligatorios.",
+        "El nombre, owner, images, meta, descripción y fecha límite son obligatorios.",
     });
   }
 
@@ -15,11 +28,17 @@ const create = async (req, res) => {
     await projectServices.createProject(
       {
         name,
-        owner,
-        goal_amount,
         description,
+        category,
+        img,
+        goal_amount,
+        current_amount,
+        creation_date,
         deadline,
         rewards,
+        owner,
+        backers,
+        updates,
       },
       (err, result) => {
         if (err) {

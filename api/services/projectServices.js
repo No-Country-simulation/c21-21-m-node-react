@@ -3,7 +3,18 @@ import User from "../models/userModel.js";
 
 const createProject = async (data, callback) => {
   try {
-    const { name, owner, goal_amount, description, deadline, rewards } = data;
+    const {
+      name,
+      description,
+      category,
+      img,
+      goal_amount,
+      current_amount,
+      creation_date,
+      deadline,
+      rewards,
+      owner,
+    } = data;
 
     const existingProject = await Project.findOne({ name });
     if (existingProject) return callback({ message: "El proyecto ya existe." });
@@ -15,10 +26,16 @@ const createProject = async (data, callback) => {
     const newProject = new Project({
       name,
       description,
-      owner, //solo el ID del owner (a cabmiar dependiendo del front y auth0)
+      category,
+      img, //UN ARRAY CON LOS ID DE LAS IMAGENES
       goal_amount,
+      current_amount,
+      creation_date,
       deadline,
-      rewards,
+      rewards, //UN ARRAY CON LOS ID DE LOS REWARDS
+      owner, //SOLO EL ID DEL OWNER
+      backers,
+      updates,
     });
 
     const savedProject = await newProject.save();
@@ -33,24 +50,24 @@ const createProject = async (data, callback) => {
 };
 
 //Función que devuelve una lista de proyectos
-const getProjects = async () =>{
+const getProjects = async () => {
   try {
-    const projects = await Project.find()
+    const projects = await Project.find();
     return projects;
   } catch (error) {
-    throw new Error("Error al obtener la lista de proyectos.");  // Lanza el error para manejarlo en el controlador
+    throw new Error("Error al obtener la lista de proyectos."); // Lanza el error para manejarlo en el controlador
   }
-}
+};
 
 //Función que devuelve un preyecto según el ID
-export const getProjectByID = async (id)=>{
+export const getProjectByID = async (id) => {
   try {
     const project = await Project.findOne({ _id: id });
     return project;
   } catch (error) {
     throw new Error("Error al obtener el proyecto por ID.");
   }
-}
+};
 
 const updateProject = async (id, updateObj, callback) => {
   try {
@@ -85,5 +102,4 @@ const updateProject = async (id, updateObj, callback) => {
   }
 };
 
-export default { createProject, updateProject,getProjects, getProjectByID};
-
+export default { createProject, updateProject, getProjects, getProjectByID };

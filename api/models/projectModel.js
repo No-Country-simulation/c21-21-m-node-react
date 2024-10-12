@@ -23,6 +23,10 @@ const projectSchema = new mongoose.Schema({
     ],
     required: true,
   },
+  img: [{
+    type: String,
+    required: true
+  }],
   goal_amount: {
     type: Number,
     required: true,
@@ -32,7 +36,10 @@ const projectSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
-  //DESDE EL FRONT NO LO VAN A USAR
+  creation_date: {
+    type: Date,
+    required: true
+  },
   deadline: {
     type: Date,
     required: true,
