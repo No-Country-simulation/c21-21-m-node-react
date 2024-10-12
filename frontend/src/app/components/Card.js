@@ -5,7 +5,7 @@ import Table from './Table';
 import ProjectForm from './ProjectForm';
 import ActionConfirmation from './ActionConfirmation';
 
-const Card = ({ imgSrc, title, percentage, description }) => {
+const Card = ({ imgSrc, title, percentage, description, personalInvestment, role }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modalContent, setModalContent] = useState(null);
@@ -20,6 +20,8 @@ const Card = ({ imgSrc, title, percentage, description }) => {
 
     const projectDetails = {
         projectId: 1,
+        creator: 'Creador Creador',
+        email: 'creador@gmail.com',
         projectTitle: "Proyecto 1",
         description: "Descripción del proyecto",
         goal: 2000,
@@ -60,42 +62,62 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                             style={{ width: `${percentage}%` }} 
                         ></div>
                     </div>
-                    <p className="font-bold text-sm mb-5">${description} recaudados</p> 
+                    <p className={`font-bold text-sm ${role === 'emprendedor' ? 'mb-5' : ''}`}>${description} recaudados</p> 
+                    {
+                        personalInvestment !== null && (
+                            <p className="font-bold text-sm mb-5">${personalInvestment} inversión</p>)
+                    }
                     <hr className="border-gray-300 mb-4" />
                     <div className="flex space-x-2 mb-2">
                         <Button
-                            onClick={() => openModal(`Editar la campaña 
-                                ${projectDetails.projectTitle}`, 
-                                <ProjectForm projectDetails={projectDetails} />,
-                                "max-w-4xl"
-                            )} 
-                            className="flex-1 bg-yellow-500 text-white rounded-full 
-                            px-2 py-1 hover:bg-yellow-600 transition duration-200 text-sm">
-                            Editar
+                            onClick={() => 
+                                role === 'emprendedor' 
+                                    ? openModal(`Editar la campaña ${projectDetails.projectTitle}`, 
+                                        <ProjectForm projectDetails={projectDetails} />, 
+                                            "max-w-4xl") 
+                                    : window.location.href = '/' // cambiarlo por el enrutamiento de next 
+                                } 
+                            className="flex-1 bg-yellow-500 text-white rounded-full px-2 py-1 
+                                hover:bg-yellow-600 transition duration-200 text-sm"
+                        >
+                            {role === 'emprendedor' ? 'Editar' : 'Ver detalle'}
                         </Button>
-                        <Button 
-                            onClick={() => openModal(`Eliminar la campaña
-                                ${projectDetails.projectTitle}`,
-                                <ActionConfirmation text={`Estás seguro de eliminar la campaña? 
-                                    No se podrán revertir los cambios y lo recaudado será devuelto.`} 
-                                    action="Confirmar eliminación" bgColor="bg-red-500 hover:bg-red-600" />,
-                                "max-w-sm"
-                            )}
-                            className="flex-1 bg-red-500 text-white rounded-full px-2 
-                            py-1 hover:bg-red-600 transition duration-200 text-sm">
-                            Eliminar
+                        <Button
+                            onClick={() => 
+                                role === 'emprendedor' 
+                                    ? openModal(`Eliminar la campaña ${projectDetails.projectTitle}`,
+                                        <ActionConfirmation text={`Estás seguro de eliminar la campaña? 
+                                            No se podrán revertir los cambios y lo recaudado será devuelto.`} 
+                                            action="Confirmar eliminación" bgColor="bg-red-500 hover:bg-red-600" />,
+                                            "max-w-sm") 
+                                    : null
+                                } 
+                            className={`flex-1 rounded-full px-2 py-1 transition duration-200 text-sm 
+                                ${role === 'emprendedor' ? 'bg-red-500 text-white hover:bg-red-600' 
+                                : 'bg-gray-400  cursor-not-allowed opacity-50'}`}
+                        >
+                            {role === 'emprendedor' ? 'Eliminar' : 'Actualizar $'}
                         </Button>
                     </div>
                     <div className="flex mb-2"> 
                         <Button
-                            onClick={() => openModal(`Inversores del proyecto 
-                                ${projectDetails.projectTitle}`, 
-                                <Table investors={projectDetails.investors} />,
-                                "max-w-4xl"
-                            )} 
+                            onClick={() => 
+                                role === 'emprendedor' 
+                                    ? openModal(`Inversores del proyecto ${projectDetails.projectTitle}`, 
+                                        <Table investors={projectDetails.investors} />,
+                                            "max-w-4xl")
+                                    : openModal(`Emprendedor del proyecto ${projectDetails.projectTitle}`, 
+                                        <div>
+                                            <p className="pb-2">Nombre y Apellido: {projectDetails.creator}</p>
+                                            <p>Email: {projectDetails.email} </p>
+                                        </div>,
+                                        "max-w-sm"
+                                      )
+                                } 
                             className="flex-1 bg-blue-500 text-white rounded-full px-2 
-                            py-1 hover:bg-blue-600 transition duration-200 text-sm">
-                            Ver inversores
+                                py-1 hover:bg-blue-600 transition duration-200 text-sm"
+                        >
+                            {role === 'emprendedor' ? 'Ver inversores' : 'Ver emprendedor'}
                         </Button>
                     </div>
                 </div>
