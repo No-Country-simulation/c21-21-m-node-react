@@ -71,28 +71,28 @@ export const getProjectByID = async (id) => {
 
 const updateProject = async (id, updateObj, callback) => {
   try {
-    /*
-    crear un validator user, para que solo el owner pueda actualizar el proyecto
-    */
-
-    const projectUpdate = await Project.findById(id);
-    if (!projectUpdate)
+    const project = await Project.findById(id);
+    if (!project) {
       return callback({ message: "El proyecto asociado a esa Id, no existe." });
+    }
 
-    //actualizar proyecto
-    let updatedProject = {
-      name: updateObj.name,
-      description: updateObj.description,
-      goal_amount: updateObj.goal_amount,
-      deadline: updateObj.deadline,
-      rewards: updateObj.rewards,
+    //actualiza SOLO los campos que han sido enviados en el updateObj
+    const updatedProject = {
+      name: updateObj.name || project.name,
+      description: updateObj.description || project.description,
+      goal_amount: updateObj.goal_amount || project.goal_amount,
+      deadline: updateObj.deadline || project.deadline,
+      category: updateObj.category || project.category,
+      creation_date: project.creation_date,
+      rewards: updateObj.rewards || project.rewards,
     };
 
-    await projectUpdate.updateOne(updatedProject);
-    await projectUpdate.save();
+    //actualizar protyecto
+    await Project.updateOne({ _id: id }, updatedProject);
 
     return callback(false, {
-      message: "El proyecto se ha acualizado exitosamente!",
+      message: "El proyecto se ha actualizado exitosamente!",
+      project,
     });
   } catch (error) {
     return callback({
