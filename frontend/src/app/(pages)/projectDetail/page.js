@@ -3,7 +3,7 @@ import Image from "next/image";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import Container from "@/app/components/Container";
-import ProgressBar from "@/app/components/ProgressBar";
+import ProgressBar from "@/app/components/ProgresBar";
 import Button from "@/app/components/Button";
 
 export default function ProjectDetails() {
