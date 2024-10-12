@@ -81,11 +81,11 @@ const updateProject = async (id, updateObj, callback) => {
 
     //actualizar proyecto
     let updatedProject = {
-      name: project.name,
-      description: project.description,
-      goal_amount: project.goal_amount,
-      deadline: project.deadline,
-      rewards: project.rewards,
+      name: updateObj.name,
+      description: updateObj.description,
+      goal_amount: updateObj.goal_amount,
+      deadline: updateObj.deadline,
+      rewards: updateObj.rewards,
     };
 
     await projectUpdate.updateOne(updatedProject);
