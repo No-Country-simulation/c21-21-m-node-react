@@ -2,7 +2,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "mongoose": "^8.7.0",
+    "mongoose": "^8.7.1",
     "nodemon": "^3.1.7"
   },
   "name": "c21-21-m-node-react",
@@ -12,17 +12,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "start": "nodemon node api/index.js"
-=======
     "start": "nodemon node api/index.js",
     "seed": "node seed.js"
->>>>>>> develop
-=======
-    "start": "nodemon node api/index.js",
-    "seed": "node seed.js"
->>>>>>> develop
   },
   "keywords": [],
   "author": "",
