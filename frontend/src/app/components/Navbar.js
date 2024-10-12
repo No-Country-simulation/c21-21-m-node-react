@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from 'react';
-import Link from 'next/link'; 
+import Link from 'next/link';
 import Button from '../components/Button';
-import { signIn } from 'next-auth/react';
+// import { signIn } from 'next-auth/react';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +19,7 @@ const Navbar = () => {
     const closeModal = () => {
         setShowModal(false);
     };
-    
+
     const menuItems = [
         { label: 'Home', to: '/' },
         { label: 'Proyectos', to: '/projects' },
@@ -29,15 +29,15 @@ const Navbar = () => {
         <header className="bg-customBlue">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1">
-                    <Link href="/" className="-m-1.5 p-1.5"> 
-                        <h1 className='font-bold text-xl text-customLightgray'>CrowdStart</h1>
+                    <Link href="/" className="-m-1.5 p-1.5">
+                        <h1 className='font-bold text-xl text-customLightgray'>BOOSTUP</h1>
                     </Link>
                 </div>
                 <div className="flex lg:hidden">
                     <Button type="button"
                         className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                         onClick={toggleMenu}>
-                    <span className="sr-only">Open main menu</span>
+                        <span className="sr-only">Abrir</span>
                         <svg
                             className="h-6 w-6"
                             fill="none"
@@ -67,14 +67,14 @@ const Navbar = () => {
                 <div className="fixed inset-0 z-10 bg-black/30"></div>
                 <div className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div className="flex items-center justify-between">
-                        <Link href="/" className="-m-1.5 p-1.5"> 
-                            <h1 className='font-bold text-xl text-gray-900'>CrowdStart</h1>
+                        <Link href="/" className="-m-1.5 p-1.5">
+                            <h1 className='font-bold text-xl text-gray-900'>BOOSTUP</h1>
                         </Link>
                         <Button type="button"
                             className="-m-2.5 rounded-md p-2.5 text-gray-700"
                             onClick={toggleMenu}
-                            >
-                            <span className="sr-only">Close menu</span>
+                        >
+                            <span className="sr-only">X</span>
                             <svg
                                 className="h-6 w-6"
                                 fill="none"
@@ -82,7 +82,7 @@ const Navbar = () => {
                                 strokeWidth="1.5"
                                 stroke="currentColor"
                                 aria-hidden="true"
-                                >
+                            >
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                             </svg>
                         </Button>
@@ -90,10 +90,10 @@ const Navbar = () => {
                     <div className="mt-6 flow-root">
                         <div className="-my-6 divide-y divide-gray-500/10">
                             <div className="space-y-2 py-6">
-                            <Button onClick={openModal} className="text-md font-semibold leading-6">Acceder</Button>
+                                <Button onClick={openModal} className="text-md font-semibold leading-6">Acceder</Button>
                                 {
                                     menuItems.map((item) => (
-                                        <Link key={item.label} href={item.to} 
+                                        <Link key={item.label} href={item.to}
                                             className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900">
                                             {item.label}
                                         </Link>
@@ -110,7 +110,7 @@ const Navbar = () => {
                 showModal && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-1">
                         <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
-                            <Button onClick={closeModal} 
+                            <Button onClick={closeModal}
                                 className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl font-bold">
                                 &times;
                             </Button>
@@ -121,7 +121,7 @@ const Navbar = () => {
                             </p>
                             <div className="flex flex-col space-y-4">
                                 <Button
-                                    onClick={() => signIn('google')} 
+                                    onClick={() => signIn('google')}
                                     className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
                                     Emprendedor con Google
                                 </Button>
