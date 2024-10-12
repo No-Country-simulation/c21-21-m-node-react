@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 
 import projectRoute from "./routes/projectRoute.js";
 import userRoutes from "./routes/userRoutes.js";
+import promotionRoutes from "./routes/promotionRoutes.js"
 
 dotenv.config();
 
@@ -38,3 +39,4 @@ startServer();
 //routes
 app.use("/users", userRoutes);
 app.use("/projects", projectRoute);
+app.use("/promotion", promotionRoutes)
