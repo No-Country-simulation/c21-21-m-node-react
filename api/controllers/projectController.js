@@ -108,18 +108,12 @@ const update = async (req, res) => {
       .send({ errMessage: "El objeto de actualización es obligatorio!" });
 
   try {
-    await projectServices.update(
-      {
-        id,
-        updateObj,
-      },
-      (err, result) => {
-        if (err) {
-          return res.status(500).send(err);
-        }
-        return res.status(201).send(result);
+    await projectServices.updateProject(id, updateObj, (err, result) => {
+      if (err) {
+        return res.status(500).send(err);
       }
-    );
+      return res.status(201).send(result);
+    });
   } catch (error) {
     return res.status(500).send({
       errMessage: "Error al actualizar el proyecto.",
