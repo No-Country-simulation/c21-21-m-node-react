@@ -1,6 +1,6 @@
 const Table = ({ investors }) => {
     return (
-        <div className="overflow-x-hidden"> 
+        <div className="overflow-x-auto"> 
             <table className="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">

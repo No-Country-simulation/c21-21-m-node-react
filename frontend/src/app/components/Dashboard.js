@@ -61,7 +61,8 @@ const Dashboard = () => {
             <Modal
                 isOpen={isModalOpen}        
                 onClose={() => setIsModalOpen(false)}
-                title={'Crear campaña'}>
+                title={'Crear campaña'}
+                size="max-w-4xl max-h-[80vh]">
                 <ProjectForm />
             </Modal>
         </div>

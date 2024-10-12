@@ -3,16 +3,19 @@ import Button from "./Button";
 import Modal from "./Modal";
 import Table from './Table';
 import ProjectForm from './ProjectForm';
+import ActionConfirmation from './ActionConfirmation';
 
 const Card = ({ imgSrc, title, percentage, description }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [titleModal, setTitleModal] = useState("");
+    const [modalTitle, setModalTitle] = useState("");
     const [modalContent, setModalContent] = useState(null);
+    const [modalSize, setModalSize] = useState("");
 
-    const openModal = (title, content) => {
-        setTitleModal(title)
-        setModalContent(content)
-        setIsModalOpen(true)
+    const openModal = (title, content, size) => {
+        setModalTitle(title);
+        setModalContent(content);
+        setModalSize(size);
+        setIsModalOpen(true);
     };
 
     const projectDetails = {
@@ -63,14 +66,21 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                         <Button
                             onClick={() => openModal(`Editar la campaña 
                                 ${projectDetails.projectTitle}`, 
-                                <ProjectForm projectDetails={projectDetails} />
+                                <ProjectForm projectDetails={projectDetails} />,
+                                "max-w-4xl"
                             )} 
                             className="flex-1 bg-yellow-500 text-white rounded-full 
                             px-2 py-1 hover:bg-yellow-600 transition duration-200 text-sm">
                             Editar
                         </Button>
                         <Button 
-                            onClick={() => openModal("Eliminar campaña")}
+                            onClick={() => openModal(`Eliminar la campaña
+                                ${projectDetails.projectTitle}`,
+                                <ActionConfirmation text={`Estás seguro de eliminar la campaña? 
+                                    No se podrán revertir los cambios y lo recaudado será devuelto.`} 
+                                    action="Confirmar eliminación" bgColor="bg-red-500 hover:bg-red-600" />,
+                                "max-w-sm"
+                            )}
                             className="flex-1 bg-red-500 text-white rounded-full px-2 
                             py-1 hover:bg-red-600 transition duration-200 text-sm">
                             Eliminar
@@ -80,7 +90,8 @@ const Card = ({ imgSrc, title, percentage, description }) => {
                         <Button
                             onClick={() => openModal(`Inversores del proyecto 
                                 ${projectDetails.projectTitle}`, 
-                                <Table investors={projectDetails.investors} />
+                                <Table investors={projectDetails.investors} />,
+                                "max-w-4xl"
                             )} 
                             className="flex-1 bg-blue-500 text-white rounded-full px-2 
                             py-1 hover:bg-blue-600 transition duration-200 text-sm">
@@ -92,7 +103,8 @@ const Card = ({ imgSrc, title, percentage, description }) => {
             <Modal
                 isOpen={isModalOpen}        
                 onClose={() => setIsModalOpen(false)}
-                title={titleModal}>
+                title={modalTitle}
+                size={modalSize}>
                 {modalContent}
             </Modal>
         </div>  

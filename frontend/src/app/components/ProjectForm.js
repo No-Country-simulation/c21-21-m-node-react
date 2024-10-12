@@ -184,7 +184,9 @@ const ProjectForm = ({ projectDetails }) => {
                 type="submit"
                 className="w-full sm:w-auto bg-blue-500 text-white font-semibold px-6 py-3 rounded-md hover:bg-blue-600 transition duration-200 mt-6"
             >
-                Crear Proyecto
+                {
+                    projectDetails ? 'Editar campaña' : 'Crear campaña'
+                }
             </Button>
         </form>
     );
