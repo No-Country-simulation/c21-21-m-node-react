@@ -31,7 +31,7 @@ const Navbar = () => {
                 <div className="flex lg:flex-1">
                     <Link href="/" className="-m-1.5 p-1.5">
                         {/* <h1 className='font-bold text-xl text-customGreen'>BOOSTUP</h1> */}
-                        <img src="./logo.png" alt="BOOSTUP" class="h-8 w-auto"/>
+                        <img src="../assets/images/logo.png" alt="BOOSTUP" class="h-8 w-auto"/>
                     </Link>
 
                 </div>
