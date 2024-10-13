@@ -23,10 +23,12 @@ const projectSchema = new mongoose.Schema({
     ],
     required: true,
   },
-  img: [{
-    type: String,
-    required: true
-  }],
+  img: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   goal_amount: {
     type: Number,
     required: true,
@@ -38,7 +40,7 @@ const projectSchema = new mongoose.Schema({
   },
   creation_date: {
     type: Date,
-    required: true
+    required: true,
   },
   deadline: {
     type: Date,
@@ -66,9 +68,26 @@ const projectSchema = new mongoose.Schema({
   ],
   rewards: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Reward",
-      required: true,
+      name: {
+        type: String,
+        required: true,
+      },
+      description: {
+        type: String,
+        require: true,
+      },
+      category: {
+        type: String,
+        enum: ["Bronce", "Silver", "Gold", "Platinum"],
+        required: true,
+      },
+      amount: {
+        type: Number,
+        required: true,
+      },
+      img: {
+        type: String,
+      },
     },
   ],
   owner: {
