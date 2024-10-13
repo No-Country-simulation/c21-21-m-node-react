@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
-const projectSchema = mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
+const projectSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -12,12 +8,25 @@ const projectSchema = mongoose.Schema({
   description: {
     type: String,
     required: true,
-    default: "",
   },
-  creator: {
+  category: {
     type: String,
+    enum: [
+      "Fintech",
+      "HealthTech",
+      "EdTech",
+      "Social Media",
+      "HRTech",
+      "Videogames",
+      "e-Commerce",
+      "Others",
+    ],
     required: true,
   },
+  img: [{
+    type: String,
+    required: true
+  }],
   goal_amount: {
     type: Number,
     required: true,
@@ -25,6 +34,11 @@ const projectSchema = mongoose.Schema({
   current_amount: {
     type: Number,
     required: true,
+    default: 0,
+  },
+  creation_date: {
+    type: Date,
+    required: true
   },
   deadline: {
     type: Date,
@@ -32,25 +46,42 @@ const projectSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    required: true,
-    enum: ["active", "inactive", "pending", "finally"],
+    enum: ["active", "inactive", "pending", "completed"],
+    default: "pending",
   },
-  rewards: [
+  backers: [
     {
       name: {
-        type: String,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Backer",
       },
-      description: {
-        type: String,
-        required: true,
-        default: "",
-      },
-      min_contribution: {
+      contribution: {
         type: Number,
       },
+      contribution_date: {
+        type: Date,
+      },
+      //AGREGAR VISIBILIDAD DE LOS BACKERS
+    },
+  ],
+  rewards: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Reward",
+      required: true,
+    },
+  ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  updates: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "UpdateProject",
     },
   ],
 });
 
-module.exports = mongoose.model("project", projectSchema);
+export default mongoose.model("Project", projectSchema);
