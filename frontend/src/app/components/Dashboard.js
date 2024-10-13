@@ -17,15 +17,15 @@ const Dashboard = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('https://run.mocky.io/v3/175491e7-0ddf-4d09-9138-cf6c68d68f77');
-                    setRole("emprendedor")
-                    setProjects(response.data.projects);
-                    setTotalProjects(response.data.totalProjects);
-                    setTotalAmount(response.data.totalAmount);
+                setRole("emprendedor")
+                setProjects(response.data.projects);
+                setTotalProjects(response.data.totalProjects);
+                setTotalAmount(response.data.totalAmount);
             } catch (error) {
                 setError(error);
-            } 
+            }
         };
-    
+
         fetchData();
     }, []);
 
@@ -33,22 +33,22 @@ const Dashboard = () => {
 
     const title = role === 'emprendedor' ? 'Tus proyectos' : 'Proyectos en los que has invertido';
     const buttonTitle = role === 'emprendedor' ? 'Crear campaña' : 'Ver proyectos para invertir';
-    
+
     const labelTotalProjects = role === 'emprendedor' ? 'Total proyectos' : 'Total proyectos invertidos';
     const labelTotalAmount = role === 'emprendedor' ? 'Total recaudado' : 'Total inversión';
-    
+
     return (
         <div className="flex flex-col px-4 lg:px-8">
             <div className="flex flex-col md:flex-row justify-between items-start lg:items-center 
                 mb-4 space-y-4 md:space-y-0">
                 <h1 className="text-3xl lg:text-4xl pb-2 lg:pb-0 font-bold">{title}</h1>
                 <div className="w-full md:w-auto">
-                    <Button 
+                    <Button
                         onClick={() => {
-                            role === 'emprendedor' 
-                            ? openModal() 
-                            : window.location.href = '/'; // cambiarlo por el enrutamiento de next 
-                        }} 
+                            role === 'emprendedor'
+                                ? openModal()
+                                : window.location.href = '/'; // cambiarlo por el enrutamiento de next 
+                        }}
                         className="w-full bg-customGreen text-white font-bold px-6 py-3 rounded-full"
                     >
                         {buttonTitle}
@@ -60,10 +60,10 @@ const Dashboard = () => {
                 <p className="font-bold">{labelTotalAmount}: ${totalAmount}</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 
-                gap-y-8 w-full"> 
+                gap-y-8 w-full">
                 {
                     projects.map((cardProject, index) => (
-                        <Card 
+                        <Card
                             key={cardProject.id || index}
                             imgSrc={cardProject.imgSrc || "https://via.placeholder.com/300"}
                             title={cardProject.title}
@@ -76,7 +76,7 @@ const Dashboard = () => {
                 }
             </div>
             <Modal
-                isOpen={isModalOpen}        
+                isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title={'Crear campaña'}
                 size="max-w-4xl max-h-[80vh]">

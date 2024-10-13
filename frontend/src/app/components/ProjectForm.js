@@ -129,11 +129,11 @@ const ProjectForm = ({ projectDetails }) => {
                 />
             </div>
 
-           {/* Sección para datos bancarios */}
+            {/* Sección para datos bancarios */}
             <div className="mt-6">
                 <h3 className="text-lg font-semibold mb-1">Configurar Transferencia</h3>
                 <p className="text-sm text-gray-600 mb-4">
-                    Al actualizar el estatus de la campaña a "Finalizada", nos pondremos 
+                    Al actualizar el estatus de la campaña a "Finalizada", nos pondremos
                     en contacto contigo para verificar estos datos y poder transferir el monto recaudado.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
