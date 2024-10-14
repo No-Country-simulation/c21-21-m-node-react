@@ -10,12 +10,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  profile_picture:{
-    type: String,
+  profile_picture: {
+    type: String, //URL de la imagen del perfil, que sera la de google en un inicio y despues puede actualizarla
   },
   role: {
     type: String,
