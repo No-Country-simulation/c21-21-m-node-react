@@ -1,15 +1,15 @@
 import Image from "next/image";
 import ImageP from "../../assets/images/background.jpg";
 
-const InvestmentHeader = () => {
+const Header = () => {
     return (
         <div className="flex flex-col items-center md:flex-row">
             <Image 
                 src={ImageP} 
                 alt="imagen" 
-                className="hidden lg:block w-36 h-auto mr-4 rounded-md" 
-                width={150} 
-                height={150} 
+                className="hidden md:block w-48 h-auto mr-4 rounded-md" 
+                width={200} 
+                height={200} 
             />
             <div className="flex-1 text-center md:text-left"> 
                 <p>Elija el monto de su inversión para</p>
@@ -26,5 +26,4 @@ const InvestmentHeader = () => {
     );
 };
 
-export default InvestmentHeader;
-
+export default Header;
