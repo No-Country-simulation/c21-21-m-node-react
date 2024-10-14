@@ -1,12 +1,15 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Button from '../components/Button';
-// import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import axios from 'axios';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    const [role, setRole] = useState('');
+    const { data: session } = useSession();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -24,6 +27,34 @@ const Navbar = () => {
         { label: 'Home', to: '/' },
         { label: 'Proyectos', to: '/projects' },
     ];
+
+    const handleAuth = async (selectedRole) => {
+        setRole(selectedRole); 
+        await signIn('google'); 
+    };
+
+    const sendData = async () => {
+        if (session) {
+            const accessToken = session.accessToken; 
+            console.log(accessToken)
+
+            try {
+                const response = await axios.post('http://localhost:4000/user/auth/register', {
+                    token: accessToken,
+                    role: role,
+                });
+                console.log('Response from backend:', response.data);
+            } catch (error) {
+                console.error('Error sending data to backend:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (session) {
+            sendData();
+        }
+    }, [session]); 
 
     return (
         <header className="bg-customGray">
@@ -123,12 +154,12 @@ const Navbar = () => {
                             </p>
                             <div className="flex flex-col space-y-4">
                                 <Button
-                                    onClick={() => signIn('google')}
+                                    onClick={() => handleAuth('emprendedor')}
                                     className="w-full px-4 py-2 bg-customGreen text-customWhite rounded hover:bg-customGreen transition">
                                     Emprendedor con Google
                                 </Button>
                                 <Button
-                                    onClick={() => signIn('google')}
+                                    onClick={() => handleAuth('inversor')}
                                     className="w-full px-4 py-2 bg-customGreen text-customWhite rounded hover:bg-customGreen transition">
                                     Inversor con Google
                                 </Button>
