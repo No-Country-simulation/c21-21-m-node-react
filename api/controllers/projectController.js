@@ -3,10 +3,23 @@ import projectServices from "../services/projectServices.js";
 const create = async (req, res) => {
   const { name, owner, goal_amount, description, deadline, rewards } = req.body;
 
-  if (!(name && owner && goal_amount && description && deadline)) {
+  if (
+    !(
+      name &&
+      owner &&
+      img &&
+      category &&
+      current_amount &&
+      creation_date &&
+      goal_amount &&
+      description &&
+      deadline &&
+      rewards
+    )
+  ) {
     return res.status(400).send({
       errMessage:
-        "El nombre, owner, meta, descripción y fecha límite son obligatorios.",
+        "El nombre, owner, images, meta, descripción y fecha límite son obligatorios.",
     });
   }
 
@@ -15,11 +28,17 @@ const create = async (req, res) => {
     await projectServices.createProject(
       {
         name,
-        owner,
-        goal_amount,
         description,
+        category,
+        img,
+        goal_amount,
+        current_amount,
+        creation_date,
         deadline,
         rewards,
+        owner,
+        backers,
+        updates,
       },
       (err, result) => {
         if (err) {
@@ -37,30 +56,27 @@ const create = async (req, res) => {
 };
 
 //Cualquier Consulta sobre esta función preguntar a David De Vito
-const getAllProjects = async (req,res) =>{
+const getAllProjects = async (req, res) => {
   try {
-
     const projects = await projectServices.getProjects();
 
     //Si la lista esta vacia se lanza un msm de error
-    if(projects.length === 0){
-      return res.status(404).send({errMessage: "No se encontraron proyectos."})
+    if (projects.length === 0) {
+      return res
+        .status(404)
+        .send({ errMessage: "No se encontraron proyectos." });
     }
 
     return res.status(200).json(projects);
-
   } catch (error) {
-
     return res.status(500).send({
       errMessage: "No se pudo obtener la lista de proyectos.",
       details: error.Message,
     });
-    
   }
+};
 
-}
-
-const getProjectById = async(req, res)=>{
+const getProjectById = async (req, res) => {
   try {
     const { id } = req.params;
     const project = await projectServices.getProjectByID(id);
@@ -84,10 +100,9 @@ const getProjectById = async(req, res)=>{
     return res.status(500).send({
       errMessage: "No se pudo obtener el proyecto.",
       details: error.Message,
-    })
+    });
   }
-
-}
+};
 
 const update = async (req, res) => {
   const { id } = req.params;
@@ -100,18 +115,12 @@ const update = async (req, res) => {
       .send({ errMessage: "El objeto de actualización es obligatorio!" });
 
   try {
-    await projectServices.update(
-      {
-        id,
-        updateObj,
-      },
-      (err, result) => {
-        if (err) {
-          return res.status(500).send(err);
-        }
-        return res.status(201).send(result);
+    await projectServices.updateProject(id, updateObj, (err, result) => {
+      if (err) {
+        return res.status(500).send(err);
       }
-    );
+      return res.status(201).send(result);
+    });
   } catch (error) {
     return res.status(500).send({
       errMessage: "Error al actualizar el proyecto.",

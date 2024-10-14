@@ -3,7 +3,18 @@ import User from "../models/userModel.js";
 
 const createProject = async (data, callback) => {
   try {
-    const { name, owner, goal_amount, description, deadline, rewards } = data;
+    const {
+      name,
+      description,
+      category,
+      img,
+      goal_amount,
+      current_amount,
+      creation_date,
+      deadline,
+      rewards,
+      owner,
+    } = data;
 
     const existingProject = await Project.findOne({ name });
     if (existingProject) return callback({ message: "El proyecto ya existe." });
@@ -15,10 +26,16 @@ const createProject = async (data, callback) => {
     const newProject = new Project({
       name,
       description,
-      owner, //solo el ID del owner (a cabmiar dependiendo del front y auth0)
+      category,
+      img, //UN ARRAY CON LOS ID DE LAS IMAGENES
       goal_amount,
+      current_amount,
+      creation_date,
       deadline,
-      rewards,
+      rewards, //UN ARRAY CON LOS ID DE LOS REWARDS
+      owner, //SOLO EL ID DEL OWNER
+      backers,
+      updates,
     });
 
     const savedProject = await newProject.save();
@@ -33,16 +50,16 @@ const createProject = async (data, callback) => {
 };
 
 //Función que devuelve una lista de proyectos
-const getProjects = async () =>{
+const getProjects = async () => {
   try {
     const projects = await Project.find({
       $or: [{ isDeleted: false }, { isDeleted: { $exists: false } }], //Una vez que todos los documentos tenga 'isDeleted' se puede eliminar la segunda condición
     });
     return projects;
   } catch (error) {
-    throw new Error("Error al obtener la lista de proyectos.");  // Lanza el error para manejarlo en el controlador
+    throw new Error("Error al obtener la lista de proyectos."); // Lanza el error para manejarlo en el controlador
   }
-}
+};
 
 //Función que devuelve un preyecto según el ID
 const getProjectByID = async (id)=>{
@@ -52,7 +69,7 @@ const getProjectByID = async (id)=>{
   } catch (error) {
     throw new Error("Error al obtener el proyecto por ID.");
   }
-}
+};
 
 const updateProject = async (id, updateObj, callback) => {
   try {
@@ -65,21 +82,25 @@ const updateProject = async (id, updateObj, callback) => {
     });
     if (!projectUpdate)
       return callback({ message: "El proyecto asociado a esa Id, no existe." });
+    }
 
-    //actualizar proyecto
-    let updatedProject = {
-      name: project.name,
-      description: project.description,
-      goal_amount: project.goal_amount,
-      deadline: project.deadline,
-      rewards: project.rewards,
+    //actualiza SOLO los campos que han sido enviados en el updateObj
+    const updatedProject = {
+      name: updateObj.name || project.name,
+      description: updateObj.description || project.description,
+      goal_amount: updateObj.goal_amount || project.goal_amount,
+      deadline: updateObj.deadline || project.deadline,
+      category: updateObj.category || project.category,
+      creation_date: project.creation_date,
+      rewards: updateObj.rewards || project.rewards,
     };
 
-    await projectUpdate.updateOne(updatedProject);
-    await projectUpdate.save();
+    //actualizar protyecto
+    await Project.updateOne({ _id: id }, updatedProject);
 
     return callback(false, {
-      message: "El proyecto se ha acualizado exitosamente!",
+      message: "El proyecto se ha actualizado exitosamente!",
+      project,
     });
   } catch (error) {
     return callback({

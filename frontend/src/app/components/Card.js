@@ -46,23 +46,23 @@ const Card = ({ imgSrc, title, percentage, description, personalInvestment, role
     };
 
     return (
-        <div className="w-full mx-auto">  
+        <div className="w-full mx-auto">
             <div className="bg-white shadow-md rounded-lg border border-gray-200 p-0">
-                <img 
-                    src={imgSrc} 
-                    alt={title} 
-                    className="w-full h-32 object-cover rounded-t-lg" 
+                <img
+                    src={imgSrc}
+                    alt={title}
+                    className="w-full h-32 object-cover rounded-t-lg"
                 />
-                <div className="p-2"> 
+                <div className="p-2">
                     <h1 className="text-lg font-semibold text-gray-800 mb-4 truncate 
-                        overflow-hidden whitespace-nowrap text-ellipsis">{title}</h1> 
+                        overflow-hidden whitespace-nowrap text-ellipsis">{title}</h1>
                     <div className="w-full bg-gray-200 rounded-full mb-2">
                         <div
                             className="bg-blue-500 h-2 rounded-full"
-                            style={{ width: `${percentage}%` }} 
+                            style={{ width: `${percentage}%` }}
                         ></div>
                     </div>
-                    <p className={`font-bold text-sm ${role === 'emprendedor' ? 'mb-5' : ''}`}>${description} recaudados</p> 
+                    <p className={`font-bold text-sm ${role === 'emprendedor' ? 'mb-5' : ''}`}>${description} recaudados</p>
                     {
                         personalInvestment !== null && (
                             <p className="font-bold text-sm mb-5">${personalInvestment} inversión</p>)
@@ -70,50 +70,50 @@ const Card = ({ imgSrc, title, percentage, description, personalInvestment, role
                     <hr className="border-gray-300 mb-4" />
                     <div className="flex space-x-2 mb-2">
                         <Button
-                            onClick={() => 
-                                role === 'emprendedor' 
-                                    ? openModal(`Editar la campaña ${projectDetails.projectTitle}`, 
-                                        <ProjectForm projectDetails={projectDetails} />, 
-                                            "max-w-4xl") 
+                            onClick={() =>
+                                role === 'emprendedor'
+                                    ? openModal(`Editar la campaña ${projectDetails.projectTitle}`,
+                                        <ProjectForm projectDetails={projectDetails} />,
+                                        "max-w-4xl")
                                     : window.location.href = '/' // cambiarlo por el enrutamiento de next 
-                                } 
+                            }
                             className="flex-1 bg-yellow-500 text-white rounded-full px-2 py-1 
                                 hover:bg-yellow-600 transition duration-200 text-sm"
                         >
                             {role === 'emprendedor' ? 'Editar' : 'Ver detalle'}
                         </Button>
                         <Button
-                            onClick={() => 
-                                role === 'emprendedor' 
+                            onClick={() =>
+                                role === 'emprendedor'
                                     ? openModal(`Eliminar la campaña ${projectDetails.projectTitle}`,
                                         <ActionConfirmation text={`Estás seguro de eliminar la campaña? 
-                                            No se podrán revertir los cambios y lo recaudado será devuelto.`} 
+                                            No se podrán revertir los cambios y lo recaudado será devuelto.`}
                                             action="Confirmar eliminación" bgColor="bg-red-500 hover:bg-red-600" />,
-                                            "max-w-sm") 
+                                        "max-w-sm")
                                     : null
-                                } 
+                            }
                             className={`flex-1 rounded-full px-2 py-1 transition duration-200 text-sm 
-                                ${role === 'emprendedor' ? 'bg-red-500 text-white hover:bg-red-600' 
-                                : 'bg-gray-400  cursor-not-allowed opacity-50'}`}
+                                ${role === 'emprendedor' ? 'bg-red-500 text-white hover:bg-red-600'
+                                    : 'bg-gray-400  cursor-not-allowed opacity-50'}`}
                         >
                             {role === 'emprendedor' ? 'Eliminar' : 'Actualizar $'}
                         </Button>
                     </div>
-                    <div className="flex mb-2"> 
+                    <div className="flex mb-2">
                         <Button
-                            onClick={() => 
-                                role === 'emprendedor' 
-                                    ? openModal(`Inversores del proyecto ${projectDetails.projectTitle}`, 
+                            onClick={() =>
+                                role === 'emprendedor'
+                                    ? openModal(`Inversores del proyecto ${projectDetails.projectTitle}`,
                                         <Table investors={projectDetails.investors} />,
-                                            "max-w-4xl")
-                                    : openModal(`Emprendedor del proyecto ${projectDetails.projectTitle}`, 
+                                        "max-w-4xl")
+                                    : openModal(`Emprendedor del proyecto ${projectDetails.projectTitle}`,
                                         <div>
                                             <p className="pb-2">Nombre y Apellido: {projectDetails.creator}</p>
                                             <p>Email: {projectDetails.email} </p>
                                         </div>,
                                         "max-w-sm"
-                                      )
-                                } 
+                                    )
+                            }
                             className="flex-1 bg-blue-500 text-white rounded-full px-2 
                                 py-1 hover:bg-blue-600 transition duration-200 text-sm"
                         >
@@ -123,13 +123,13 @@ const Card = ({ imgSrc, title, percentage, description, personalInvestment, role
                 </div>
             </div>
             <Modal
-                isOpen={isModalOpen}        
+                isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title={modalTitle}
                 size={modalSize}>
                 {modalContent}
             </Modal>
-        </div>  
+        </div>
     );
 };
 

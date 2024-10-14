@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Button from '../components/Button';
-// import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -21,8 +22,9 @@ const Navbar = () => {
     };
 
     const menuItems = [
-        { label: 'Home', to: '/' },
+        { label: 'Inicio', to: '/' },
         { label: 'Proyectos', to: '/projects' },
+        { label: 'Nosotros', to: '/about-us' },
     ];
 
     return (
@@ -30,8 +32,13 @@ const Navbar = () => {
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1">
                     <Link href="/" className="-m-1.5 p-1.5">
-                        {/* <h1 className='font-bold text-xl text-customGreen'>BOOSTUP</h1> */}
-                        <img src="../assets/images/logo.png" alt="BOOSTUP" class="h-8 w-auto"/>
+                        <Image
+                            src="/logo.png"
+                            alt="BOOSTUP"
+                            width={100}
+                            height={100}
+                            className="h-8 w-auto"
+                        />
                     </Link>
 
                 </div>
