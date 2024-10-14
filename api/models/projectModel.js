@@ -73,6 +73,16 @@ const projectSchema = new mongoose.Schema({
       ref: "UpdateProject",
     },
   ],
+  
+  //isDeleted y deletedAt son campos hechos para la eliminación lógica
+  isDeleted : {
+    type: Boolean,
+    default: false
+  },
+  deletedAt: {
+    type: Date,
+    default: null
+  }
 });
 
 export default mongoose.model("Project", projectSchema);
