@@ -87,6 +87,13 @@ const getProjectById = async (req, res) => {
   try {
     const { id } = req.params;
     const project = await projectServices.getProjectByID(id);
+    
+    //Se lanza 410 si el proyecto ya ha sido lógicamente eliminado del servidor
+    if(project.isDeleted === true){
+      return res.status(410).json({
+        message: "Este proyecto ha sido eliminado."
+      })
+    }
 
     //Se lanza 404 si el id pasado como parametro tiene 24 caracteres y es erroneo sino pasa 500
     if (!project) {
@@ -129,4 +136,37 @@ const update = async (req, res) => {
   }
 };
 
-export default { create, update, getAllProjects, getProjectById };
+const deleteProjectById = async (req, res) =>{
+  try {
+  
+    const {id} = req.params;
+
+    const project = await projectServices.deleteProject(id);
+
+    if(!project){
+      return res.status(404).json({
+        message: "Proyecto no encorntrado."
+      })
+    }
+
+    //Se lanza 410 si el proyecto ya ha sido lógicamente eliminado del servidor
+    if(project.isDeleted === true){
+      return res.status(410).json({
+        message: "Este proyecto ya ha sido eliminado."
+      })
+    }
+
+    return res.status(200).json({
+      message: "Proyecto eliminado (lógicamente).",
+      project
+    });
+
+  } catch (error) {
+    return res.status(500).send({
+      errMessage: "No se pudo eliminar el proyecto",
+      details: error.message
+    })
+  }
+}
+
+export default { create, getAllProjects, getProjectById, update, deleteProjectById };

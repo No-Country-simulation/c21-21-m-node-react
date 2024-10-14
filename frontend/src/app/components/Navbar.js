@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Button from '../components/Button';
 import Image from 'next/image';
-// import { signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ const Navbar = () => {
     const menuItems = [
         { label: 'Inicio', to: '/' },
         { label: 'Proyectos', to: '/projects' },
-        { label: 'Nosotros', to: '/aboutUs' },
+        { label: 'Nosotros', to: '/about-us' },
     ];
 
     return (
