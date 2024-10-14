@@ -74,33 +74,37 @@ const getProjectByID = async (id)=>{
 const updateProject = async (id, updateObj, callback) => {
   try {
     /*
-    crear un validator user, para que solo el owner pueda actualizar el proyecto
+    Crear un validador user, para que solo el owner pueda actualizar el proyecto
     */
 
-    const projectUpdate = await Project.findById(id, {
-      $or: [{ isDeleted: false }, { isDeleted: { $exists: false } }]
+    const projectUpdate = await Project.findOne({
+      _id: id,
+      $or: [{ isDeleted: false }, { isDeleted: { $exists: false } }],
     });
-    if (!projectUpdate)
-      return callback({ message: "El proyecto asociado a esa Id, no existe." });
+
+    if (!projectUpdate) {
+      return callback({
+        message: "El proyecto asociado a esa ID no existe o ha sido eliminado.",
+      });
     }
 
-    //actualiza SOLO los campos que han sido enviados en el updateObj
+    // Actualiza solo los campos que han sido enviados en updateObj
     const updatedProject = {
-      name: updateObj.name || project.name,
-      description: updateObj.description || project.description,
-      goal_amount: updateObj.goal_amount || project.goal_amount,
-      deadline: updateObj.deadline || project.deadline,
-      category: updateObj.category || project.category,
-      creation_date: project.creation_date,
-      rewards: updateObj.rewards || project.rewards,
+      name: updateObj.name || projectUpdate.name,
+      description: updateObj.description || projectUpdate.description,
+      goal_amount: updateObj.goal_amount || projectUpdate.goal_amount,
+      deadline: updateObj.deadline || projectUpdate.deadline,
+      category: updateObj.category || projectUpdate.category,
+      creation_date: projectUpdate.creation_date, // Mantener la fecha de creación original
+      rewards: updateObj.rewards || projectUpdate.rewards,
     };
 
-    //actualizar protyecto
-    await Project.updateOne({ _id: id }, updatedProject);
+    // Actualizar el proyecto
+    const updatedProjectResult = await Project.findByIdAndUpdate(id, updatedProject, { new: true });
 
     return callback(false, {
       message: "El proyecto se ha actualizado exitosamente!",
-      project,
+      project: updatedProjectResult,
     });
   } catch (error) {
     return callback({
@@ -109,6 +113,7 @@ const updateProject = async (id, updateObj, callback) => {
     });
   }
 };
+
 
 //Función que elimina un proyecto de forma lógica según el ID
 const deleteProject = async (id) => {
