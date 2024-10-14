@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandshakeAngle } from '@fortawesome/free-solid-svg-icons';
-import Button from "./Button";
+import Button from "../Button";
 
 const InvestmentAmount = () => {
     const investmentOptions = [100, 300, 500, 800, 1000, 1500];

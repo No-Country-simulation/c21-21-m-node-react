@@ -1,14 +1,14 @@
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
-import InvestmentPayment from '@/app/components/InvestmentPayment';
+import Payment from '@/app/components/investment/Payment';
 
 const InvestmentPaymentPage = () => {
     return (
         <>
             <Navbar />
             <Container>
-                <InvestmentPayment />
+                <Payment />
             </Container>
             <Footer />
         </>

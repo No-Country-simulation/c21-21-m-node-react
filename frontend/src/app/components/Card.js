@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Button from "./Button";
 import Modal from "./Modal";
 import Table from './Table';
@@ -48,7 +49,7 @@ const Card = ({ imgSrc, title, percentage, description, personalInvestment, role
     return (
         <div className="w-full mx-auto">  
             <div className="bg-white shadow-md rounded-lg border border-gray-200 p-0">
-                <img 
+                <Image 
                     src={imgSrc} 
                     alt={title} 
                     className="w-full h-32 object-cover rounded-t-lg" 
