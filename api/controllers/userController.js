@@ -1,64 +1,112 @@
 import User from "../models/userModel.js";
 
-export const createUser = async (req, res) => {
+export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const token = req.headers.authorization?.split(" ")[1];
 
-    const user = await User.findOne({ email });
+    if (!token) {
+      return res
+        .status(403)
+        .send({ message: "No se ha proporcionado un token de autorizacion" });
+    }
+
+    //validar el token que obtuvimos de los headers
+    const response = await fetch(
+      `${process.env.GOOGLE_OAUTH_URL}?access_token=${token}`
+    );
+    const googleUser = await response.json();
+
+    if (!googleUser || !googleUser.email) {
+      return res.status(401).send({ message: "Token invalido" });
+    }
+
+    let user = await User.findOne({ email: googleUser.email });
 
     if (user) {
-      return res.status(409).json({ message: "El User ya existe" });
+      return res.status(400).send({ message: "El usuario ya está registrado" });
     }
 
-    const nuevoUser = new User({ name, email, password });
+    //crear el usuario en la DB
+    user = new User({
+      name: googleUser.name,
+      email: googleUser.email,
+      profile_picture: googleUser.picture, //la imagen de perfil de google que despues puede cambiar con un updateUser
+      projects: [],
+      role: "inversor",
+    });
 
-    await nuevoUser.save();
+    await user.save();
 
-    return res.status(201).json({ message: "User creado", user: nuevoUser });
-  } catch (e) {
-    return res.status(500).json({ message: "Error al crear usuario", e });
-  }
-};
-
-export const getUserById = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const user = await User.findById(id).populate("projects");
-
-    if (!user) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
-    }
-
-    return res.status(200).json(user);
+    return res
+      .status(201)
+      .send({ message: "Usuario registrado con exito", user: user });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Error al obtener el usuario", error: error.message });
+    return res.status(500).send({
+      message: "Error al registrar el usuario.",
+      details: error.message,
+    });
   }
 };
 
-export const getUsers = async (req, res) => {
+const getProfile = async (req, res) => {
   try {
-    const usuarios = await User.find();
-    return res.status(200).json(usuarios);
-  } catch (e) {
-    return res
-      .status(500)
-      .json({ message: "Error al obtener los usuarios", e });
+    //ver si el usuario esta disponible en req.user, ya que todo está autenticado por el middleware
+    if (!req.user) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
+
+    const userProfile = await User.findOne({ email: req.user.email });
+
+    return res.status(200).send(userProfile);
+  } catch (error) {
+    return res.status(500).send({
+      message: "Error al obtener el perfil del usuario",
+      details: error.message,
+    });
   }
 };
 
-export const deleteUser = async (req, res) => {
-  const { id } = req.params;
+const getUsers = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(id);
+    /* if (req.user.role !== "administrator") {
+      return res
+        .status(403)
+        .send({ message: "No tienes permiso para ver la lista de usuarios" });
+    } */
 
-    if (!user) return res(404).json({ message: "El user no existe" });
-
-    return res.status(200).json({ message: "Usuario eliminado" });
-  } catch (e) {
-    res.status(500).json({ message: "Error al borrar el usuario " });
+    const users = await User.find();
+    return res.status(200).send(users);
+  } catch (error) {
+    return res.status(500).send({
+      message: "Error al obtener la lista de usuarios",
+      details: error.message,
+    });
   }
 };
+
+const updateUserProfile = async (req, res) => {
+  try {
+    const { name, profile_picture } = req.body;
+
+    if (!name || !profile_picture) {
+      return res.status(400).send({
+        message: "Faltan campos obligatorios (nombre o foto de perfil)",
+      });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { name, profile_picture },
+      { new: true }
+    );
+
+    return res.status(200).send(updatedUser);
+  } catch (error) {
+    return res.status(500).send({
+      message: "Error al actualizar el perfil",
+      details: error.message,
+    });
+  }
+};
+
+export default { getProfile, getUsers, updateUserProfile, register };
