@@ -10,8 +10,9 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {},
-  debug: true, // Activa el modo debug
+  debug: true,
 });
 
 export { handler as GET, handler as POST };
