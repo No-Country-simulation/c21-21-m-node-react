@@ -1,61 +1,41 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Button from '../components/Button';
-import { signIn, useSession } from 'next-auth/react';
-import axios from 'axios';
+import Modal from './Modal';
+import Auth from './Auth';
+import MobileMenu from './MobileMenu';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [role, setRole] = useState('');
-    const { data: session } = useSession();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [isLogin, setIsLogin] = useState(true);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
-    const openModal = () => {
-        setShowModal(true);
+    const toggleForm = () => {
+        setIsLogin(!isLogin); 
+        setModalTitle(isLogin ? 'Crear cuenta' : 'Iniciar sesión');
     };
 
-    const closeModal = () => {
-        setShowModal(false);
+    const openModal = (title, isLogin) => {
+        setModalTitle(title);
+        setIsLogin(isLogin);
+        setIsModalOpen(true);
     };
+
+    const openLoginModal = () => openModal('Iniciar sesión', true);
+    const openRegisterModal = () => openModal('Crear cuenta', false);
 
     const menuItems = [
         { label: 'Inicio', to: '/' },
         { label: 'Proyectos', to: '/projects' },
         { label: 'Nosotros', to: '/about-us' },
     ];
-
-    const handleAuth = async (selectedRole) => {
-        setRole(selectedRole); 
-        await signIn('google'); 
-    };
-
-    const sendData = async () => {
-        if (session) {
-            const accessToken = session.accessToken; 
-            console.log(accessToken)
-
-            try {
-                const response = await axios.post('http://localhost:4000/user/auth/register', {
-                    token: accessToken,
-                    role: role,
-                });
-                console.log('Response from backend:', response.data);
-            } catch (error) {
-                console.error('Error sending data to backend:', error);
-            }
-        }
-    };
-
-    useEffect(() => {
-        if (session) {
-            sendData();
-        }
-    }, [session]); 
 
     return (
         <header className="bg-customGray">
@@ -97,83 +77,38 @@ const Navbar = () => {
                             </Link>
                         ))
                     }
-                    <Button onClick={openModal} className="text-md font-semibold leading-6 text-customWhite bg-customGreen pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 hover:pr-3.5">Acceder</Button>
+                    <Button
+                        onClick={openLoginModal}
+                        className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
+                            pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
+                            hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
+                            hover:pr-3.5">
+                            Iniciar sesión
+                    </Button>
+                    <Button
+                        onClick={openRegisterModal}
+                        className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
+                            pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
+                            hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
+                            hover:pr-3.5 -ml-10">
+                            Crear cuenta
+                    </Button>
                 </div>
             </nav>
-
-            {/* Menú en mobile */}
-            <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'}`} role="dialog" aria-modal="true">
-                <div className="fixed inset-0 z-10 bg-customGray"></div>
-                <div className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-customWhite px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-customBlack">
-                    <div className="flex items-center justify-between">
-                        <Link href="/" className="-m-1.5 p-1.5">
-                            <h1 className='font-bold text-xl text-customBlack'>BOOSTUP</h1>
-                        </Link>
-                        <Button type="button"
-                            className="-m-2.5 rounded-md p-2.5 text-customGray"
-                            onClick={toggleMenu}
-                        >
-                            <span className="sr-only">X</span>
-                            <svg
-                                className="h-6 w-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                        </Button>
-                    </div>
-                    <div className="mt-6 flow-root">
-                        <div className="-my-6 divide-y divide-customBlack">
-                            <div className="space-y-2 py-6">
-                                <Button onClick={openModal} className="text-md font-semibold leading-6">Acceder</Button>
-                                {
-                                    menuItems.map((item) => (
-                                        <Link key={item.label} href={item.to}
-                                            className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-customblack">
-                                            {item.label}
-                                        </Link>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Modal */}
-            {
-                showModal && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-customBlack bg-opacity-50 px-1">
-                        <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
-                            <Button onClick={closeModal}
-                                className="absolute top-2 right-2 text-customGray hover:text-customBlack text-2xl font-bold">
-                                &times;
-                            </Button>
-                            <h2 className="text-lg font-bold mb-4">Inicio de sesión</h2>
-                            <hr className="border-customWhite mb-4" />
-                            <p className="mb-4 text-customGray text-sm">
-                                Selecciona el rol con el que quieres ingresar. Si es primera vez, el registro se hará automático.
-                            </p>
-                            <div className="flex flex-col space-y-4">
-                                <Button
-                                    onClick={() => handleAuth('emprendedor')}
-                                    className="w-full px-4 py-2 bg-customGreen text-customWhite rounded hover:bg-customGreen transition">
-                                    Emprendedor con Google
-                                </Button>
-                                <Button
-                                    onClick={() => handleAuth('inversor')}
-                                    className="w-full px-4 py-2 bg-customGreen text-customWhite rounded hover:bg-customGreen transition">
-                                    Inversor con Google
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
+            <MobileMenu
+                isOpen={isOpen}
+                toggleMenu={toggleMenu}
+                menuItems={menuItems}
+                openLoginModal={openLoginModal}      
+                openRegisterModal={openRegisterModal} 
+            />
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title={modalTitle}
+                size='max-w-md max-h-80'>
+                <Auth isLogin={isLogin} toggleForm={toggleForm} />
+            </Modal>
         </header>
     );
 };
