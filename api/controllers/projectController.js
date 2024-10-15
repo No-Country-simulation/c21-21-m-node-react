@@ -1,7 +1,16 @@
 import projectServices from "../services/projectServices.js";
 
 const create = async (req, res) => {
-  const { name, owner, goal_amount, description, deadline, rewards } = req.body;
+  const {
+    name,
+    owner,
+    goal_amount,
+    description,
+    deadline,
+    img,
+    category,
+    rewards,
+  } = req.body;
 
   if (
     !(
@@ -9,7 +18,6 @@ const create = async (req, res) => {
       owner &&
       img &&
       category &&
-      current_amount &&
       creation_date &&
       goal_amount &&
       description &&
@@ -38,7 +46,6 @@ const create = async (req, res) => {
         rewards,
         owner,
         backers,
-        updates,
       },
       (err, result) => {
         if (err) {
