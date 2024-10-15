@@ -49,10 +49,10 @@ const Card = ({ imgSrc, title, percentage, description, personalInvestment, role
     return (
         <div className="w-full mx-auto">
             <div className="bg-white shadow-md rounded-lg border border-gray-200 p-0">
-                <Image 
-                    src={imgSrc} 
-                    alt={title} 
-                    className="w-full h-32 object-cover rounded-t-lg" 
+                <Image
+                    src={imgSrc}
+                    alt={title}
+                    className="w-full h-32 object-cover rounded-t-lg"
                 />
                 <div className="p-2">
                     <h1 className="text-lg font-semibold text-gray-800 mb-4 truncate 

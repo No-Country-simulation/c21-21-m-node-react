@@ -10,18 +10,20 @@ const PaypalButton = ({ investmentAmount }) => {
 
     return (
         <PayPalScriptProvider options={{
-            "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID, 
-            currency: "USD",}} 
+            "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+            currency: "USD",
+        }}
         >
             <PayPalButtons createOrder={(data, actions) => {
-                return actions.order.create({purchase_units: [
-                    {
-                        amount: {value: investmentAmount.toFixed(2),}, // dos decimales
-                    },],
+                return actions.order.create({
+                    purchase_units: [
+                        {
+                            amount: { value: investmentAmount.toFixed(2), }, // dos decimales
+                        },],
                 });
             }}
-            onApprove={async (data, actions) => {
-                const order = await actions.order.capture();
+                onApprove={async (data, actions) => {
+                    const order = await actions.order.capture();
                     console.log("Inversión capturada:", order);
                     handlePayment(order); // Simula la inversión
                 }}

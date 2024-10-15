@@ -14,13 +14,13 @@ const handler = NextAuth({
     callbacks: {
         async jwt({ token, user, account }) {
             if (account) {
-                token.accessToken = account.access_token; 
+                token.accessToken = account.access_token;
             }
             return token;
         },
         async session({ session, token }) {
-            session.accessToken = token.accessToken; 
-        return session;
+            session.accessToken = token.accessToken;
+            return session;
         },
     },
     debug: true, // Activa el modo debug

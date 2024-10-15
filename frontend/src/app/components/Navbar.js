@@ -30,13 +30,13 @@ const Navbar = () => {
     ];
 
     const handleAuth = async (selectedRole) => {
-        setRole(selectedRole); 
-        await signIn('google'); 
+        setRole(selectedRole);
+        await signIn('google');
     };
 
     const sendData = async () => {
         if (session) {
-            const accessToken = session.accessToken; 
+            const accessToken = session.accessToken;
             console.log(accessToken)
 
             try {
@@ -55,7 +55,7 @@ const Navbar = () => {
         if (session) {
             sendData();
         }
-    }, [session]); 
+    }, [session]);
 
     return (
         <header className="bg-customGray">
