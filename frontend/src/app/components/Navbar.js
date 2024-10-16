@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Button from '../components/Button';
 import { signIn, useSession } from 'next-auth/react';
 import axios from 'axios';
+import Image from 'next/image';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
