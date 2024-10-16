@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Button from '../components/Button';
 import { signIn, useSession } from 'next-auth/react';
+import Image from 'next/image';
 import axios from 'axios';
 import Image from 'next/image';
 
