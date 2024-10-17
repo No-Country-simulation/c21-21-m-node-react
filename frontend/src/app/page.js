@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react';
 import { useApiContext } from './contexts/ApiContext';
 import { useUserContext } from './contexts/UserContext';
 import userService from './api/services/userService';
+import Link from 'next/link';
 
 const Home = () => {
     //const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +49,11 @@ const Home = () => {
                 <div className="flex flex-col justify-center items-center text-center h-full">
                     <h1 className="text-4xl md:text-5xl font-bold mb-6 pt-4 md:pt-20 text-white mt-20">Bienvenido a BOOSTUP</h1>
                     <p className="text-lg md:text-xl font-bold mb-6 text-white">Incentiva a nuevas empresas y haz realidad sus ideas.</p>
-                    <button className="bg-customGreen text-white font-bold px-8 py-3 rounded-full mt-20 hover:text-customGreen hover:bg-customGray hover:border hover:border-customGreen">Explorar proyectos</button>
+                    <Link href="/project">
+                        <button className="bg-customGreen text-white font-bold px-8 py-3 rounded-full mt-20 hover:text-customGreen hover:bg-customGray hover:border hover:border-customGreen">
+                            Explorar proyectos
+                        </button>
+                    </Link>
                 </div>
             </Container>
             <Footer />
