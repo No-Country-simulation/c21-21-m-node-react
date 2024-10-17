@@ -42,7 +42,7 @@ const Home = () => {
     return (
         <div
             className="flex flex-col min-h-screen bg-cover"
-            style={{ backgroundImage: `url(${backgroundImage.src})`}}>
+            style={{ backgroundImage: `url(${backgroundImage.src})` }}>
             <Navbar />
             <Container className="flex flex-col justify-center items-center flex-1 text-center">
                 <div className="flex flex-col justify-center items-center text-center h-full">
@@ -53,14 +53,14 @@ const Home = () => {
             </Container>
             <Footer />
             <Modal
-                isOpen={!!errorMessage} 
-                onClose={closeModal} 
-                title="Error al ..." 
+                isOpen={!!errorMessage}
+                onClose={closeModal}
+                title="Error al ..."
                 size='max-w-md max-h-40'
                 isError={!!errorMessage}>
                 {errorMessage}
             </Modal>
-            {/*isLoading && <LoaderView />*/} 
+            {/*isLoading && <LoaderView />*/}
         </div>
     );
 };

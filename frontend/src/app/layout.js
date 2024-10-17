@@ -3,18 +3,23 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { SessionProvider } from 'next-auth/react';
 import { ApiProvider } from "./contexts/ApiContext";
-import { UserProvider } from "./contexts/UserContext"; 
+import { UserProvider } from "./contexts/UserContext";
 import "./globals.css";
+import Head from 'next/head';
 
 config.autoAddCss = false;
 
 const RootLayout = ({ children, session }) => {
     return (
-        <html lang="en">
+        <html lang="es">
+            <Head>
+                <title>BOOSTUP</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <body>
-                <SessionProvider session={session}> 
+                <SessionProvider session={session}>
                     <ApiProvider>
-                        <UserProvider> 
+                        <UserProvider>
                             {children}
                         </UserProvider>
                     </ApiProvider>
