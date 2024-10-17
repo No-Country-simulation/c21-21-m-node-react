@@ -1,10 +1,24 @@
-// src/contexts/UserContext.js
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null); 
+
+    useEffect(() => {
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+            setUser(JSON.parse(savedUser));
+        }
+    }, []); 
+
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('user');
+        }
+    }, [user]);
 
     const updateUser = (userData) => {
         setUser(userData);

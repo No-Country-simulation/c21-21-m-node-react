@@ -5,15 +5,14 @@ import Footer from './components/Footer';
 import Container from './components/Container';
 import Modal from './components/Modal';
 import backgroundImage from './assets/images/banner.jpg';
-import LoaderView from './components/loaders/LoaderView';
+//import LoaderView from './components/loaders/LoaderView';
 import { useSession } from 'next-auth/react';
 import { useApiContext } from './contexts/ApiContext';
 import { useUserContext } from './contexts/UserContext';
 import userService from './api/services/userService';
 
 const Home = () => {
-    const [isLoading, setIsLoading] = useState(true);
-
+    //const [isLoading, setIsLoading] = useState(true);
     const { data: session } = useSession();
     const [errorMessage, setErrorMessage] = useState('');
     const { apiCalled, setApiCalled } = useApiContext();
@@ -32,7 +31,7 @@ const Home = () => {
                 userService.userLogin(accessToken, setApiCalled, setErrorMessage);
             }
         }
-        setIsLoading(false)
+        //setIsLoading(false)
     }, [session, apiCalled, setUser]);
 
     const closeModal = () => {
@@ -61,7 +60,7 @@ const Home = () => {
                 isError={!!errorMessage}>
                 {errorMessage}
             </Modal>
-            {isLoading && <LoaderView />} 
+            {/*isLoading && <LoaderView />*/} 
         </div>
     );
 };
