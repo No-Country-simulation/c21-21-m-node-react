@@ -1,7 +1,9 @@
 "use client";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
-import { SessionProvider } from 'next-auth/react'; 
+import { SessionProvider } from 'next-auth/react';
+import { ApiProvider } from "./contexts/ApiContext";
+import { UserProvider } from "./contexts/UserContext"; 
 import "./globals.css";
 
 config.autoAddCss = false;
@@ -11,7 +13,11 @@ const RootLayout = ({ children, session }) => {
         <html lang="en">
             <body>
                 <SessionProvider session={session}> 
-                    {children}
+                    <ApiProvider>
+                        <UserProvider> 
+                            {children}
+                        </UserProvider>
+                    </ApiProvider>
                 </SessionProvider>
             </body>
         </html>
