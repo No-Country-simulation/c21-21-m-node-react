@@ -5,16 +5,19 @@ import Footer from './components/Footer';
 import Container from './components/Container';
 import Modal from './components/Modal';
 import backgroundImage from './assets/images/banner.jpg';
+import LoaderView from './components/loaders/LoaderView';
 import { useSession } from 'next-auth/react';
 import { useApiContext } from './contexts/ApiContext';
 import { useUserContext } from './contexts/UserContext';
 import userService from './api/services/userService';
 
 const Home = () => {
+    const [isLoading, setIsLoading] = useState(true);
+
     const { data: session } = useSession();
     const [errorMessage, setErrorMessage] = useState('');
     const { apiCalled, setApiCalled } = useApiContext();
-    const { user, setUser } = useUserContext();
+    const { setUser } = useUserContext();
 
     useEffect(() => {
         const action = localStorage.getItem('action');
@@ -29,16 +32,18 @@ const Home = () => {
                 userService.userLogin(accessToken, setApiCalled, setErrorMessage);
             }
         }
+        setIsLoading(false)
     }, [session, apiCalled, setUser]);
 
     const closeModal = () => {
         setErrorMessage('');
     };
 
+    // refactorizar. Crear componente home.
     return (
         <div
             className="flex flex-col min-h-screen bg-cover"
-            style={{ backgroundImage: `url(${backgroundImage.src})`, backgroundPosition: '20% 0' }}>
+            style={{ backgroundImage: `url(${backgroundImage.src})`}}>
             <Navbar />
             <Container className="flex flex-col justify-center items-center flex-1 text-center">
                 <div className="flex flex-col justify-center items-center text-center h-full">
@@ -56,6 +61,7 @@ const Home = () => {
                 isError={!!errorMessage}>
                 {errorMessage}
             </Modal>
+            {isLoading && <LoaderView />} 
         </div>
     );
 };
