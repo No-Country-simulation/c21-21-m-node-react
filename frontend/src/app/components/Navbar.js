@@ -1,43 +1,86 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Button from '../components/Button';
-// import { signIn } from 'next-auth/react';
+import Modal from './Modal';
+import Auth from './Auth';
+import MobileMenu from './MobileMenu';
+import { useUserContext } from '../contexts/UserContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { signOut } from 'next-auth/react'; 
 
 const Navbar = () => {
+    const { user } = useUserContext(); 
     const [isOpen, setIsOpen] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [isLogin, setIsLogin] = useState(true);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
-    const openModal = () => {
-        setShowModal(true);
+    const toggleForm = () => {
+        setIsLogin(!isLogin); 
+        setModalTitle(isLogin ? 'Crear cuenta' : 'Iniciar sesión');
     };
 
-    const closeModal = () => {
-        setShowModal(false);
+    const openModal = (title, isLogin) => {
+        setModalTitle(title);
+        setIsLogin(isLogin);
+        setIsModalOpen(true);
+    };
+
+    const openLoginModal = () => openModal('Iniciar sesión', true);
+    const openRegisterModal = () => openModal('Crear cuenta', false);
+
+    const handleDropdownToggle = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const logout = async () => {
+        localStorage.removeItem('user');
+        await signOut();
+        setIsDropdownOpen(false);
     };
 
     const menuItems = [
-        { label: 'Home', to: '/' },
+        { label: 'Inicio', to: '/' },
         { label: 'Proyectos', to: '/projects' },
+        { label: 'Nosotros', to: '/about-us' },
     ];
 
+    // refactorizar
     return (
         <header className="bg-customGray">
-            <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+            <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" 
+                aria-label="Global" style={{ height: '80px' }}> 
                 <div className="flex lg:flex-1">
                     <Link href="/" className="-m-1.5 p-1.5">
-                        {/* <h1 className='font-bold text-xl text-customGreen'>BOOSTUP</h1> */}
-                        <img src="../assets/images/logo.png" alt="BOOSTUP" class="h-8 w-auto"/>
+                        <Image
+                            src="/logo.png"
+                            alt="BOOSTUP"
+                            width={100}
+                            height={100}
+                            className="h-6 w-auto"
+                        />
                     </Link>
-
+                    
                 </div>
                 <div className="flex lg:hidden">
+                    {   
+                        user && (
+                            <div className="flex items-center mr-2">
+                                <FontAwesomeIcon icon={faUserCircle} className="h-6 w-6 text-customWhite" />
+                            </div>
+                        )
+                    }
                     <Button type="button"
-                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-customWhite"
+                        className="-m-2.5 inline-flex items-center justify-center rounded-md 
+                            p-2.5 text-customWhite"
                         onClick={toggleMenu}>
                         <span className="sr-only">Abrir</span>
                         <svg
@@ -48,95 +91,88 @@ const Navbar = () => {
                             stroke="currentColor"
                             aria-hidden="true"
                         >
-                            <path strokeLinecap="round" className="stroke-customWhite" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            <path strokeLinecap="round" className="stroke-customWhite" 
+                                strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                         </svg>
                     </Button>
                 </div>
                 <div className="hidden lg:flex lg:justify-end lg:gap-x-12">
                     {
                         menuItems.map((item) => (
-                            <Link key={item.label} href={item.to} className="text-md font-semibold leading-6 text-customWhite p-1 hover:text-customGreen">
+                            <Link key={item.label} href={item.to} className="text-md font-semibold 
+                                leading-6 text-customWhite p-1 hover:text-customGreen">
                                 {item.label}
                             </Link>
                         ))
                     }
-                    <Button onClick={openModal} className="text-md font-semibold leading-6 text-customWhite bg-customGreen pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 hover:pr-3.5">Acceder</Button>
-                </div>
-            </nav>
-
-            {/* Menú en mobile */}
-            <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'}`} role="dialog" aria-modal="true">
-                <div className="fixed inset-0 z-10 bg-customGray"></div>
-                <div className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-customWhite px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-customBlack">
-                    <div className="flex items-center justify-between">
-                        <Link href="/" className="-m-1.5 p-1.5">
-                            <h1 className='font-bold text-xl text-customBlack'>BOOSTUP</h1>
-                        </Link>
-                        <Button type="button"
-                            className="-m-2.5 rounded-md p-2.5 text-customGray"
-                            onClick={toggleMenu}
-                        >
-                            <span className="sr-only">X</span>
-                            <svg
-                                className="h-6 w-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                        </Button>
-                    </div>
-                    <div className="mt-6 flow-root">
-                        <div className="-my-6 divide-y divide-customBlack">
-                            <div className="space-y-2 py-6">
-                                <Button onClick={openModal} className="text-md font-semibold leading-6">Acceder</Button>
+                    {
+                        user ? (
+                            <div className="relative inline-block text-left">
+                                <div className="flex items-center cursor-pointer" 
+                                    onClick={handleDropdownToggle}>
+                                    <FontAwesomeIcon icon={faUserCircle} className="h-8 w-8 
+                                        text-customWhite" />
+                                    <div className="ml-2 text-md font-semibold leading-6 text-customWhite">
+                                        <span>{user.email}</span>
+                                        <div className="text-sm text-gray-300">{user.role}</div> 
+                                    </div>
+                                </div>
                                 {
-                                    menuItems.map((item) => (
-                                        <Link key={item.label} href={item.to}
-                                            className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-customblack">
-                                            {item.label}
-                                        </Link>
-                                    ))
+                                    isDropdownOpen && (
+                                        <div className="absolute right-0 z-10 mt-2 w-48 rounded-md 
+                                            bg-white shadow-lg">
+                                            <div className="py-1">
+                                                <Link href="/dashboard" className="block px-4 py-2 
+                                                    text-sm text-gray-700 hover:bg-gray-100" 
+                                                    onClick={() => setIsDropdownOpen(false)}>
+                                                    Dashboard
+                                                </Link>
+                                                <Button 
+                                                    onClick={logout} 
+                                                    className="block w-full text-left px-4 py-2 
+                                                        text-sm text-gray-700 hover:bg-gray-100">
+                                                        Logout
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )   
                                 }
                             </div>
-                        </div>
-                    </div>
+                        ) : (
+                            <>
+                                <Button onClick={openLoginModal}
+                                    className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
+                                        pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
+                                        hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
+                                        hover:pr-3.5">
+                                        Iniciar sesión
+                                </Button>
+                                <Button onClick={openRegisterModal}
+                                    className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
+                                        pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
+                                        hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
+                                        hover:pr-3.5 -ml-10">
+                                        Crear cuenta
+                                </Button>
+                            </>
+                        )
+                    }
                 </div>
-            </div>
-
-            {/* Modal */}
-            {
-                showModal && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-customBlack bg-opacity-50 px-1">
-                        <div className="bg-white p-6 rounded-lg shadow-lg relative w-full max-w-md mx-auto">
-                            <Button onClick={closeModal}
-                                className="absolute top-2 right-2 text-customGray hover:text-customBlack text-2xl font-bold">
-                                &times;
-                            </Button>
-                            <h2 className="text-lg font-bold mb-4">Inicio de sesión</h2>
-                            <hr className="border-customWhite mb-4" />
-                            <p className="mb-4 text-customGray text-sm">
-                                Selecciona el rol con el que quieres ingresar. Si es primera vez, el registro se hará automático.
-                            </p>
-                            <div className="flex flex-col space-y-4">
-                                <Button
-                                    onClick={() => signIn('google')}
-                                    className="w-full px-4 py-2 bg-customGreen text-customWhite rounded hover:bg-customGreen transition">
-                                    Emprendedor con Google
-                                </Button>
-                                <Button
-                                    onClick={() => signIn('google')}
-                                    className="w-full px-4 py-2 bg-customGreen text-customWhite rounded hover:bg-customGreen transition">
-                                    Inversor con Google
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
+            </nav>
+            <MobileMenu
+                isOpen={isOpen}
+                toggleMenu={toggleMenu}
+                menuItems={menuItems}
+                openLoginModal={openLoginModal}      
+                openRegisterModal={openRegisterModal} 
+            />
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title={modalTitle}
+                size='max-w-md max-h-80'>
+                <Auth isLogin={isLogin} toggleForm={toggleForm} />
+            </Modal>
         </header>
     );
 };

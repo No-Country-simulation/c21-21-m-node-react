@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 
 import projectRoute from "./routes/projectRoute.js";
 import userRoutes from "./routes/userRoutes.js";
-import promotionRoutes from "./routes/promotionRoutes.js"
+import promotionRoutes from "./routes/promotionRoutes.js";
 
 dotenv.config();
 
@@ -37,6 +37,6 @@ const startServer = async () => {
 startServer();
 
 //routes
-app.use("/users", userRoutes);
+app.use("/user", userRoutes);
 app.use("/projects", projectRoute);
-app.use("/promotion", promotionRoutes)
+app.use("/promotion", promotionRoutes);
