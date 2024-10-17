@@ -1,6 +1,15 @@
 import Button from './Button';
+import { signIn } from 'next-auth/react';
 
 const Auth = ({ isLogin, toggleForm }) => {
+    const handleAuth = async (role, action) => {
+        if (!isLogin) {
+            localStorage.setItem('role', role);
+        }
+        localStorage.setItem('action', action);
+        await signIn('google');
+    }
+
     return (
         <>
             <div className="flex flex-col space-y-4">
@@ -11,13 +20,13 @@ const Auth = ({ isLogin, toggleForm }) => {
                 }
             </small>
                 <Button
-                    onClick={() => handleAuth('emprendedor')}
+                    onClick={() => handleAuth('emprendedor', isLogin ? 'login' : 'register')}
                     className="w-full px-4 py-2 bg-customGreen text-customWhite rounded 
                         hover:bg-customGreen transition">
                         Emprendedor con Google
                 </Button>
                 <Button
-                    onClick={() => handleAuth('inversor')}
+                    onClick={() => handleAuth('inversor', isLogin ? 'login' : 'register')}
                     className="w-full px-4 py-2 bg-customGreen text-customWhite rounded 
                         hover:bg-customGreen transition">
                         Inversionista con Google

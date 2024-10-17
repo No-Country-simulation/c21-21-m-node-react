@@ -1,9 +1,40 @@
+"use client"
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Container from './components/Container';
+import Modal from './components/Modal';
 import backgroundImage from './assets/images/banner.jpg';
+import { useSession } from 'next-auth/react';
+import { useApiContext } from './contexts/ApiContext';
+import { useUserContext } from './contexts/UserContext';
+import userService from './api/services/userService';
 
 const Home = () => {
+    const { data: session } = useSession();
+    const [errorMessage, setErrorMessage] = useState('');
+    const { apiCalled, setApiCalled } = useApiContext();
+    const { user, setUser } = useUserContext();
+
+    useEffect(() => {
+        const action = localStorage.getItem('action');
+        const accessToken = session?.accessToken;
+
+        if (session && !apiCalled) {
+            setApiCalled(true);
+
+            if (action === 'register') {
+                userService.userRegister(accessToken, setUser, setApiCalled, setErrorMessage);
+            } else if (action === 'login') {
+                userService.userLogin(accessToken, setApiCalled, setErrorMessage);
+            }
+        }
+    }, [session, apiCalled, setUser]);
+
+    const closeModal = () => {
+        setErrorMessage('');
+    };
+
     return (
         <div
             className="flex flex-col min-h-screen bg-cover"
@@ -17,6 +48,14 @@ const Home = () => {
                 </div>
             </Container>
             <Footer />
+            <Modal
+                isOpen={!!errorMessage} 
+                onClose={closeModal} 
+                title="Error al ..." 
+                size='max-w-md max-h-40'
+                isError={!!errorMessage}>
+                {errorMessage}
+            </Modal>
         </div>
     );
 };
