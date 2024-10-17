@@ -23,8 +23,13 @@ export const register = async (req, res) => {
     let user = await User.findOne({ email: googleUser.email });
 
     if (user) {
-      return res.status(400).send({ message: "El usuario ya está registrado" });
+      return res
+        .status(400)
+        .send({ message: "El usuario ya está registrado", user: user });
     }
+
+    //obtener el rol del req.body o asignar un rol por defecto | en el modelo de usuarios, por defecto es "inversor"
+    const role = req.body.role || "inversor";
 
     //crear el usuario en la DB
     user = new User({
@@ -32,7 +37,7 @@ export const register = async (req, res) => {
       email: googleUser.email,
       profile_picture: googleUser.picture, //la imagen de perfil de google que despues puede cambiar con un updateUser
       projects: [],
-      role: "inversor",
+      role: role,
     });
 
     await user.save();
