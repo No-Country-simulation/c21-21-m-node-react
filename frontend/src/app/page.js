@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Container from './components/Container';
 import Modal from './components/Modal';
-import backgroundImage from './assets/images/banner.jpg';
+import backgroundImage from '../../public/banner.jpg'; // crear una carpeta en public: images
 //import LoaderView from './components/loaders/LoaderView';
 import { useSession } from 'next-auth/react';
 import { useApiContext } from './contexts/ApiContext';

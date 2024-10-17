@@ -1,5 +1,5 @@
 import Image from "next/image";
-import ImageP from "../../assets/images/banner.jpg";
+import ImageP from "../../../../public/banner.jpg";
 
 const Header = () => {
     return (
