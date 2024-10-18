@@ -28,7 +28,7 @@ const Home = () => {
             if (action === 'register') {
                 userService.userRegister(accessToken, setUser, setApiCalled, setErrorMessage);
             } else if (action === 'login') {
-                userService.userLogin(accessToken, setApiCalled, setErrorMessage);
+                userService.userLogin(accessToken, setUser, setApiCalled, setErrorMessage);
             }
         }
         //setIsLoading(false)
