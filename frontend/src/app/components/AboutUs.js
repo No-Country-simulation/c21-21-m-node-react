@@ -14,13 +14,13 @@ const AboutUs = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="p-6 bg-customWhite rounded-lg shadow-md">
-                        <h3 className="text-2xl font-semibold text-customGreen inline-block border-b-4 border-customGreen pb-2">Nuestra Misión</h3>
+                        <h3 className="text-2xl font-semibold text-customGreen">Nuestra Misión</h3>
                         <p className="mt-4 text-customBlack">
                             Proporcionamos un espacio donde los inversores pueden descubrir oportunidades innovadoras y apoyar proyectos que transformen el futuro. Cada proyecto que apoyamos está alineado con nuestros principios de sostenibilidad, impacto social y desarrollo tecnológico.
                         </p>
                     </div>
                     <div className="p-6 bg-customWhite rounded-lg shadow-md">
-                        <h3 className="text-2xl font-semibold text-customGreen inline-block border-b-4 border-customGreen pb-2">Nuestros Valores</h3>
+                        <h3 className="text-2xl font-semibold text-customGreen">Nuestros Valores</h3>
                         <p className="mt-4 text-customBlack">
                             Creemos en la innovación, la transparencia y el trabajo en equipo. En BOOSTUP, valoramos la seriedad, la confianza y la seguridad, creando un entorno confiable tanto para los emprendedores como para los inversores.
                         </p>
