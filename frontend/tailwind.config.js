@@ -14,6 +14,9 @@ module.exports = {
                 customWhite: '#FDFDFD',
                 customBlack: '#1B1A1E',
             },
+            fontFamily: {
+                sans: ['Roboto', 'sans-serif'],
+            },
         },
     },
     plugins: [],
