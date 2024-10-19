@@ -51,6 +51,8 @@ const Navbar = () => {
         { label: 'Inicio', to: '/' },
         { label: 'Proyectos', to: '/project' },
         { label: 'Nosotros', to: '/about-us' },
+        { label: 'FAQ', to: '/FAQ' },
+        { label: 'Política de privacidad', to: '/privacy-policy' },
     ];
 
     // refactorizar
@@ -79,7 +81,7 @@ const Navbar = () => {
                         )
                     }
                     <Button type="button"
-                        className="-m-2.5 inline-flex items-center justify-center rounded-md 
+                        className="-m-2.5 inline-flex items-center justify-center rounded-md
                             p-2.5 text-customWhite"
                         onClick={toggleMenu}>
                         <span className="sr-only">Abrir</span>
@@ -99,7 +101,7 @@ const Navbar = () => {
                 <div className="hidden lg:flex lg:justify-end lg:gap-x-12">
                     {
                         menuItems.map((item) => (
-                            <Link key={item.label} href={item.to} className="text-md font-semibold 
+                            <Link key={item.label} href={item.to} className="text-md font-semibold
                                 leading-6 text-customWhite p-1 hover:text-customGreen">
                                 {item.label}
                             </Link>
