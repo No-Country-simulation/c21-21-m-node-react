@@ -1,7 +1,10 @@
 "use client"
 import { useState } from "react";
+import Card from "./Card";
+import ProjectsCard from "./cards/Projects";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import PorAhora from '../../../public/banner.jpg';
 
 const categories = ["Todos", "Animal", "Tecnología", "Salud", "Ambiental"];
 
@@ -28,8 +31,7 @@ const Projects = () => {
                     <FontAwesomeIcon icon={faSearch} className="h-4 w-4 mr-2" />
                 </button>
             </div>
-
-            <div className="flex flex-col md:flex-row md:justify-around">
+            <div className="flex flex-col pb-8 md:flex-row md:justify-around">
                 <div className="md:hidden mb-4">
                     <button
                         onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -78,6 +80,16 @@ const Projects = () => {
                         ))
                     }
                 </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
+                gap-y-6 gap-x-3 w-full">
+                <Card 
+                    imgSrc={PorAhora}
+                    title='Proyecto'
+                    percentage='80'
+                    isProjectsPage={true}>
+                    <ProjectsCard />
+                </Card>
             </div>
         </>
     );

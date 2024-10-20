@@ -27,9 +27,9 @@ const Entrepreneur = ({ projectDetails, openModal }) => {
                         <ProjectForm projectDetails={projectDetails} />,
                         "max-w-4xl")
                     }
-                    className="w-10 h-10 rounded-full bg-yellow-500 text-white flex 
+                    className="w-8 h-8 rounded-full bg-yellow-500 text-white flex 
                     items-center justify-center hover:bg-yellow-600 transition duration-200">
-                    <FontAwesomeIcon icon={faEdit} />
+                    <FontAwesomeIcon icon={faEdit} className="text-sm" />
                 </Button>
                 <Button
                     onClick={() =>
@@ -41,9 +41,9 @@ const Entrepreneur = ({ projectDetails, openModal }) => {
                             bgColor="bg-red-500 hover:bg-red-600" />,
                         "max-w-sm")
                     }
-                    className="w-10 h-10 rounded-full bg-red-500 text-white flex items-center 
+                    className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center 
                     justify-center hover:bg-red-600 transition duration-200">
-                    <FontAwesomeIcon icon={faTrashAlt} />
+                    <FontAwesomeIcon icon={faTrashAlt} className="text-sm" />
                 </Button>
                 <Button
                     onClick={() =>
@@ -53,7 +53,7 @@ const Entrepreneur = ({ projectDetails, openModal }) => {
                     }
                     className="flex-1 bg-blue-500 text-white rounded-full px-2 py-1 
                     hover:bg-blue-600 transition duration-200 text-sm">
-                    <FontAwesomeIcon icon={faEye} /> Inversores
+                    <FontAwesomeIcon icon={faEye} className="text-sm" /> Inversores
                 </Button>
             </div>
         </>

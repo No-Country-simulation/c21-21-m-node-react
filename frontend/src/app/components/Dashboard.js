@@ -54,7 +54,7 @@ const Dashboard = () => {
     const labelTotalAmount = role === 'emprendedor' ? 'Total recaudado' : 'Total inversión';
 
     return (
-        <div className="flex flex-col lg:px-8">
+        <>
             <div className="flex flex-col md:flex-row justify-between items-start lg:items-center 
                 mb-4 space-y-4 md:space-y-0">
                 <h1 className="text-customH1 pb-2 lg:pb-0 font-bold">{title}</h1>
@@ -78,8 +78,8 @@ const Dashboard = () => {
                 <p className="font-bold">{labelTotalProjects}: {totalProjects}</p>
                 <p className="font-bold">{labelTotalAmount}: ${totalAmount}</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 
-                gap-y-12 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
+                gap-y-8 w-full gap-x-6">
                 {
                     projects.map((project, index) => (
                         <Card
@@ -105,7 +105,7 @@ const Dashboard = () => {
                 size={modalSize}>
                 {modalContent} 
             </Modal>
-        </div>
+        </>
     );
 };
 

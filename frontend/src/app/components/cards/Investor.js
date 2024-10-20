@@ -13,14 +13,14 @@ const Investor = ({ projectDetails, openModal }) => {
                     onClick={() => {
                         window.location.href = ``;
                     }}
-                    className="w-10 h-10 rounded-full bg-yellow-500 text-white flex 
+                    className="w-8 h-8 rounded-full bg-yellow-500 text-white flex 
                     items-center justify-center hover:bg-yellow-600 transition duration-200">
-                    <FontAwesomeIcon icon={faEye} />
+                    <FontAwesomeIcon icon={faEye} className="text-sm" />
                 </Button>
                 <Button
-                    className="w-10 h-10 rounded-full bg-gray-400 flex 
+                    className="w-8 h-8 rounded-full bg-gray-400 flex 
                     items-center justify-center cursor-not-allowed opacity-50">
-                    <FontAwesomeIcon icon={faSyncAlt} />
+                    <FontAwesomeIcon icon={faSyncAlt} className="text-sm" />
                 </Button>
                 <Button
                     onClick={() =>
@@ -33,7 +33,9 @@ const Investor = ({ projectDetails, openModal }) => {
                     }
                     className="flex-1 bg-blue-500 text-white rounded-full px-2 py-1 
                     hover:bg-blue-600 transition duration-200 text-sm">
-                    <FontAwesomeIcon icon={faEye} /> Emprendedor
+                    <span className="inline lg:inline md:hidden">
+                        <FontAwesomeIcon icon={faEye} className="text-sm" />
+                    </span> Emprendedor
                 </Button>
             </div>
         </>
