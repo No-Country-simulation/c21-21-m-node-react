@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Container from './components/Container';
+import Button from './components/Button';
 import Modal from './components/Modal';
 import backgroundImage from '../../public/banner.jpg'; // crear una carpeta en public: images
 //import LoaderView from './components/loaders/LoaderView';
@@ -42,17 +43,21 @@ const Home = () => {
     // refactorizar. Crear componente home.
     return (
         <div
-            className="flex flex-col min-h-screen bg-cover"
-            style={{ backgroundImage: `url(${backgroundImage.src})` }}>
+            className="flex flex-col min-h-screen bg-cover bg-customGray"
+            style={{backgroundImage: `url(${backgroundImage.src})`}}>
             <Navbar />
             <Container className="flex flex-col justify-center items-center flex-1 text-center">
                 <div className="flex flex-col justify-center items-center text-center h-full">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-6 pt-4 md:pt-20 text-white mt-20">Bienvenido a BOOSTUP</h1>
-                    <p className="text-lg md:text-xl font-bold mb-6 text-white">Incentiva a nuevas empresas y haz realidad sus ideas.</p>
-                    <Link href="/project">
-                        <button className="bg-customGreen text-white font-bold px-8 py-3 rounded-full mt-20 hover:text-customGreen hover:bg-customGray hover:border hover:border-customGreen">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-6 pt-4 md:pt-20 text-white mt-20">
+                        Bienvenido a BOOSTUP
+                    </h1>
+                    <p className="text-lg md:text-xl font-bold mb-6 text-white">Incentiva a nuevas 
+                        empresas y haz realidad sus ideas.</p>
+                    <Link href="/projects" passHref>
+                        <Button className="bg-customGreen text-white font-bold px-8 py-3 rounded-full 
+                            mt-20 hover:text-customGreen hover:bg-customGray hover:border-customGray">
                             Explorar proyectos
-                        </button>
+                        </Button>
                     </Link>
                 </div>
             </Container>

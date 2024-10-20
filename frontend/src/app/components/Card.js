@@ -6,8 +6,8 @@ const Card = ({ imgSrc, title, percentage, children, isProjectsPage = false }) =
             'flex flex-row md:flex-col hover:bg-gray-100 p-2 rounded-lg cursor-pointer transition duration-300' 
             : ''}`}>
             <div className={`relative ${isProjectsPage ? 
-                'w-1/3 h-24 md:w-full md:h-32 flex-shrink-0 overflow-hidden' : 'w-full h-32'}`}>
-                <div className={`relative h-full w-full transition-transform duration-300 
+                'w-1/3 h-24 md:w-full md:h-32 flex-shrink-0 overflow-hidden rounded-lg' : 'w-full h-32'}`}>
+                <div className={`relative h-full w-full transition-transform duration-300
                     ${isProjectsPage ? 'transform hover:scale-110' : ''}`}>
                     <Image
                         src={imgSrc}
@@ -15,6 +15,7 @@ const Card = ({ imgSrc, title, percentage, children, isProjectsPage = false }) =
                         layout="fill"
                         objectFit="cover"
                         className={'rounded-lg'}
+                      
                     />
                 </div>
             </div>

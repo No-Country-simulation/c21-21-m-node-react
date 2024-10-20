@@ -49,9 +49,9 @@ const Navbar = () => {
 
     const menuItems = [
         { label: 'Inicio', to: '/' },
-        { label: 'Proyectos', to: '/project' },
+        { label: 'Proyectos', to: '/projects' },
         { label: 'Nosotros', to: '/about-us' },
-        { label: 'FAQ', to: '/FAQ' },
+        { label: 'FAQ', to: '/frequent-questions' },
         { label: 'Política de privacidad', to: '/privacy-policy' },
     ];
 
