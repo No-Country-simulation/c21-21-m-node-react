@@ -14,6 +14,9 @@ module.exports = {
                 customWhite: '#FDFDFD',
                 customBlack: '#1B1A1E',
             },
+            fontSize: {
+                customH1: 'clamp(1.75rem, 1.75rem + 0.25 * (100vw - 23.4375rem) / 66.5625, 2rem)',
+            },
             fontFamily: {
                 sans: ['Roboto', 'sans-serif'],
             },

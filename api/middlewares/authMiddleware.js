@@ -22,6 +22,7 @@ export const authenticate = async (req, res, next) => {
     }
 
     let user = await User.findOne({ email: googleUser.email });
+    console.log(user)
 
     if (!user) {
       return res.status(404).send({
