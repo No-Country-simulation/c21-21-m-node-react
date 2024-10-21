@@ -2,7 +2,10 @@ import User from "../models/userModel.js";
 
 export const register = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
+    const userRole = req.body.role ? String(req.body.role) : null;
+    console.log(token);
+    console.log(userRole);
 
     if (!token) {
       return res
@@ -14,33 +17,41 @@ export const register = async (req, res) => {
     const response = await fetch(
       `${process.env.GOOGLE_OAUTH_URL}?access_token=${token}`
     );
+
     const googleUser = await response.json();
+    console.log(googleUser);
 
     if (!googleUser || !googleUser.email) {
       return res.status(401).send({ message: "Token invalido" });
     }
 
     let user = await User.findOne({ email: googleUser.email });
+    console.log(user);
 
     if (user) {
       return res
         .status(400)
-        .send({ message: "El usuario ya está registrado", user: user });
+        .send({
+          message: "El usuario ya está registrado con el:",
+          userRole: user.role,
+        });
     }
-
-    //obtener el rol del req.body o asignar un rol por defecto | en el modelo de usuarios, por defecto es "inversor"
-    const role = req.body.role || "inversor";
 
     //crear el usuario en la DB
     user = new User({
-      name: googleUser.name,
       email: googleUser.email,
       profile_picture: googleUser.picture, //la imagen de perfil de google que despues puede cambiar con un updateUser
       projects: [],
-      role: role,
+      role: userRole,
     });
 
-    await user.save();
+    console.log(user);
+
+    try {
+      await user.save();
+    } catch (err) {
+      console.log(err);
+    }
 
     return res
       .status(201)
@@ -62,7 +73,9 @@ const getProfile = async (req, res) => {
 
     const userProfile = await User.findOne({ email: req.user.email });
 
-    return res.status(200).send(userProfile);
+    return res
+      .status(200)
+      .send({ message: "Usuario encontrado.", user: userProfile });
   } catch (error) {
     return res.status(500).send({
       message: "Error al obtener el perfil del usuario",
@@ -74,10 +87,10 @@ const getProfile = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     /* if (req.user.role !== "administrator") {
-      return res
-        .status(403)
-        .send({ message: "No tienes permiso para ver la lista de usuarios" });
-    } */
+            return res
+                .status(403)
+                .send({ message: "No tienes permiso para ver la lista de usuarios" });
+        } */
 
     const users = await User.find();
     return res.status(200).send(users);

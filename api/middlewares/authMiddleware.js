@@ -29,8 +29,8 @@ export const authenticate = async (req, res, next) => {
         return res.status(401).send({ message: "Token inválido." });
       }
 
-      //ver si el user ya está en la DB
       let user = await User.findOne({ email: googleUser.email });
+      console.log(user);
 
       if (!user) {
         return res.status(404).send({

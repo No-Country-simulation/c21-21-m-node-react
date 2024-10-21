@@ -1,4 +1,5 @@
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedinIn, FaEnvelope, FaWhatsapp } from 'react-icons/fa';
+import { AiOutlineX } from 'react-icons/ai';
 
 const Footer = () => {
     return (
@@ -15,7 +16,7 @@ const Footer = () => {
                         <FaFacebookF size={24} />
                     </a>
                     <a href="https://twitter.com" target="_blank" className="hover:text-customGreen">
-                        <FaTwitter size={24} />
+                        <AiOutlineX size={24} />
                     </a>
                     <a href="https://linkedin.com" target="_blank" className="hover:text-customGreen">
                         <FaLinkedinIn size={24} />
