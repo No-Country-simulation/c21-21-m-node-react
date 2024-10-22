@@ -12,10 +12,11 @@ const Card = ({ imgSrc, title, percentage, children, isProjectsPage = false }) =
                     <Image
                         src={imgSrc}
                         alt={title}
-                        layout="fill"
-                        objectFit="cover"
+                        fill 
                         className={'rounded-lg'}
-                      
+                        sizes={'(max-width: 640px) 100vw, (max-width: 768px) 50vw, (min-width: 769px) 33vw'} 
+                        priority 
+                        style={{ objectFit: 'cover' }}
                     />
                 </div>
             </div>
