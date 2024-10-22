@@ -6,7 +6,7 @@ import Card from "./Card";
 import Entrepreneur from './cards/Entrepreneur';
 import Investor from './cards/Investor';
 import Modal from './Modal';
-import ProjectForm from './ProjectForm';
+import ProjectForm from './form/ProjectForm';
 import PorAhora from '../../../public/banner.jpg'
 
 const Dashboard = () => {
@@ -16,14 +16,15 @@ const Dashboard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState(""); 
     const [modalContent, setModalContent] = useState(null); 
-    const [modalSize, setModalSize] = useState("");
+    const [modalWidth, setModalWidth] = useState("");
+    const [modalHeight, setModalHeight] = useState("");
     const [role, setRole] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('https://run.mocky.io/v3/175491e7-0ddf-4d09-9138-cf6c68d68f77');
-                setRole("inversor")
+                setRole("emprendedor")
                 setProjects(response.data.projects);
                 setTotalProjects(response.data.totalProjects);
                 setTotalAmount(response.data.totalAmount);
@@ -35,10 +36,11 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
-    const openModal = (title, content, size) => {
+    const openModal = (title, content, width, height) => {
         setModalTitle(title);
         setModalContent(content);
-        setModalSize(size);
+        setModalWidth(width);
+        setModalHeight(height);
         setIsModalOpen(true); 
     };
 
@@ -64,7 +66,8 @@ const Dashboard = () => {
                             role === 'emprendedor'
                                 ? openModal('Crear campaña',
                                     <ProjectForm />,
-                                    "max-w-4xl max-h-[80vh]"
+                                    'max-w-4xl',
+                                    'h-[83vh]'
                                     
                                 ) : window.location.href = '/'; // cambiarlo por el enrutamiento de next 
                         }}
@@ -102,7 +105,8 @@ const Dashboard = () => {
                 isOpen={isModalOpen}
                 onClose={closeModal} 
                 title={modalTitle} 
-                size={modalSize}>
+                width={modalWidth}
+                height={modalHeight}>
                 {modalContent} 
             </Modal>
         </>

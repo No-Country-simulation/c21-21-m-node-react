@@ -1,4 +1,4 @@
-import ProjectForm from "../ProjectForm";
+import ProjectForm from "../form/ProjectForm";
 import Button from "../Button";
 import ActionConfirmation from "../ActionConfirmation";
 import Table from "../Table";

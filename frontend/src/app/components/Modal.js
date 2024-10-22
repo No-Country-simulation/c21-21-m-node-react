@@ -1,11 +1,9 @@
-import React from 'react';
-
-const Modal = ({ isOpen, onClose, title, size, children, isError }) => {
+const Modal = ({ isOpen, onClose, title, width, height, children, isError = null }) => {
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-1">
-            <div className={`bg-white rounded-lg shadow-lg relative w-full mx-auto overflow-hidden ${size}`}>
+            <div className={`bg-white rounded-lg shadow-lg relative ${width} mx-auto overflow-hidden`}>
                 <div className={`px-6 py-4 flex items-center justify-between ${isError ? 'bg-red-500 text-white' : 'bg-transparent'}`}>
                     <h2 className="text-lg font-bold">{title}</h2>
                     <button
@@ -15,7 +13,7 @@ const Modal = ({ isOpen, onClose, title, size, children, isError }) => {
                     </button>
                 </div>
                 <div className={`border-b-2 ${isError ? 'border-red-600' : 'border-gray-300'}`}></div>
-                <div className={`px-6 py-4 overflow-y-auto ${size !== "max-w-sm" ? "h-[60vh]" : "h-[27vh]"}`}>
+                <div className={`px-6 pt-4 pb-12 overflow-y-auto ${height}`}>
                     {children}
                 </div>
             </div>
