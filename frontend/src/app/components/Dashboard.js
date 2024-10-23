@@ -7,7 +7,7 @@ import Entrepreneur from "./cards/Entrepreneur";
 import Investor from "./cards/Investor";
 import Modal from "./Modal";
 import ProjectForm from "./ProjectForm";
-import PorAhora from "../../../public/banner.webp";
+import PorAhora from "../../../public/images/banner.webp";
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);

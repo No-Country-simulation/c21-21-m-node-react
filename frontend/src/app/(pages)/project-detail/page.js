@@ -21,7 +21,7 @@ export default function ProjectDetails() {
           <div className="lg:col-span-2 space-y-6">
             <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/banner.webp"
+                src="/images/banner.webp"
                 alt="Imagen de la campaña"
                 layout="fill"
                 objectFit="cover"

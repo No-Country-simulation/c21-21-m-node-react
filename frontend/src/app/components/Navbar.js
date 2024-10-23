@@ -66,7 +66,7 @@ const Navbar = () => {
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
             <Image
-              src="/logo.webp"
+              src="/images/logo.webp"
               alt="BOOSTUP"
               width={100}
               height={100}

@@ -8,7 +8,7 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
-import PorAhora from "../../../public/banner.webp";
+import PorAhora from "../../../public/images/banner.webp";
 
 const categories = ["Todos", "Animal", "Tecnología", "Salud", "Ambiental"];
 

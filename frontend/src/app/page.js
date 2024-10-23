@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import Container from "./components/Container";
 import Button from "./components/Button";
 import Modal from "./components/Modal";
-import backgroundImage from "../../public/banner.webp"; // crear una carpeta en public: images
+import backgroundImage from "../../public/images/banner.webp";
 //import LoaderView from './components/loaders/LoaderView';
 import { useSession } from "next-auth/react";
 import { useApiContext } from "./contexts/ApiContext";

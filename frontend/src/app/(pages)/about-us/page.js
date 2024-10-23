@@ -7,7 +7,7 @@ const AboutUsPage = () => {
   return (
     <div
       className="flex flex-col min-h-screen bg-cover bg-customGray"
-      style={{ backgroundImage: `url('/fondo-nosotros.webp')` }}
+      style={{ backgroundImage: `url('/images/fondo-nosotros.webp')` }}
     >
       <Navbar />
       <Container>
