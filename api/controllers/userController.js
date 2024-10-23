@@ -1,11 +1,10 @@
 import User from "../models/userModel.js";
+import userService from "../services/userServices.js";
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const userRole = req.body.role ? String(req.body.role) : null;
-    console.log(token);
-    console.log(userRole);
 
     if (!token) {
       return res
@@ -17,48 +16,33 @@ export const register = async (req, res) => {
     const response = await fetch(
       `${process.env.GOOGLE_OAUTH_URL}?access_token=${token}`
     );
-
-    const googleUser = await response.json();
-    console.log(googleUser);
+    let googleUser = await response.json();
 
     if (!googleUser || !googleUser.email) {
-      return res.status(401).send({ message: "Token invalido" });
+      return res.status(401).send({ message: "Token inválido" });
     }
 
-    let user = await User.findOne({ email: googleUser.email });
-    console.log(user);
+    //solicitud adicional para obtener el perfil completo pa la foto de perfil
+    const profileResponse = await fetch(
+      `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${token}`
+    );
+    const profileData = await profileResponse.json();
 
-    if (user) {
+    //llamada al servicio (la logica)
+    userService.registerUser(profileData, userRole, (err, savedUser) => {
+      if (err) {
+        return res
+          .status(400)
+          .send({ message: err.message, details: err.details });
+      }
+
       return res
-        .status(400)
-        .send({
-          message: "El usuario ya está registrado con el:",
-          userRole: user.role,
-        });
-    }
-
-    //crear el usuario en la DB
-    user = new User({
-      email: googleUser.email,
-      profile_picture: googleUser.picture, //la imagen de perfil de google que despues puede cambiar con un updateUser
-      projects: [],
-      role: userRole,
+        .status(201)
+        .send({ message: "Usuario registrado con exito!", user: savedUser });
     });
-
-    console.log(user);
-
-    try {
-      await user.save();
-    } catch (err) {
-      console.log(err);
-    }
-
-    return res
-      .status(201)
-      .send({ message: "Usuario registrado con exito", user: user });
   } catch (error) {
     return res.status(500).send({
-      message: "Error al registrar el usuario.",
+      message: "Error inesperado al registrar el usuario.",
       details: error.message,
     });
   }
