@@ -12,28 +12,28 @@ const BankSection = ({ onChange, data }) => {
                 <Input
                     label="Titular de la Cuenta"
                     name="accountHolder"
-                    value={data.accountHolder}
+                    value={data.bankDetails.accountHolder}
                     onChange={onChange}
                     placeholder="Nombre del titular de la cuenta"
                 />
                 <Input
                     label="Número de Cuenta (ej: IBAN o Local)"
                     name="accountNumber"
-                    value={data.accountNumber}
+                    value={data.bankDetails.accountNumber}
                     onChange={onChange}
                     placeholder="Ej: DE89370400440532013000"
                 />
                 <Input
                     label="Banco"
                     name="bankName"
-                    value={data.bankName}
+                    value={data.bankDetails.bankName}
                     onChange={onChange}
                     placeholder="Introduce el nombre del banco"
                 />
                 <Input
                     label="Código SWIFT"
                     name="swiftCode"
-                    value={data.swiftCode}
+                    value={data.bankDetails.swiftCode}
                     onChange={onChange}
                     placeholder="Introduce el código SWIFT"
                 />

@@ -10,8 +10,8 @@ const ProjectDetailsSection = ({ onChange, data }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                     label="Título"
-                    name="title"
-                    value={data.title}
+                    name="name"
+                    value={data.name}
                     onChange={onChange}
                     required
                     placeholder="Introduce el título"
@@ -20,7 +20,7 @@ const ProjectDetailsSection = ({ onChange, data }) => {
                     <label className="block font-semibold text-sm mb-2">Imagen</label>
                     <input
                         type="file"
-                        name="image"
+                        name="img"
                         onChange={onChange}
                         className="w-full border border-gray-300 rounded-md p-2 focus:outline-none 
                         focus:ring-2 focus:ring-blue-400"
@@ -40,15 +40,15 @@ const ProjectDetailsSection = ({ onChange, data }) => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label htmlFor="goal" className="block font-semibold text-sm mb-2">Meta *</label>
+                    <label htmlFor="goal_amount" className="block font-semibold text-sm mb-2">Meta *</label>
                     <div className="relative">
                         <span className="absolute left-3 top-2.5 text-gray-500">$</span>
                         <input
                             type="text"
-                            name="goal"
-                            value={data.goal}
+                            name="goal_amount"
+                            value={data.goal_amount}
                             onChange={onChange}
-                            id="goal"
+                            id="goal_amount"
                             className="w-full border border-gray-300 rounded-md p-2 pl-8 
                             focus:outline-none focus:ring-2 focus:ring-blue-400"
                             placeholder="Introduce la meta"
@@ -59,8 +59,8 @@ const ProjectDetailsSection = ({ onChange, data }) => {
                 </div>
                 <DateField
                     label="Fecha de límite"
-                    name="endDate"
-                    value={data.endDate}
+                    name="deadline"
+                    value={data.deadline}
                     onChange={onChange}
                 />
      
@@ -70,10 +70,11 @@ const ProjectDetailsSection = ({ onChange, data }) => {
                     value={data.category}
                     onChange={onChange}
                     options={[
+                        { value: "fintech", label: "Fintech" },
                         { value: "health", label: "Salud" },
                         { value: "tech", label: "Tecnología" },
-                        { value: "animal", label: "Animal" },
                         { value: "education", label: "Educación" },
+                        { value: "e-Commerce", label: "E-Commerce" },
                         { value: "other", label: "Otro" },
                     ]}
                     required
@@ -81,11 +82,11 @@ const ProjectDetailsSection = ({ onChange, data }) => {
                 <Select
                     label="Estatus"
                     name="status"
-                    value="active" 
+                    value={data.status} 
                     options={[
                         { value: "active", label: "Activo" },
                         { value: "inactive", label: "Inactivo" },
-                        { value: "finalizado", label: "Finalizado" },
+                        { value: "completed", label: "Finalizado" },
                     ]}
                     required={false}
                     disabled

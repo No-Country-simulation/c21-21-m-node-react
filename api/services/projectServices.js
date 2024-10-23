@@ -1,51 +1,51 @@
 import Project from "../models/projectModel.js";
 import User from "../models/userModel.js";
 
-const createProject = async (data, callback) => {
+const createProject = async (data) => {
+  console.log(data);
   try {
     const {
+      owner, 
       name,
-      description,
-      category,
       img,
+      description,
       goal_amount,
-      current_amount,
-      creation_date,
       deadline,
-      rewards,
-      owner,
+      category,
+      status,
+      bankDetails,
+      creation_date 
     } = data;
 
-    const existingProject = await Project.findOne({ name });
-    if (existingProject) return callback({ message: "El proyecto ya existe." });
-
     const ownerId = await User.findById(owner);
-    if (!ownerId) return callback({ message: "El creador/usuario no existe." });
+    if (!ownerId) {
+      throw new Error("El creador/usuario no existe."); e
+    }
 
-    //crear proyecto
+    const existingProject = await Project.findOne({ name });
+    if (existingProject) {
+      throw new Error("El proyecto ya existe."); 
+    }
+
     const newProject = new Project({
+      owner: ownerId,
       name,
+      img,
       description,
-      category,
-      img, //UN ARRAY CON LOS ID DE LAS IMAGENES
       goal_amount,
-      current_amount,
-      creation_date,
       deadline,
-      rewards, //UN ARRAY CON LOS ID DE LOS REWARDS
-      owner, //SOLO EL ID DEL OWNER
-      backers,
-      updates,
+      category,
+      status,
+      bankDetails,
+      creation_date 
     });
 
     const savedProject = await newProject.save();
 
-    return callback(false, savedProject);
+    return savedProject; 
   } catch (error) {
-    return callback({
-      errMessage: "Algo salió mal.",
-      details: error.message,
-    });
+    console.error("Error al guardar el proyecto:", error);
+    throw new Error("Algo salió mal: " + error.message); 
   }
 };
 

@@ -18,6 +18,7 @@ const Dashboard = () => {
     const [modalContent, setModalContent] = useState(null); 
     const [modalWidth, setModalWidth] = useState("");
     const [modalHeight, setModalHeight] = useState("");
+    const [isError, setIsError] = useState(false); 
     const [role, setRole] = useState("");
 
     useEffect(() => {
@@ -36,17 +37,23 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
-    const openModal = (title, content, width, height) => {
+    const openModal = (title, content, width, height, isError = false) => {
         setModalTitle(title);
         setModalContent(content);
         setModalWidth(width);
         setModalHeight(height);
+        setIsError(isError);
         setIsModalOpen(true); 
     };
 
     const closeModal = () => {
         setIsModalOpen(false); 
         setModalContent(null); 
+    };
+
+    const createSubmitResponse = (title, message) => {
+        closeModal();
+        openModal(title, message, 'max-w-sm', 'h-[15vh]', title === 'Error');
     };
 
     const title = role === 'emprendedor' ? 'Tus proyectos' : 'Proyectos en los que has invertido';
@@ -65,7 +72,7 @@ const Dashboard = () => {
                         onClick={() => {
                             role === 'emprendedor'
                                 ? openModal('Crear campaña',
-                                    <ProjectForm />,
+                                    <ProjectForm createSubmitResponse={createSubmitResponse} />,
                                     'max-w-4xl',
                                     'h-[83vh]'
                                     
@@ -106,7 +113,8 @@ const Dashboard = () => {
                 onClose={closeModal} 
                 title={modalTitle} 
                 width={modalWidth}
-                height={modalHeight}>
+                height={modalHeight}
+                isError={isError}>
                 {modalContent} 
             </Modal>
         </>

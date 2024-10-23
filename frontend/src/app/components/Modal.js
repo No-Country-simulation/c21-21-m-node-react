@@ -1,4 +1,5 @@
-const Modal = ({ isOpen, onClose, title, width, height, children, isError = null }) => {
+const Modal = ({ isOpen, onClose, title, width, height, children, isError = false }) => {
+    console.log(isError)
     if (!isOpen) return null;
 
     return (
