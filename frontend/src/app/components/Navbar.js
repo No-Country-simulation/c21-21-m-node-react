@@ -51,8 +51,6 @@ const Navbar = () => {
         { label: 'Inicio', to: '/' },
         { label: 'Proyectos', to: '/projects' },
         { label: 'Nosotros', to: '/about-us' },
-        { label: 'FAQ', to: '/frequent-questions' },
-        { label: 'Política de privacidad', to: '/privacy-policy' },
     ];
 
     // refactorizar
