@@ -30,7 +30,7 @@ export const register = async (req, res) => {
 
         if (user) {
             return res.status(400).send(
-                { message: "El usuario ya está registrado con el:", userRole: user.role }
+                { message: "El usuario ya está registrado con el rol: " + user.role }
             );
         }
 

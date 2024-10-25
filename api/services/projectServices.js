@@ -95,8 +95,16 @@ const updateProject = async (id, updateObj, callback) => {
       goal_amount: updateObj.goal_amount || projectUpdate.goal_amount,
       deadline: updateObj.deadline || projectUpdate.deadline,
       category: updateObj.category || projectUpdate.category,
-      creation_date: projectUpdate.creation_date, // Mantener la fecha de creación original
+      status: updateObj.status || projectUpdate.status,
+      creation_date: projectUpdate.creation_date, 
       rewards: updateObj.rewards || projectUpdate.rewards,
+      img: updateObj.img ? updateObj.img : projectUpdate.img,
+      bankDetails: {
+        accountHolder: updateObj.bankDetails?.accountHolder || projectUpdate.bankDetails.accountHolder,
+        accountNumber: updateObj.bankDetails?.accountNumber || projectUpdate.bankDetails.accountNumber,
+        bankName: updateObj.bankDetails?.bankName || projectUpdate.bankDetails.bankName,
+        swiftCode: updateObj.bankDetails?.swiftCode || projectUpdate.bankDetails.swiftCode,
+      }
     };
 
     // Actualizar el proyecto

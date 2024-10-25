@@ -45,7 +45,7 @@ const create = async (req, res) => {
 
     img = req.file ? req.file.filename : null;
 
-    await projectServices.createProject({
+    const newProject = await projectServices.createProject({
       owner, 
       name,
       img,
@@ -58,8 +58,14 @@ const create = async (req, res) => {
       creation_date: new Date()
     });
 
-    res.status(201).send({ message: "Proyecto creado exitosamente" });
-    console.log(res)
+    const projectData = newProject.toObject(); 
+    delete projectData.owner; 
+   
+    res.status(201).send({
+      message: "Proyecto creado exitosamente",
+      project: projectData, 
+    });
+
   } catch (error) {
     console.log(error)
     if (img) {
@@ -138,6 +144,10 @@ const update = async (req, res) => {
       .status(400)
       .send({ errMessage: "El objeto de actualización es obligatorio!" });
 
+  if (req.file) {
+    updateObj.img = req.file.filename; 
+  }
+    
   try {
     await projectServices.updateProject(id, updateObj, (err, result) => {
       if (err) {

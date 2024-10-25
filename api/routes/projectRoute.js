@@ -14,7 +14,7 @@ router.get("/getProjects", projectController.getAllProjects);
 router.get("/getProject/:id", projectController.getProjectById);
 
 //update
-router.put("/updateProject/:id", projectController.update);
+router.put("/updateProject/:id", upload.single('img'), projectController.update);
 
 //delete lógico (patch)
 router.patch("/delete-project/:id", projectController.deleteProjectById);
