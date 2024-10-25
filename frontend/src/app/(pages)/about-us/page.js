@@ -13,11 +13,10 @@ const AboutUsPage = () => {
         setErrorMessage('');
     };
 
-    
     return (
         <div
             className="flex flex-col min-h-screen bg-cover bg-customGray"
-            style={{backgroundImage: `url('/fondo-nosotros.jpg')`}}>
+            style={{backgroundImage: `url('/images/fondo-nosotros.webp')`}}>
             <Navbar isLoading={isLoading} />
             <Container>
                 <AboutUs />

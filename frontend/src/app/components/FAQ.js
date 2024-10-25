@@ -34,7 +34,7 @@ const FAQ = () => {
     ];
 
     return (
-        <section className="bg-customGray bg-opacity-60 p-12 rounded-lg" id="FAQ">
+        <section className="bg-customGray p-12 rounded-lg" id="FAQ">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-10">
                     <h2 className="text-3xl font-extrabold text-customWhite sm:text-4xl inline-block border-b-4 border-customGreen pb-2">
@@ -42,7 +42,6 @@ const FAQ = () => {
                     </h2>
                 </div>
 
-                {/* Sección Generales */}
                 <div className="bg-customWhite p-8 rounded-lg mb-8">
                     <h3 className="text-2xl font-bold text-customGreen mb-4">Generales</h3>
                     {generalFaqs.map((faq, index) => (
@@ -64,7 +63,6 @@ const FAQ = () => {
                     ))}
                 </div>
 
-                {/* Sección Startups */}
                 <div className="bg-customWhite p-8 rounded-lg mb-8">
                     <h3 className="text-2xl font-bold text-customGreen mb-4">Startups</h3>
                     {startupFaqs.map((faq, index) => (
@@ -86,7 +84,6 @@ const FAQ = () => {
                     ))}
                 </div>
 
-                {/* Sección Inversores */}
                 <div className="bg-customWhite p-8 rounded-lg mb-8">
                     <h3 className="text-2xl font-bold text-customGreen mb-4">Inversores</h3>
                     {investorFaqs.map((faq, index) => (

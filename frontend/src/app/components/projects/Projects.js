@@ -8,7 +8,7 @@ import SearchBar from "./SearchBar";
 import CategoryDropdown from "./CategoryDropdown";
 import projectsService from "@/app/api/services/projectsService";
 
-const categories = ["Todos", "Animal", "Tecnología", "Salud", "Ambiental"];
+const categories = ["Todos", "Fintech", "Tecnología", "Salud", "Ambiental", "Otros"];
 
 const Projects = () => {
     const [data, setData] = useState([]);
@@ -21,7 +21,19 @@ const Projects = () => {
         const fetchData = async () => {
             try {
                 const projects = await projectsService.getProjects();
-                setData(projects);
+                
+                const projectsWithPercentage = projects.map(project => {
+                    const goalAmount = project.goal_amount || 1; 
+                    const currentAmount = project.current_amount || 0; 
+                    const percentage = Math.floor((currentAmount / goalAmount) * 100); 
+
+                    return {
+                        ...project,
+                        percentage: percentage, 
+                    };
+                });
+
+                setData(projectsWithPercentage);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -36,7 +48,7 @@ const Projects = () => {
         : data.filter(project => project.category === selectedCategory);
     
     const filterProjects = search.length < 3 ? filterByCategory 
-        : filterByCategory.filter(project => project.title.toLowerCase().includes(search.toLowerCase()));
+        : filterByCategory.filter(project => project.name.toLowerCase().includes(search.toLowerCase()));
 
     return (
         <>
@@ -75,9 +87,9 @@ const Projects = () => {
                     ) : filterProjects.length > 0 ? (
                             filterProjects.map((project, index) => (
                                 <Card 
-                                    key={project.id || index}
-                                    imgSrc={project.image}
-                                    title={project.title}
+                                    key={project._id || index}
+                                    imgSrc={project.image || "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                    title={project.name}
                                     percentage={project.percentage}
                                     isProjectsPage={true}>
                                     <ProjectsCard project={project} />
