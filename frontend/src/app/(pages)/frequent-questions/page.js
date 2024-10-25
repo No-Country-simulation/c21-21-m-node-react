@@ -1,20 +1,19 @@
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
-import AboutUs from '@/app/components/AboutUs';
+import FAQ from '@/app/components/FAQ';
 
-const AboutUsPage = () => {
+const FAQPage = () => {
     return (
         <div
-            className="flex flex-col min-h-screen bg-cover bg-customGray"
-            style={{backgroundImage: `url('/fondo-nosotros.jpg')`}}>
+            className="flex flex-col min-h-screen bg-cover bg-customWhite">
             <Navbar />
             <Container>
-                <AboutUs />
+                <FAQ />
             </Container>
             <Footer />
         </div>
     );
 };
 
-export default AboutUsPage;
+export default FAQPage;

@@ -3,11 +3,9 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
-    required: true,
     unique: true,
   },
   profile_picture: {
@@ -16,8 +14,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ["inversor", "administrator", "creator"],
-    default: "inversor",
+    enum: ["inversor", "administrator", "emprendedor"],
   },
   projects: [
     {
