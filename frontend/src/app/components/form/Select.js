@@ -1,8 +1,9 @@
 const Select = ({ label, name, value, onChange, options, required, disabled = false }) => {
     return (
         <div>
-            <label className="block font-semibold text-sm mb-2">{label}{required && ' *'}</label>
+            <label htmlFor={name} className="block font-semibold text-sm mb-2">{label}{required && ' *'}</label>
             <select
+                id={name}
                 name={name}
                 value={value}
                 onChange={onChange}

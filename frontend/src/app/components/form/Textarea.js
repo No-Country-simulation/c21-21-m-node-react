@@ -1,8 +1,9 @@
 const Textarea = ({ label, name, value, onChange, required, placeholder }) => {
     return (
         <div>
-            <label className="block font-semibold text-sm mb-2">{label}{required && ' *'}</label>
+            <label htmlFor={name} className="block font-semibold text-sm mb-2">{label}{required && ' *'}</label>
             <textarea
+                id={name}
                 name={name}
                 value={value}
                 onChange={onChange}

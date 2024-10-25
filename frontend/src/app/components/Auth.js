@@ -1,27 +1,29 @@
 import { useState } from 'react';
 import LoaderButton from './loaders/LoaderButton';
+import Button from './Button';
 import { signIn } from 'next-auth/react';
+import Cookies from 'js-cookie';
 
 const Auth = ({ isLogin, toggleForm }) => {
     const [loadingButton, setLoadingButton] = useState(null); 
 
     const handleAuth = async (role = null, action) => {
-        localStorage.setItem('action', action);
+        Cookies.set('action', action);
         if (isLogin) {
             setLoadingButton('google-login');
         } else {
             setLoadingButton(role);
-            localStorage.setItem('role', role);
+            Cookies.set('role', role);
         }
-
+    
         await signIn('google');
     };
-
+    
     return (
         <>
             <div className="flex flex-col space-y-4">
                 <small className="text-gray-600">
-                    {isLogin
+                    { isLogin
                         ? 'Dale clic para iniciar sesión.'
                         : 'Selecciona el rol y registrate con tu cuenta de Google.'}
                 </small>
@@ -56,13 +58,16 @@ const Auth = ({ isLogin, toggleForm }) => {
                     )
                 }
             </div>
-            <LoaderButton
+            <Button
                 className="mt-6 text-blue-500 underline"
                 onClick={toggleForm}
                 isLoading={false}  
             >
-                {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
-            </LoaderButton>
+                {
+                    isLogin ? '¿No tienes cuenta? Regístrate' 
+                    : '¿Ya tienes cuenta? Inicia sesión'
+                }
+            </Button>
         </>
     );
 };

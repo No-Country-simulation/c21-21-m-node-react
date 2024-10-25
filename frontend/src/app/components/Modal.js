@@ -1,10 +1,9 @@
-const Modal = ({ isOpen, onClose, title, width, height, children, isError = false }) => {
-    console.log(isError)
+const Modal = ({ isOpen, onClose, title, width, height, margin, children, isError = false }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-1">
-            <div className={`bg-white rounded-lg shadow-lg relative ${width} mx-auto overflow-hidden`}>
+        <div className="fixed inset-0 z-50 justify-center bg-black bg-opacity-80 px-1">
+            <div className={`bg-white ${margin} rounded-lg shadow-lg relative ${width} mx-auto overflow-hidden`}>
                 <div className={`px-6 py-4 flex items-center justify-between ${isError ? 'bg-red-500 text-white' : 'bg-transparent'}`}>
                     <h2 className="text-lg font-bold">{title}</h2>
                     <button

@@ -6,12 +6,14 @@ import Button from '../components/Button';
 import Modal from './Modal';
 import Auth from './Auth';
 import MobileMenu from './MobileMenu';
+import LoaderAuth from './loaders/LoaderAuth';
 import { useUserContext } from '../contexts/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { signOut } from 'next-auth/react';
+import Cookies from 'js-cookie';
 
-const Navbar = () => {
+const Navbar = ({ isLoading }) => {
     const { user } = useUserContext();
     const [isOpen, setIsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,14 +37,14 @@ const Navbar = () => {
     };
 
     const openLoginModal = () => openModal('Iniciar sesión', true);
-    const openRegisterModal = () => openModal('Crear cuenta', false);
 
     const handleDropdownToggle = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
     const logout = async () => {
-        localStorage.removeItem('user');
+        Cookies.remove('user');
+        Cookies.remove('token');
         await signOut();
         setIsDropdownOpen(false);
     };
@@ -108,6 +110,11 @@ const Navbar = () => {
                         ))
                     }
                     {
+                        isLoading && !user? ( 
+                            <>
+                                <LoaderAuth />
+                            </>
+                        ) : (
                         user ? (
                             <div className="relative inline-block text-left">
                                 <div className="flex items-center cursor-pointer"
@@ -115,8 +122,11 @@ const Navbar = () => {
                                     <FontAwesomeIcon icon={faUserCircle} className="h-8 w-8 
                                         text-customWhite" />
                                     <div className="ml-2 text-md font-semibold leading-6 text-customWhite">
-                                        <span>{user.email}</span>
-                                        <div className="text-sm text-gray-300">{user.role}</div>
+                                        <span>{user.name}</span>
+                                        <div className="text-sm text-gray-300">{user?.role 
+                                            ? user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase() 
+                                            : "Sin rol asignado"}
+                                        </div>
                                     </div>
                                 </div>
                                 {
@@ -141,22 +151,13 @@ const Navbar = () => {
                                 }
                             </div>
                         ) : (
-                            <>
-                                <Button onClick={openLoginModal}
-                                    className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
-                                        pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
-                                        hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
-                                        hover:pr-3.5">
-                                    Iniciar sesión
-                                </Button>
-                                <Button onClick={openRegisterModal}
-                                    className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
-                                        pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
-                                        hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
-                                        hover:pr-3.5 -ml-10">
-                                    Crear cuenta
-                                </Button>
-                            </>
+                            <Button onClick={openLoginModal}
+                                className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
+                                    pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
+                                    hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
+                                    hover:pr-3.5">
+                                Iniciar sesión
+                            </Button>)
                         )
                     }
                 </div>
@@ -166,13 +167,13 @@ const Navbar = () => {
                 toggleMenu={toggleMenu}
                 menuItems={menuItems}
                 openLoginModal={openLoginModal}
-                openRegisterModal={openRegisterModal}
             />
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 title={modalTitle}
-                size='max-w-md max-h-80'>
+                width={"w-full md:max-w-sm"}
+                margin={"mt-24"}>
                 <Auth isLogin={isLogin} toggleForm={toggleForm} />
             </Modal>
         </header>

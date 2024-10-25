@@ -5,12 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'; 
 import { useUserContext } from '../contexts/UserContext';
 import { signOut } from 'next-auth/react'; 
+import Cookies from 'js-cookie';
 
-const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal, openRegisterModal }) => {
+const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
     const { user } = useUserContext(); 
    
     const logout = async () => {
-        localStorage.removeItem('user');
+        Cookies.removeItem('user');
+        Cookies.remove('token');
         await signOut();
         toggleMenu();
     };
@@ -18,7 +20,7 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal, openRegiste
     return (
         <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'}`} role="dialog" aria-modal="true">
             <div className="fixed inset-0 z-10 bg-customGray"></div>
-            <div className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-customWhite px-5 py-6 sm:max-w-sm sm:ring-1 sm:ring-customBlack">
+            <div className="fixed inset-y-0 right-0 z-10 w-full bg-customWhite px-5 py-6 sm:max-w-sm sm:ring-1 sm:ring-customBlack">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center"> 
                         {
@@ -26,8 +28,11 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal, openRegiste
                                 <>
                                     <FontAwesomeIcon icon={faUserCircle} className="h-8 w-8 text-customBlack" />
                                     <div className="ml-3">
-                                        <span className="font-semibold">{user.email}</span>
-                                        <div className="text-sm text-gray-500">{user.role}</div>
+                                        <span className="font-semibold">{user.name}</span>
+                                        <div className="text-sm text-gray-500">{user?.role 
+                                            ? user.role.charAt(0).toUpperCase() + user.role.slice(1).toLowerCase() 
+                                            : "Sin rol asignado"}
+                                        </div>
                                     </div>
                                 </>
                             )
@@ -76,7 +81,7 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal, openRegiste
                                         </Button>
                                     </>
                                 ) : (
-                                    <div className='flex justify-center space-x-2 pt-5'>
+                                    <div className='pt-5'>
                                         <Button
                                             onClick={openLoginModal}
                                             className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
@@ -84,14 +89,6 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal, openRegiste
                                                 hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
                                                 hover:pr-3.5">
                                                 Iniciar sesión
-                                        </Button>
-                                        <Button
-                                            onClick={openRegisterModal}
-                                                className="text-md font-semibold leading-6 text-customWhite bg-customGreen 
-                                                pt-1 pb-1 pl-4 pr-4 rounded-full hover:text-customGreen hover:bg-customGray 
-                                                hover:border-2 hover:border-customGreen hover:pt-0 hover:pb-0 hover:pl-3.5 
-                                                hover:pr-3.5">
-                                                Crear cuenta
                                         </Button>
                                     </div>
                                 )

@@ -1,8 +1,10 @@
 const Input = ({ label, name, value, onChange, required, type = "text", placeholder }) => {
     return (
         <div>
-            <label className="block font-semibold text-sm mb-2">{label}{required && ' *'}</label>
+            <label htmlFor={name} className="block font-semibold text-sm mb-2">
+                {label}{required && ' *'}</label>
             <input
+                id={name}
                 type={type}
                 name={name}
                 value={value}

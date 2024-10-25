@@ -1,22 +1,23 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null); 
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const savedUser = localStorage.getItem('user');
+        const savedUser = Cookies.get('user');
         if (savedUser) {
             setUser(JSON.parse(savedUser));
         }
-    }, []); 
+    }, []);
 
     useEffect(() => {
         if (user) {
-            localStorage.setItem('user', JSON.stringify(user));
+            Cookies.set('user', JSON.stringify(user));
         } else {
-            localStorage.removeItem('user');
+            Cookies.remove('user');
         }
     }, [user]);
 

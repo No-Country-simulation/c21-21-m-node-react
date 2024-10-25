@@ -4,7 +4,7 @@ import Textarea from './Textarea';
 import Select from './Select';
 import DateField from './DateField';
 
-const ProjectDetailsSection = ({ onChange, data }) => {
+const ProjectDetailsSection = ({ onChange, data, isStatusEditable }) => {
     return (
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -17,8 +17,9 @@ const ProjectDetailsSection = ({ onChange, data }) => {
                     placeholder="Introduce el título"
                 />
                 <div>
-                    <label className="block font-semibold text-sm mb-2">Imagen</label>
+                    <label htmlFor="img" className="block font-semibold text-sm mb-2">Imagen</label>
                     <input
+                        id="img"
                         type="file"
                         name="img"
                         onChange={onChange}
@@ -62,8 +63,8 @@ const ProjectDetailsSection = ({ onChange, data }) => {
                     name="deadline"
                     value={data.deadline}
                     onChange={onChange}
+                    required
                 />
-     
                 <Select
                     label="Categoría"
                     name="category"
@@ -83,13 +84,15 @@ const ProjectDetailsSection = ({ onChange, data }) => {
                     label="Estatus"
                     name="status"
                     value={data.status} 
+                    onChange={onChange}
                     options={[
+                        ...(data.status === "pending" ? 
+                            [{ value: "pending", label: "Pendiente" }] : []),
                         { value: "active", label: "Activo" },
                         { value: "inactive", label: "Inactivo" },
                         { value: "completed", label: "Finalizado" },
                     ]}
-                    required={false}
-                    disabled
+                    disabled={!isStatusEditable}
                 />
             </div>
         </div>
