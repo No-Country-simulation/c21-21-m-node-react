@@ -7,7 +7,7 @@ import ProgressBar from "@/app/components/ProgresBar";
 import PaypalButton from "@/app/components/investment/PaypalButton";
 import { useRouter } from "next/router";
 import Button from "@/app/components/Button";
-import {FaUser, FaCalendarAlt} from "react-icons/fa"
+import { FaUser, FaCalendarAlt } from "react-icons/fa";
 
 export default function ProjectDetails() {
   return (
@@ -21,7 +21,7 @@ export default function ProjectDetails() {
           <div className="lg:col-span-2 space-y-6">
             <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/banner.jpg"
+                src="/images/banner.webp"
                 alt="Imagen de la campaña"
                 layout="fill"
                 objectFit="cover"
@@ -31,7 +31,7 @@ export default function ProjectDetails() {
 
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 rounded-full bg-primary-foreground flex items-center justify-center">
-                <FaUser size={24}/>
+                <FaUser size={24} />
               </div>
               <div>
                 <h2 className="font-semibold text-primary">Creador</h2>
