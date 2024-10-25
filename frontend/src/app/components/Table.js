@@ -11,14 +11,23 @@ const Table = ({ investors }) => {
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
-                    {investors.map((investor, index) => (
-                        <tr key={index} className="border-b border-gray-200">
-                            <td className="py-3 px-6">{investor.name}</td>
-                            <td className="py-3 px-6">{investor.email}</td>
-                            <td className="py-3 px-6">${investor.totalInvestment}</td>
-                            <td className="py-3 px-6">{investor.investmentDate}</td>
-                        </tr>
-                    ))}
+                    {
+                        investors?.length > 0 ? (
+                            investors.map((investor, index) => (
+                                <tr key={investor._id || index} className="border-b border-gray-200">
+                                    <td className="py-3 px-6">{investor.firstName} {investor.lastName}</td>
+                                    <td className="py-3 px-6">{investor.email}</td>
+                                    <td className="py-3 px-6">${investor.totalInvested}</td>
+                                    <td className="py-3 px-6">{investor.investmentDate}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={4} className="py-3 px-6 text-center">No hay 
+                                    inversionistas para mostrar.</td>
+                            </tr>
+                        )
+                    }
                 </tbody>
             </table>
         </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const Card = ({ imgSrc, title, percentage, children, isProjectsPage = false }) => {
+const Card = ({ img, title, percentage, children, isProjectsPage = false }) => {
     return (
         <div className={`w-full mx-auto ${isProjectsPage ? 
             'flex flex-row md:flex-col hover:bg-gray-100 p-2 rounded-lg cursor-pointer transition duration-300' 
@@ -10,9 +10,9 @@ const Card = ({ imgSrc, title, percentage, children, isProjectsPage = false }) =
                 <div className={`relative h-full w-full transition-transform duration-300
                     ${isProjectsPage ? 'transform hover:scale-110' : ''}`}>
                     <Image
-                        src={imgSrc}
+                        src={img}
                         alt={title}
-                        fill 
+                        fill
                         className={'rounded-lg'}
                         sizes={'(max-width: 640px) 100vw, (max-width: 768px) 50vw, (min-width: 769px) 33vw'} 
                         priority 

@@ -1,60 +1,83 @@
+import fs from 'fs';
+import path from 'path'
+import { fileURLToPath } from 'url';
 import projectServices from "../services/projectServices.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const create = async (req, res) => {
-  const {
-    name,
-    owner,
-    goal_amount,
-    description,
-    deadline,
-    img,
-    category,
-    rewards,
-  } = req.body;
-
-  if (
-    !(
-      name &&
-      owner &&
-      img &&
-      category &&
-      creation_date &&
-      goal_amount &&
-      description &&
-      deadline &&
-      rewards
-    )
-  ) {
-    return res.status(400).send({
-      errMessage:
-        "El nombre, owner, images, meta, descripción y fecha límite son obligatorios.",
-    });
-  }
-
+  console.log(req.body)
+  let img = null;
   try {
-    //llamado al servicio, la respuesta ya se maneja en el callback
-    await projectServices.createProject(
-      {
-        name,
-        description,
-        category,
-        img,
-        goal_amount,
-        current_amount,
-        creation_date,
-        deadline,
-        rewards,
-        owner,
-        backers,
-      },
-      (err, result) => {
-        if (err) {
-          return res.status(500).send(err);
-        }
-        return res.status(201).send(result);
+    const {
+      owner,
+      name,
+      description,
+      goal_amount,
+      deadline, 
+      category,
+      status,
+      bankDetails,
+    } = req.body;
+
+    if (!(name && owner && category && goal_amount && description)) {
+      return res.status(400).send({
+        errMessage: "El nombre, owner, meta, descripción y fecha límite son obligatorios.",
+      });
+    }
+
+    const parsedGoalAmount = parseFloat(goal_amount);
+
+    if(isNaN(parsedGoalAmount)) {
+      return res.status(400).send({
+        errMessage: "El campo 'meta' debe ser un número válido.",
+      });
+    }
+
+    let parsedDeadline = null;
+    if(deadline) {
+      parsedDeadline = new Date(deadline);
+      if(isNaN(parsedDeadline.getTime())) {
+        return res.status(400).json({ error: "Fecha de vencimiento no válida." });
       }
-    );
+    }
+
+    img = req.file ? req.file.filename : null;
+
+    const newProject = await projectServices.createProject({
+      owner, 
+      name,
+      img,
+      description,
+      goal_amount: parsedGoalAmount,
+      deadline: parsedDeadline,
+      category,
+      status,
+      bankDetails,
+      creation_date: new Date()
+    });
+
+    const projectData = newProject.toObject(); 
+    delete projectData.owner; 
+   
+    res.status(201).send({
+      message: "Proyecto creado exitosamente",
+      project: projectData, 
+    });
+
   } catch (error) {
+    console.log(error)
+    if (img) {
+      const imgPath = path.join(__dirname, '../uploads/', img);
+      fs.unlink(imgPath, (err) => {
+          if (err) {
+              console.error('Error al eliminar la imagen:', err);
+          } else {
+              console.log('Imagen eliminada exitosamente:', img);
+          }
+      });
+    }
     return res.status(500).send({
       errMessage: "Error al crear el proyecto.",
       details: error.message,
@@ -121,6 +144,10 @@ const update = async (req, res) => {
       .status(400)
       .send({ errMessage: "El objeto de actualización es obligatorio!" });
 
+  if (req.file) {
+    updateObj.img = req.file.filename; 
+  }
+    
   try {
     await projectServices.updateProject(id, updateObj, (err, result) => {
       if (err) {
