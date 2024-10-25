@@ -1,22 +1,19 @@
 import express from "express";
-import {
-  createUser,
-  getUsers,
-  deleteUser,
-  getUserById,
-} from "../controllers/userController.js";
+import userController from "../controllers/userController.js";
+import { authenticate } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-//TODOS LOS USERS
-router.get("/", getUsers);
+//post
+router.post("/auth/register", userController.register);
 
-//OBTENER USER BY ID
-router.get("/:id", getUserById);
+//get
+router.get("/profile", authenticate, userController.getProfile);
+router.get("/allUsers", userController.getUsers);
 
-//CREAR USER
-router.post("/create", createUser);
+//put
+router.put("/updateProfile", authenticate, userController.updateUserProfile);
 
-//BORRAR USER
-router.delete("/:id", deleteUser);
+//delete (ojo que este es un borrado logico, nada debe ser borrado de la DB)
+
 export default router;

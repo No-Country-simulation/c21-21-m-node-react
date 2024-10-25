@@ -3,25 +3,17 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
-    required: true,
     unique: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  profile_picture:{
-    type: String,
+  profile_picture: {
+    type: String, //URL de la imagen del perfil, que sera la de google en un inicio y despues puede actualizarla
   },
   role: {
     type: String,
-    required: true,
-    enum: ["inversor", "administrator", "creator"],
-    default: "inversor",
+    enum: ["inversor", "administrator", "emprendedor"],
   },
   projects: [
     {

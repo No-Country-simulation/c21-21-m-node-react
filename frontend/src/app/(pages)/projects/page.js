@@ -1,9 +1,9 @@
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
-import Projects from '@/app/components/projects';
+import Projects from '@/app/components/projects/Projects';
 
-const AboutUs = () => {
+const ProjectsPage = () => {
     return (
         <>
             <Navbar />
@@ -15,4 +15,4 @@ const AboutUs = () => {
     );
 };
 
-export default AboutUs;
+export default ProjectsPage;
