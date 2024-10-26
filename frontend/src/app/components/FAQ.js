@@ -34,77 +34,98 @@ const FAQ = () => {
     ];
 
     return (
-        <section className="bg-customGray p-12 rounded-lg" id="FAQ">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-10">
-                    <h2 className="text-3xl font-extrabold text-customWhite sm:text-4xl inline-block border-b-4 border-customGreen pb-2">
+        <section className="bg-customGray p-2 md:p-6 lg:p-20 rounded-lg" id="FAQ">
+            <div className="container mx-auto">
+                <div className="text-center pt-2 pb-10 md:mb-4">
+                    <h1 className="text-customH1 font-extrabold text-customWhite 
+                        inline-block border-b-4 border-customGreen pb-2">
                         Preguntas frecuentes
-                    </h2>
+                    </h1>
                 </div>
-
-                <div className="bg-customWhite p-8 rounded-lg mb-8">
+                <div className="bg-customWhite p-6 lg:p-10 rounded-lg mb-8">
                     <h3 className="text-2xl font-bold text-customGreen mb-4">Generales</h3>
-                    {generalFaqs.map((faq, index) => (
-                        <div key={index} className="mb-4">
-                            <button
-                                className="flex items-center justify-between w-full font-semibold text-customGray hover:text-customGreen"
-                                onClick={() => toggleFAQ(index)}
-                            >
-                                {faq.question}
-                                <span>{activeIndex === index ? <FaChevronUp /> : <FaChevronDown />}</span>
-                            </button>
-                            <div
-                                className={`transition-all duration-300 ease-in-out overflow-hidden ${activeIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                                    }`}
-                            >
-                                <p className="pl-4 mt-2 text-customBlack">{faq.answer}</p>
-                            </div>
-                        </div>
-                    ))}
+                    {
+                        generalFaqs.map((faq, index) => (
+                            <div key={index} className="mb-6">
+                                <button
+                                    className="flex justify-between w-full font-semibold 
+                                    text-customGray hover:text-customGreen text-left" 
+                                    onClick={() => toggleFAQ(index)}>
+                                    <span className="text-left">{faq.question}</span> 
+                                    <span>
+                                        {
+                                            activeIndex === index ? 
+                                                <FaChevronUp /> 
+                                            : <FaChevronDown />
+                                        }
+                                    </span>
+                                </button>
+                                <div
+                                    className={`transition-all duration-300 ease-in-out overflow-hidden ${activeIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    <p className="lg:pl-2 mt-2 text-customBlack">{faq.answer}</p>
+                                </div>
+                            </div>)
+                        )
+                    }
                 </div>
-
                 <div className="bg-customWhite p-8 rounded-lg mb-8">
                     <h3 className="text-2xl font-bold text-customGreen mb-4">Startups</h3>
-                    {startupFaqs.map((faq, index) => (
-                        <div key={index + generalFaqs.length} className="mb-4">
-                            <button
-                                className="flex items-center justify-between w-full font-semibold text-customGray hover:text-customGreen"
-                                onClick={() => toggleFAQ(index + generalFaqs.length)}
-                            >
-                                {faq.question}
-                                <span>{activeIndex === index + generalFaqs.length ? <FaChevronUp /> : <FaChevronDown />}</span>
-                            </button>
-                            <div
-                                className={`transition-all duration-300 ease-in-out overflow-hidden ${activeIndex === index + generalFaqs.length ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                                    }`}
-                            >
-                                <p className="pl-4 mt-2 text-customBlack">{faq.answer}</p>
-                            </div>
-                        </div>
-                    ))}
+                    {
+                        startupFaqs.map((faq, index) => (
+                            <div key={index + generalFaqs.length} className="mb-4">
+                                <button
+                                    className="flex justify-between w-full font-semibold 
+                                    text-customGray hover:text-customGreen text-left" 
+                                    onClick={() => toggleFAQ(index + generalFaqs.length)}>
+                                    <span className="text-left">{faq.question}</span>
+                                    <span>
+                                        {
+                                            activeIndex === index + generalFaqs.length ? 
+                                                <FaChevronUp /> 
+                                            : <FaChevronDown />
+                                        }
+                                    </span>
+                                </button>
+                                <div
+                                    className={`transition-all duration-300 ease-in-out 
+                                        overflow-hidden ${activeIndex === index + generalFaqs.length ? 
+                                        'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    <p className="lg:pl-2 mt-2 text-customBlack">{faq.answer}</p>
+                                </div>
+                            </div>)
+                        )
+                    }
                 </div>
-
                 <div className="bg-customWhite p-8 rounded-lg mb-8">
                     <h3 className="text-2xl font-bold text-customGreen mb-4">Inversores</h3>
-                    {investorFaqs.map((faq, index) => (
-                        <div key={index + generalFaqs.length + startupFaqs.length} className="mb-4">
-                            <button
-                                className="flex items-center justify-between w-full font-semibold text-customGray hover:text-customGreen"
-                                onClick={() => toggleFAQ(index + generalFaqs.length + startupFaqs.length)}
-                            >
-                                {faq.question}
-                                <span>{activeIndex === index + generalFaqs.length + startupFaqs.length ? <FaChevronUp /> : <FaChevronDown />}</span>
-                            </button>
-                            <div
-                                className={`transition-all duration-300 ease-in-out overflow-hidden ${activeIndex === index + generalFaqs.length + startupFaqs.length ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                                    }`}
-                            >
-                                <p className="pl-4 mt-2 text-customBlack">{faq.answer}</p>
-                            </div>
-                        </div>
-                    ))}
+                    {
+                        investorFaqs.map((faq, index) => (
+                            <div key={index + generalFaqs.length + startupFaqs.length} className="mb-4">
+                                <button
+                                    className="flex justify-between w-full font-semibold 
+                                    text-customGray hover:text-customGreen text-left" 
+                                    onClick={() => toggleFAQ(index + generalFaqs.length + 
+                                    startupFaqs.length)}>
+                                    <span className="text-left">{faq.question}</span>
+                                    <span>
+                                        {
+                                            activeIndex === index + generalFaqs.length + startupFaqs.length ? 
+                                                <FaChevronUp /> 
+                                            : <FaChevronDown />
+                                        }
+                                    </span>
+                                </button>
+                                <div
+                                    className={`transition-all duration-300 ease-in-out overflow-hidden 
+                                        ${activeIndex === index + generalFaqs.length + 
+                                            startupFaqs.length ? 'max-h-96 opacity-100' 
+                                            : 'max-h-0 opacity-0'}`}>
+                                    <p className="lg:pl-2 mt-2 text-customBlack">{faq.answer}</p>
+                                </div>
+                            </div>)
+                        )
+                    }
                 </div>
-
             </div>
         </section>
     );

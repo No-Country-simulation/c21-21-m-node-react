@@ -14,13 +14,14 @@ const AboutUsPage = () => {
     };
 
     return (
-        <div
-            className="flex flex-col min-h-screen bg-cover bg-customGray"
-            style={{backgroundImage: `url('/images/fondo-nosotros.webp')`}}>
+        <>
             <Navbar isLoading={isLoading} />
-            <Container>
-                <AboutUs />
-            </Container>
+            <div className="flex flex-col min-h-screen bg-cover bg-customGray"
+                style={{backgroundImage: `url('/images/fondo-nosotros.webp')`}}>
+                <Container>
+                    <AboutUs />
+                </Container>
+            </div>
             <Footer />
             <Modal
                 isOpen={!!errorMessage}
@@ -31,7 +32,7 @@ const AboutUsPage = () => {
                 isError={!!errorMessage}>
                 {errorMessage}
             </Modal>
-        </div>
+        </>
     );
 };
 
