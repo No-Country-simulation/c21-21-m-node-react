@@ -2,27 +2,34 @@
 import { useState, useEffect } from "react";
 import Card from "./Card";
 import Table from "../Table";
+import Button from "../Button";
+import StatusDropdown from "./StatusDropdown";
 import projectsService from "@/app/api/services/projectsService";
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState("Pendiente");
 
-    const statusTranslations = {
-        active: "Activo",
-        inactive: "Inactivo",
-        rejected: "Rechazado",
-        pending: "Pendiente",
-        completed: "Finalizado",
+    const statusMap = {
+        "Pendiente": "pending",
+        "Activo": "active",
+        "Inactivo": "inactive",
+        "Rechazado": "rejected",
+        "Finalizado": "completed",
     };
     
-    const translateStatus = (status) => {
-        return statusTranslations[status] || status; 
-    };
+    const statusTranslations = Object.fromEntries(
+        Object.entries(statusMap).map(([key, value]) => [value, key])
+    );
+
+    const statuses = Object.keys(statusMap);
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toISOString().split('T')[0];
     };
+
+    const filteredData = data.filter(project => project.status === selectedStatus);
     
     useEffect(() => {
         const fetchData = async () => {
@@ -31,10 +38,9 @@ const Dashboard = () => {
                 
                 const formattedProjects = projects.map(project => ({
                     ...project,
-                    status: translateStatus(project.status), 
+                    status: statusTranslations[project.status] || project.status, 
                     investmentDate: formatDate(project.creation_date)
                 }));
-    
                 setData(formattedProjects);
             } catch (error) {
                 //setError(error.message);
@@ -57,7 +63,30 @@ const Dashboard = () => {
                 <Card title="prueba" description='prueba descr' />
                 <Card title="prueba" description='prueba descr' />
             </div>
-            <Table data={data} admin={true} />
+            <div className="flex flex-col pb-8 md:flex-row md:justify-around w-full">
+                <StatusDropdown 
+                    selectedStatus={selectedStatus} 
+                    handleStatus={setSelectedStatus} 
+                    statuses={statuses}
+                />
+                <div className="hidden md:flex w-full pt-8 space-x-1">
+                    {
+                        statuses.map((status) => (
+                            <Button
+                                key={status}
+                                className={`px-5 py-2 rounded-full font-bold transition duration-300 
+                                ${selectedStatus === status ? "bg-black text-white" 
+                                : "text-gray-500 hover:bg-gray-100 hover:text-black"}`}
+                                onClick={() => setSelectedStatus(status)}>
+                                {status}
+                            </Button>
+                        ))
+                    }
+                </div>
+            </div>
+            <div className="w-full">
+                <Table data={filteredData} admin={true} />
+            </div>
         </div>
     );
 };
