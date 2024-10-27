@@ -24,7 +24,7 @@ const Table = ({ data, admin = false }) => {
         <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-200">
                 <thead>
-                    <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
+                    <tr className={`bg-gray-200 text-gray-600 ${admin ? '' : 'text-sm'} leading-normal`}>
                         {
                             titles.map((title, index) => (
                                 <th key={index} className="py-3 px-6 text-left">{title}</th>)
@@ -32,7 +32,7 @@ const Table = ({ data, admin = false }) => {
                         }
                     </tr>
                 </thead>
-                <tbody className="text-gray-600 text-sm font-light">
+                <tbody className={`text-gray-600  ${admin ? '' : 'text-sm'} font-light`}>
                     {
                         currentItems?.length > 0 ? (
                             currentItems.map((obj, index) => (

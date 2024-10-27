@@ -55,7 +55,7 @@ const Dashboard = () => {
     return (
         <div className="flex flex-col justify-between items-start
             mb-4 space-y-4 md:space-y-0">
-            <h1 className="text-customH1 pb-2 lg:pb-0 font-bold">Descripción General</h1>
+            <h1 className="text-customH1 pb-2 md:pb-4 lg:pb-6 font-bold">Descripción General</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
                 gap-y-8 w-full gap-x-6">
                 <Card title="prueba" description='prueba descr' />
@@ -63,7 +63,7 @@ const Dashboard = () => {
                 <Card title="prueba" description='prueba descr' />
                 <Card title="prueba" description='prueba descr' />
             </div>
-            <div className="flex flex-col pb-8 md:flex-row md:justify-around w-full">
+            <div className="flex flex-col pt-8 md:pt-6 md:pb-6 md:flex-row md:justify-around w-full">
                 <StatusDropdown 
                     selectedStatus={selectedStatus} 
                     handleStatus={setSelectedStatus} 
