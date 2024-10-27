@@ -2,13 +2,25 @@
 import { useState, useEffect } from "react";
 import Card from "./Card";
 import Table from "../Table";
+import TableUsers from "./Table";
+import Modal from "../Modal";
 import Button from "../Button";
+import LoaderButton from "../loaders/LoaderButton";
 import StatusDropdown from "./StatusDropdown";
 import projectsService from "@/app/api/services/projectsService";
+import userService from "@/app/api/services/userService";
 
 const Dashboard = () => {
+    const [isLoading, setIsLoading] = useState(null);
     const [data, setData] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState("Pendiente");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState(""); 
+    const [modalContent, setModalContent] = useState(null); 
+    const [modalWidth, setModalWidth] = useState("");
+    const [modalHeight, setModalHeight] = useState("");
+    const [modalMargin, setModalMargin] = useState("");
+    const [isError, setIsError] = useState(false); 
 
     const statusMap = {
         "Pendiente": "pending",
@@ -52,16 +64,67 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
+    console.log(data)
+
+    const users = async (role) => {
+        setIsLoading(role)
+        try {
+            const getUsers = await userService.allUsers();
+            const filteredUsers = getUsers.filter(user => user.role === role);
+            
+            openModal(
+                role === 'emprendedor' ? `Emprendedores` : `Inversores`,
+                <TableUsers data={filteredUsers} />,
+                'max-w-4xl',
+                'h-[83vh]',
+                "mt-3"
+            );
+        } catch (error) {
+            //setError(error.message);
+        } finally {
+            setIsLoading(null);
+        }
+    };
+
+    const openModal = (title, content, width, height, margin, isError = false) => {
+        setModalTitle(title);
+        setModalContent(content);
+        setModalWidth(width);
+        setModalHeight(height);
+        setModalMargin(margin)
+        setIsError(isError);
+        setIsModalOpen(true); 
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false); 
+        setModalContent(null); 
+    };
+
+    const totalProjects = data.length;
+    const totalInvestment = data.reduce((total, project) => total + (project.current_amount || 0), 0);
+
     return (
-        <div className="flex flex-col justify-between items-start
-            mb-4 space-y-4 md:space-y-0">
+        <div className="flex flex-col justify-between items-start mb-4">
             <h1 className="text-customH1 pb-2 md:pb-4 lg:pb-6 font-bold">Descripción General</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
                 gap-y-8 w-full gap-x-6">
-                <Card title="prueba" description='prueba descr' />
-                <Card title="prueba" description='prueba descr' />
-                <Card title="prueba" description='prueba descr' />
-                <Card title="prueba" description='prueba descr' />
+                <Card title="Proyectos totales" description={totalProjects} />
+                <Card title="Inversión total" description={`$${totalInvestment}`} />
+            </div>
+            <div className="flex w-full space-x-4 mb-4 md:mb-0 pt-8 md:w-1/2 lg:md:w-1/3 md:pt-10">
+                <LoaderButton
+                    onClick={() => users('emprendedor')}
+                    isLoading={isLoading === 'emprendedor'}  
+                    className="flex-grow w-full bg-blue-500 text-white py-2 px-4 rounded">
+                    Emprendedores
+                </LoaderButton>
+                <LoaderButton
+                    onClick={() => users('inversor')}
+                    isLoading={isLoading === 'inversor'}  
+                    className="flex-grow w-full bg-green-500 text-white py-2 px-4 rounded">
+                    Inversores
+                </LoaderButton>
             </div>
             <div className="flex flex-col pt-8 md:pt-6 md:pb-6 md:flex-row md:justify-around w-full">
                 <StatusDropdown 
@@ -87,6 +150,16 @@ const Dashboard = () => {
             <div className="w-full">
                 <Table data={filteredData} admin={true} />
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={closeModal} 
+                title={modalTitle} 
+                width={modalWidth}
+                height={modalHeight}
+                margin={modalMargin}
+                isError={isError}>
+                {modalContent} 
+            </Modal>  
         </div>
     );
 };

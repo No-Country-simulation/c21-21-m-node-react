@@ -71,9 +71,24 @@ const userLogin = async (accessToken, name, setUser, setApiCalled, setErrorMessa
     }
 };
 
+const allUsers = async () => {
+    try {
+        const res = await axios.get("/api/users");
+        return res.data;
+
+    } catch (error) {
+        const errorMessage = error.response?.data?.message || 'Sin mensaje de error'; 
+        setErrorMessage(errorMessage);
+        await signOut({ redirect: false });
+        setApiCalled(false);
+        Cookies.remove('action');
+    }
+};
+
 const userService = {
     userRegister,
     userLogin,
+    allUsers,
 };
 
 export default userService;
