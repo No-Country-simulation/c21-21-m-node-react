@@ -16,8 +16,7 @@ const AboutUsPage = () => {
     return (
         <>
             <Navbar isLoading={isLoading} />
-            <div className="flex flex-col min-h-screen bg-cover bg-customGray"
-                style={{backgroundImage: `url('/images/fondo-nosotros.webp')`}}>
+            <div className="bg-cover bg-customGray" id='about-us'>
                 <Container>
                     <AboutUs />
                 </Container>

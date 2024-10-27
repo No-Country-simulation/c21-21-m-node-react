@@ -7,14 +7,15 @@ import Modal from './Modal';
 import Auth from './Auth';
 import MobileMenu from './MobileMenu';
 import LoaderAuth from './loaders/LoaderAuth';
+import ClipLoader from "react-spinners/ClipLoader";
 import { useUserContext } from '../contexts/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import { signOut } from 'next-auth/react';
-import Cookies from 'js-cookie';
+import useAuth from '../hooks/useAuth';
 
 const Navbar = ({ isLoading }) => {
     const { user } = useUserContext();
+    const { logout, errorMessage, setErrorMessage } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
@@ -42,15 +43,17 @@ const Navbar = ({ isLoading }) => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const logout = async () => {
-        Cookies.remove('user');
-        Cookies.remove('token');
-        await signOut();
+    const handleLogout = () => {
+        logout();
         setIsDropdownOpen(false);
     };
 
+    const closeModal = () => {
+        setErrorMessage('');
+    };
+
     const menuItems = [
-        { label: 'Inicio', to: '/' },
+        { label: 'Principal', to: '/' },
         { label: 'Proyectos', to: '/projects' },
         { label: 'Nosotros', to: '/about-us' },
     ];
@@ -63,7 +66,7 @@ const Navbar = ({ isLoading }) => {
                 <div className="flex lg:flex-1">
                     <Link href="/" className="-m-1.5 p-1.5">
                         <Image
-                            src="/logo.png"
+                            src="/images/logo.webp"
                             alt="BOOSTUP"
                             width={100}
                             height={100}
@@ -73,20 +76,25 @@ const Navbar = ({ isLoading }) => {
 
                 </div>
                 <div className="flex lg:hidden">
+                    <div className="flex items-center mr-2">
                     {
-                        user && (
-                            <div className="flex items-center mr-2">
-                                <FontAwesomeIcon icon={faUserCircle} className="h-6 w-6 text-customWhite" />
-                            </div>
-                        )
+                        isLoading && !user ? (
+                            <ClipLoader size={20} color="#ffffff" />
+                        ) : (
+                            user && (
+                                <FontAwesomeIcon icon={faUserCircle} 
+                                    className="fa-2x text-customWhite" />
+                            )
+                        ) 
                     }
+                    </div>
                     <Button type="button"
                         className="-m-2.5 inline-flex items-center justify-center rounded-md
                             p-2.5 text-customWhite"
                         onClick={toggleMenu}>
                         <span className="sr-only">Abrir</span>
                         <svg
-                            className="h-6 w-6"
+                            className="h-8 w-8"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth="1.5"
@@ -98,7 +106,7 @@ const Navbar = ({ isLoading }) => {
                         </svg>
                     </Button>
                 </div>
-                <div className="hidden lg:flex lg:justify-end lg:gap-x-12">
+                <div className="hidden lg:flex lg:justify-end lg:items-center lg:gap-x-12">
                     {
                         menuItems.map((item) => (
                             <Link key={item.label} href={item.to} className="text-md font-semibold
@@ -108,7 +116,7 @@ const Navbar = ({ isLoading }) => {
                         ))
                     }
                     {
-                        isLoading && !user? ( 
+                        isLoading && !user ? ( 
                             <>
                                 <LoaderAuth />
                             </>
@@ -117,7 +125,7 @@ const Navbar = ({ isLoading }) => {
                             <div className="relative inline-block text-left">
                                 <div className="flex items-center cursor-pointer"
                                     onClick={handleDropdownToggle}>
-                                    <FontAwesomeIcon icon={faUserCircle} className="h-8 w-8 
+                                    <FontAwesomeIcon icon={faUserCircle} className="fa-2x 
                                         text-customWhite" />
                                     <div className="ml-2 text-md font-semibold leading-6 text-customWhite">
                                         <span>{user.name}</span>
@@ -138,10 +146,10 @@ const Navbar = ({ isLoading }) => {
                                                     Dashboard
                                                 </Link>
                                                 <Button
-                                                    onClick={logout}
+                                                    onClick={handleLogout}
                                                     className="block w-full text-left px-4 py-2 
                                                         text-sm text-gray-700 hover:bg-gray-100">
-                                                    Logout
+                                                    Cerrar sesión
                                                 </Button>
                                             </div>
                                         </div>
@@ -173,6 +181,15 @@ const Navbar = ({ isLoading }) => {
                 width={"w-full md:max-w-sm"}
                 margin={"mt-24"}>
                 <Auth isLogin={isLogin} toggleForm={toggleForm} />
+            </Modal>
+            <Modal
+                isOpen={!!errorMessage}
+                onClose={closeModal}
+                title="Error al cerrar sesión"
+                width={"w-full md:max-w-sm"}
+                margin={"mt-24"}
+                isError={!!errorMessage}>
+                {errorMessage}
             </Modal>
         </header>
     );

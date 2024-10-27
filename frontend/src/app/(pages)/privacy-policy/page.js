@@ -7,7 +7,7 @@ const PrivacyPolicyPage = () => {
     return (
         <>
             <Navbar />
-            <div className="flex flex-col min-h-screen bg-cover bg-customBlack">
+            <div className="bg-cover bg-customBlack">
                 <Container>
                     <PrivacyPolicy />
                 </Container>

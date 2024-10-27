@@ -2,7 +2,7 @@
 
 const AboutUs = () => {
     return (
-        <section className="bg-customGray bg-opacity-60 p-2 md:p-6 lg:p-20 rounded-lg" id="about-us">
+        <section className="bg-customGray bg-opacity-60 p-2 md:p-6 lg:px-20 lg:pb-20 rounded-lg">
             <div className="container mx-auto">
                 <div className="text-center pt-2 pb-10 md:mb-4">
                     <h1 className="text-customH1 font-extrabold text-customWhite 

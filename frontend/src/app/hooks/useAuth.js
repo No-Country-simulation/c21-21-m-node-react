@@ -5,6 +5,8 @@ import { useApiContext } from '../contexts/ApiContext';
 import { useUserContext } from '../contexts/UserContext';
 import userService from '../api/services/userService';
 import Cookies from 'js-cookie';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const useAuth = () => {
     const { data: session } = useSession();
@@ -12,6 +14,7 @@ const useAuth = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const { apiCalled, setApiCalled } = useApiContext();
     const { setUser } = useUserContext();
+    const router = useRouter();
 
     useEffect(() => {
         const handleUserAuth = async () => {
@@ -49,7 +52,20 @@ const useAuth = () => {
     
     }, [session, apiCalled, setUser]);
 
-    return { isLoading, errorMessage, setErrorMessage };
+    const logout = async () => {
+        try {
+            await signOut({redirect: false});
+            Cookies.remove('user');
+            Cookies.remove('token');
+            setUser(null);
+
+            router.replace('/')
+        } catch (error) {
+            setErrorMessage('No se pudo cerrar la sesión');
+        }
+    };
+
+    return { isLoading, errorMessage, setErrorMessage, logout };
 };
 
 export default useAuth;
