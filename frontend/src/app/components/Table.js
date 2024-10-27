@@ -1,10 +1,22 @@
+"use client"
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes, faEye } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
+import PaginationComponent from './Pagination';
 
 const Table = ({ data, admin = false }) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6;
     const adminTitles = ["Nombre y Apellido", "Título", "Estatus", "Fecha de creación", "Acciones"];
     const userTitles = ["Nombre y Apellido", "Email", "Total invertido", "Fecha de inversión"];
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
+
+    const pageCount = Math.ceil(data.length / itemsPerPage);
+    const currentItems = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const titles = admin ? adminTitles : userTitles;
 
@@ -22,8 +34,8 @@ const Table = ({ data, admin = false }) => {
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
                     {
-                        data?.length > 0 ? (
-                            data.map((obj, index) => (
+                        currentItems?.length > 0 ? (
+                            currentItems.map((obj, index) => (
                                 <tr key={obj._id || index} className="border-b border-gray-200">
                                     {
                                         admin ? (
@@ -79,6 +91,15 @@ const Table = ({ data, admin = false }) => {
                     }
                 </tbody>
             </table>
+            {
+                admin && (
+                    <PaginationComponent
+                        count={pageCount}
+                        page={currentPage}
+                        onPageChange={handlePageChange}
+                    />
+                )
+            }
         </div>
     );
 };
