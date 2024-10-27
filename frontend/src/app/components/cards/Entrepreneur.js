@@ -57,7 +57,10 @@ const Entrepreneur = ({ project, openModal, user, updateUser, createSubmitRespon
                                     }
                                     action="Confirmar eliminación" 
                                     bgColor="bg-red-500 hover:bg-red-600" />,
-                                "max-w-sm")
+                                    "w-full md:max-w-sm",
+                                    "h-[45vh] md:h-[30vh] lg:h-[35vh]",
+                                    "mt-24"
+                                )
                             }
                             className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center 
                             justify-center hover:bg-red-600 transition duration-200">

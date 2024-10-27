@@ -17,7 +17,7 @@ const LoaderDashboard = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 
                 gap-y-8 w-full gap-x-6">
-                { Array.from({ length: 4 }).map((_, index) => <LoaderCard key={index} />) } 
+                { Array.from({ length: 4 }).map((_, index) => <LoaderCard key={index} isDashboard={true} />) } 
             </div>
         </>
     );
