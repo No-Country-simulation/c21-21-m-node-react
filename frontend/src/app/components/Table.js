@@ -45,7 +45,7 @@ const Table = ({ data, admin = false }) => {
                                                 <td className="py-3 px-6">{obj.status}</td>
                                                 <td className="py-3 px-6">{obj.investmentDate}</td>
                                                 <td className="py-3 px-6">
-                                                    <div className="flex justify-center space-x-2">
+                                                    <div className="flex space-x-2">
                                                         <Button
                                                             className="w-8 h-8 rounded-full bg-green-500 text-white flex 
                                                             items-center justify-center hover:bg-green-600 transition 
