@@ -3,8 +3,7 @@ import Button from "../Button";
 import ActionConfirmation from "../ActionConfirmation";
 import Table from "../Table";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt, faEye } from '@fortawesome/free-solid-svg-icons';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faEye, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Entrepreneur = ({ project, openModal, user, updateUser, createSubmitResponse }) => {
     return (
@@ -70,7 +69,7 @@ const Entrepreneur = ({ project, openModal, user, updateUser, createSubmitRespon
                             onClick={() =>
                                 openModal(`Inversores del proyecto`,
                                 <Table 
-                                    investors={project.backers} />,
+                                    data={project.backers} />,
                                     'max-w-4xl',
                                     'h-[83vh]',
                                     "mt-3" )
