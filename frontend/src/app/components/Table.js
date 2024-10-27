@@ -1,13 +1,19 @@
-const Table = ({ investors }) => {
+const Table = ({ investors, admin = false }) => {
+    const adminTitles = ["Nombre y Apellido", "Título", "Estatus", "Fecha de creación", "Acciones"];
+    const userTitles = ["Nombre y Apellido", "Email", "Total invertido", "Fecha de inversión"];
+
+    const titles = !admin ? adminTitles : userTitles;
+
     return (
         <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-200">
                 <thead>
                     <tr className="bg-gray-200 text-gray-600 text-sm leading-normal">
-                        <th className="py-3 px-6 text-left">Nombre y Apellido</th>
-                        <th className="py-3 px-6 text-left">Email</th>
-                        <th className="py-3 px-6 text-left">Total invertido</th>
-                        <th className="py-3 px-6 text-left">Fecha de inversión</th>
+                        {
+                            titles.map((title, index) => (
+                                <th key={index} className="py-3 px-6 text-left">{title}</th>)
+                            )
+                        }
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
