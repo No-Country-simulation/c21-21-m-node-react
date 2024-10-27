@@ -8,3 +8,11 @@ body {
     padding: 0; 
     box-sizing: border-box; 
 }
+
+#home {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/banner.webp');
+}
+
+#about-us {
+    background-image: url('/images/about-us.webp');
+}
