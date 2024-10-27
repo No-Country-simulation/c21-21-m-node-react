@@ -35,6 +35,7 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
                                 width={100}
                                 height={100}
                                 className="h-6 w-auto"
+                                priority 
                             />
                         </Link>
                         <Button type="button"

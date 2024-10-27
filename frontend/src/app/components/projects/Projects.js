@@ -8,7 +8,17 @@ import SearchBar from "./SearchBar";
 import CategoryDropdown from "./CategoryDropdown";
 import projectsService from "@/app/api/services/projectsService";
 
-const categories = ["Todos", "Fintech", "Tecnología", "Salud", "Ambiental", "Otros"];
+const categoryMap = {
+    "Todos": null,
+    "Fintech": "Fintech", // cambiar
+    "Tecnología": "tech",
+    "Salud": "health",
+    "Educación": "education",
+    "e-Commerce": "ecommerce",
+    "Otros": "Others" // cambiar
+};
+
+const categories = Object.keys(categoryMap);
 
 const Projects = () => {
     const [data, setData] = useState([]);
@@ -44,10 +54,12 @@ const Projects = () => {
         fetchData();
     }, []);
 
-    const filterByCategory = selectedCategory === "Todos" ? data 
-        : data.filter(project => project.category === selectedCategory);
-    
-    const filterProjects = search.length < 3 ? filterByCategory 
+    const filterByCategory = selectedCategory === "Todos" 
+        ? data 
+        : data.filter(project => project.category === categoryMap[selectedCategory]);
+
+    const filterProjects = search.length < 3 
+        ? filterByCategory 
         : filterByCategory.filter(project => project.name.toLowerCase().includes(search.toLowerCase()));
 
     return (
@@ -88,7 +100,9 @@ const Projects = () => {
                             filterProjects.map((project, index) => (
                                 <Card 
                                     key={project._id || index}
-                                    imgSrc={project.image || "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                    img={project?.img ? 
+                                        `http://localhost:4000/uploads/${project.img}` 
+                                        : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
                                     title={project.name}
                                     percentage={project.percentage}
                                     isProjectsPage={true}>
