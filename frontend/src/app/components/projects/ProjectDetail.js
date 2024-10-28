@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import Button from "@/app/components/Button";
 import ProjectInfo from "../cards/ProjectInfo";
@@ -12,7 +13,7 @@ import projectsService from "@/app/api/services/projectsService";
 const ProjectDetail = ({ id }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [project, setProject] = useState({});
-    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -33,6 +34,15 @@ const ProjectDetail = ({ id }) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('es-ES'); 
     };
+
+    const percentage = Math.floor((project.current_amount / project.goal_amount) * 100); 
+
+    const queryParams = new URLSearchParams({
+        title: project.name,
+        img: project.img ? `http://localhost:4000/uploads/${project.img}` : "",
+        current_amount: project.current_amount,
+        percentage: percentage
+    }).toString();
 
     return (
         <>
@@ -60,7 +70,7 @@ const ProjectDetail = ({ id }) => {
                                 </div>
                                 <div className="block md:hidden">
                                     <h1 className="text-customH1 py-3 font-bold">{project.name}</h1>
-                                    <ProjectInfo project={project} />
+                                    <ProjectInfo project={project} percentage={percentage} />
                                 </div>
                                 <div className="flex items-center space-x-4 md:pt-4">
                                     <FontAwesomeIcon icon={faUserCircle} className="fa-3x" />
@@ -79,14 +89,17 @@ const ProjectDetail = ({ id }) => {
                                 </div>
                                 <h2 className="text-md font-semibold pt-6">Descripción</h2> 
                                 <p className="text-md pt-2 pb-8">{project.description}</p>
-                                <Button className="w-full md:w-1/3 text-md font-semibold leading-6 bg-blue-500 
-                                    text-white py-2 rounded-full shadow-lg hover:bg-blue-600 transition 
-                                    duration-300 transform hover:scale-105">
-                                    Invertir ahora
-                                </Button>
+                                <Link key={project._id} href={`/investment-payment/${project._id}?${queryParams}`}>
+                                    <Button
+                                        className="w-full md:w-1/3 text-md font-semibold leading-6 bg-blue-500 
+                                        text-white py-2 rounded-full shadow-lg hover:bg-blue-600 transition 
+                                        duration-300 transform hover:scale-105">
+                                        Invertir ahora
+                                    </Button>
+                                </Link>
                             </div>
                             <div className="hidden md:block md:col-span-1 lg:col-span-1">
-                                <ProjectInfo project={project} />
+                                <ProjectInfo project={project} percentage={percentage} />
                             </div>
                             <div className="block md:hidden">
                                 <InvestorList project={project.backers} />

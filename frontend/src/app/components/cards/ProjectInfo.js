@@ -2,7 +2,7 @@
 import Button from '../Button';
 import InvestorList from '../projects/InvestorList';
 
-const ProjectInfo = ({ project }) => {
+const ProjectInfo = ({ project, percentage }) => {
     const calculateDaysLeft = (deadline) => {
         const deadlineDate = new Date(deadline);
         const currentDate = new Date();
@@ -10,8 +10,6 @@ const ProjectInfo = ({ project }) => {
         
         return diffInDays;
     };
-
-    const percentage = Math.floor((project.current_amount / project.goal_amount) * 100); 
 
     return (
         <div className="pb-8">
