@@ -2,7 +2,7 @@ import express from "express";
 import { connectDb } from "./config/dataBase.js";
 import * as dotenv from "dotenv";
 import upload from "./config/multerConfig.js";
-import path from 'path';
+import path from "path";
 
 import projectRoute from "./routes/projectRoute.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -14,13 +14,16 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-app.post('/upload', upload.single('image'), (req, res) => {
+app.post("/upload", upload.single("image"), (req, res) => {
   if (!req.file) {
-      return res.status(400).send({ message: 'No se subió ninguna imagen.' });
+    return res.status(400).send({ message: "No se subió ninguna imagen." });
   }
-  res.send({ message: 'Imagen subida exitosamente', filename: req.file.filename });
+  res.send({
+    message: "Imagen subida exitosamente",
+    filename: req.file.filename,
+  });
 });
 
 //función asíncrona para levantar el servidor y manejar errores

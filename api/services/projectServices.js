@@ -2,10 +2,9 @@ import Project from "../models/projectModel.js";
 import User from "../models/userModel.js";
 
 const createProject = async (data) => {
-  console.log(data);
   try {
     const {
-      owner, 
+      owner,
       name,
       img,
       description,
@@ -14,21 +13,27 @@ const createProject = async (data) => {
       category,
       status,
       bankDetails,
-      creation_date 
+      creation_date,
     } = data;
-
-    const ownerId = await User.findById(owner);
-    if (!ownerId) {
-      throw new Error("El creador/usuario no existe."); e
-    }
 
     const existingProject = await Project.findOne({ name });
     if (existingProject) {
-      throw new Error("El proyecto ya existe."); 
+      throw new Error("El nombre del proyecto ya existe en la base de datos.");
     }
 
+    //buscar usuario por su id y obtener name y email
+    const ownerData = await User.findById(owner, "name email");
+    if (!ownerData) {
+      throw new Error("El creador/usuario no existe.");
+    }
+
+    //crear el proyecto con el owner
     const newProject = new Project({
-      owner: ownerId,
+      owner: {
+        id: ownerData._id,
+        name: ownerData.name,
+        email: ownerData.email,
+      },
       name,
       img,
       description,
@@ -37,15 +42,20 @@ const createProject = async (data) => {
       category,
       status,
       bankDetails,
-      creation_date 
+      creation_date,
     });
 
     const savedProject = await newProject.save();
 
-    return savedProject; 
+    //actualizar el usuario de DB para agregar el projecto
+    await User.findByIdAndUpdate(owner, {
+      $push: { projects: { _id: savedProject._id, name: savedProject.name } }, //tambien se puede agregar el nombre del proyecto
+    });
+
+    return savedProject;
   } catch (error) {
     console.error("Error al guardar el proyecto:", error);
-    throw new Error("Algo salió mal: " + error.message); 
+    throw new Error("Algo salió mal: " + error.message);
   }
 };
 
@@ -62,7 +72,7 @@ const getProjects = async () => {
 };
 
 //Función que devuelve un preyecto según el ID
-const getProjectByID = async (id)=>{
+const getProjectByID = async (id) => {
   try {
     const project = await Project.findOne({ _id: id });
     return project;
@@ -96,19 +106,30 @@ const updateProject = async (id, updateObj, callback) => {
       deadline: updateObj.deadline || projectUpdate.deadline,
       category: updateObj.category || projectUpdate.category,
       status: updateObj.status || projectUpdate.status,
-      creation_date: projectUpdate.creation_date, 
+      creation_date: projectUpdate.creation_date,
       rewards: updateObj.rewards || projectUpdate.rewards,
       img: updateObj.img ? updateObj.img : projectUpdate.img,
       bankDetails: {
-        accountHolder: updateObj.bankDetails?.accountHolder || projectUpdate.bankDetails.accountHolder,
-        accountNumber: updateObj.bankDetails?.accountNumber || projectUpdate.bankDetails.accountNumber,
-        bankName: updateObj.bankDetails?.bankName || projectUpdate.bankDetails.bankName,
-        swiftCode: updateObj.bankDetails?.swiftCode || projectUpdate.bankDetails.swiftCode,
-      }
+        accountHolder:
+          updateObj.bankDetails?.accountHolder ||
+          projectUpdate.bankDetails.accountHolder,
+        accountNumber:
+          updateObj.bankDetails?.accountNumber ||
+          projectUpdate.bankDetails.accountNumber,
+        bankName:
+          updateObj.bankDetails?.bankName || projectUpdate.bankDetails.bankName,
+        swiftCode:
+          updateObj.bankDetails?.swiftCode ||
+          projectUpdate.bankDetails.swiftCode,
+      },
     };
 
     // Actualizar el proyecto
-    const updatedProjectResult = await Project.findByIdAndUpdate(id, updatedProject, { new: true });
+    const updatedProjectResult = await Project.findByIdAndUpdate(
+      id,
+      updatedProject,
+      { new: true }
+    );
 
     return callback(false, {
       message: "El proyecto se ha actualizado exitosamente!",
@@ -122,23 +143,25 @@ const updateProject = async (id, updateObj, callback) => {
   }
 };
 
-
 //Función que elimina un proyecto de forma lógica según el ID
 const deleteProject = async (id) => {
   try {
-    
     const deletedProject = await Project.findOneAndUpdate(
-      {_id: id},
-      {isDeleted: true, deletedAt: new Date()},
-      {new: true} //devuelve el documento con los cambios aplicados
+      { _id: id },
+      { isDeleted: true, deletedAt: new Date() },
+      { new: true } //devuelve el documento con los cambios aplicados
     );
 
     return deletedProject;
-
   } catch (error) {
     throw new Error("Error al eliminar el proyecto");
   }
-}
+};
 
-export default { createProject, getProjects, getProjectByID, updateProject, deleteProject};
-
+export default {
+  createProject,
+  getProjects,
+  getProjectByID,
+  updateProject,
+  deleteProject,
+};
