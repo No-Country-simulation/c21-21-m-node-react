@@ -1,58 +1,51 @@
 import User from "../models/userModel.js";
 import userService from "../services/userServices.js";
 
-export const register = async (req, res) => {
-    try {
-        const token = req.headers.authorization.split(' ')[1];
-        const userRole = req.body.role ? String(req.body.role) : null
+const register = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const userRole = req.body.role ? String(req.body.role) : null;
 
-        if (!token) {
-            return res
-                    .status(403)
-                    .send({ message: "No se ha proporcionado un token de autorizacion" });
-        }
+    if (!token) {
+      return res
+        .status(403)
+        .send({ message: "No se ha proporcionado un token de autorizacion" });
+    }
 
     //validar el token que obtuvimos de los headers
-        const response = await fetch(
-            `${process.env.GOOGLE_OAUTH_URL}?access_token=${token}`
-        );
-        
-        const googleUser = await response.json();
+    const response = await fetch(
+      `${process.env.GOOGLE_OAUTH_URL}?access_token=${token}`
+    );
+    let googleUser = await response.json();
 
-        if (!googleUser || !googleUser.email) {
-            return res.status(401).send({ message: "Token invalido" });
-        }
-
-        let user = await User.findOne({ email: googleUser.email });
-
-        if (user) {
-            return res.status(400).send(
-                { message: "El usuario ya está registrado con el rol: " + user.role }
-            );
-        }
-
-        user = new User({
-            email: googleUser.email,
-            profile_picture: googleUser.picture, 
-            projects: [],
-            role: userRole
-        });
-
-        try {
-            await user.save();
-        } catch (err) {
-            console.log(err)
-        }
-
-        return res
-                .status(201)
-                .send({ message: "Usuario registrado con exito", user: user });
-    } catch (error) {
-        return res.status(500).send({
-            message: "Error al registrar el usuario.",
-            details: error.message,
-        });
+    if (!googleUser || !googleUser.email) {
+      return res.status(401).send({ message: "Token inválido" });
     }
+
+    //solicitud adicional para obtener el perfil completo pa la foto de perfil
+    const profileResponse = await fetch(
+      `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${token}`
+    );
+    const profileData = await profileResponse.json();
+
+    //llamada al servicio (la logica)
+    userService.registerUser(profileData, userRole, (err, savedUser) => {
+      if (err) {
+        return res
+          .status(400)
+          .send({ message: err.message, details: err.details });
+      }
+
+      return res
+        .status(201)
+        .send({ message: "Usuario registrado con exito!", user: savedUser });
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "Error inesperado al registrar el usuario.",
+      details: error.message,
+    });
+  }
 };
 
 const getProfile = async (req, res) => {

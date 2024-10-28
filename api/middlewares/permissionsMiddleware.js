@@ -1,0 +1,3 @@
+/* 
+permisos de administrador y de usuario
+*/
