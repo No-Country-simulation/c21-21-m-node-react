@@ -90,15 +90,24 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
 #### 1. Registro de Usuarios
 
 - **POST** `/user/auth/register`
+
   - **Descripción**: Permite registrar un nuevo usuario utilizando el servicio de autenticación de Google OAuth. Este endpoint verifica el token de Google, y si el usuario no existe, lo crea en la base de datos.
   - **Requisitos**:
     - Se necesita un token de autorización de Google en los headers de la solicitud.
+    - Un rol opcional (role) en el cuerpo de la solicitud (req.body) que puede ser "inversor", "administrator" o "emprendedor".
   - **Headers**:
     - `Authorization: Bearer {googleOAuthToken}`
-  - **Respuesta Exitosa** (201):
+  - **Cuerpo (Body)**:
     ```json
     {
-      "message": "Usuario registrado con exito",
+      "role": "inversor"
+    }
+    ```
+  - **Respuesta Exitosa** (201):
+
+    ```json
+    {
+      "message": "Usuario registrado con éxito!",
       "user": {
         "name": "Nombre del Usuario",
         "email": "correo@ejemplo.com",
@@ -108,6 +117,7 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
       }
     }
     ```
+
   - **Errores Comunes**:
     - **403**: No se ha proporcionado un token de autorización.
     - **401**: Token de Google inválido.
@@ -122,12 +132,14 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
   - **Respuesta Exitosa** (200):
     ```json
     {
-      "_id": "idDelUsuario",
-      "name": "Nombre del Usuario",
-      "email": "correo@ejemplo.com",
-      "profile_picture": "URL_de_imagen_perfil",
-      "role": "inversor",
-      "projects": []
+    "message": "Usuario encontrado.",
+    "user": {
+    "_id": "idDelUsuario",
+    "name": "Nombre del Usuario",
+    "email": "correo@ejemplo.com",
+    "profile_picture": "URL_de_imagen_perfil",
+    "role": "inversor",
+    "projects": []
     }
     ```
   - **Errores Comunes**:
@@ -137,8 +149,10 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
 #### 3. Obtener Todos los Usuarios
 
 - **GET** `/user/allUsers`
+
   - **Descripción**: Recupera la lista de todos los usuarios registrados en el sistema. Este endpoint no tiene autenticación, pero puede ser modificado para ser accesible solo por administradores.
   - **Respuesta Exitosa** (200):
+
     ```json
     [
       {
@@ -154,11 +168,12 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
         "name": "Nombre del Usuario 2",
         "email": "correo2@ejemplo.com",
         "profile_picture": "URL_de_imagen_perfil2",
-        "role": "creator",
+        "role": "emprendedor",
         "projects": ["idProyecto1"]
       }
     ]
     ```
+
   - **Errores Comunes**:
     - **500**: Error interno al obtener la lista de usuarios.
 
@@ -198,110 +213,98 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
 #### 1. Crear un Proyecto
 
 - **POST** `/projects/createProject`
-  - **Descripción**: Permite a un usuario crear un nuevo proyecto de crowdfunding.
+  - **Descripción**: Permite a un usuario crear un nuevo proyecto de crowdfunding. El campo `owner` debe ser el ID del usuario creador del proyecto.
   - **Requisitos**:
-    - El campo `owner` debe ser el ID del usuario creador.
+    - La imagen (`img`) se debe cargar como un archivo adjunto.
   - **Parámetros (Body)**:
-    - `name` (string, obligatorio): Nombre del proyecto.
-    - `description` (string, obligatorio): Descripción del proyecto.
-    - `category` (string, obligatorio): Categoría del proyecto (Fintech, HealthTech, EdTech, etc.).
-    - `img` (array de strings, obligatorio): URLs de las imágenes del proyecto.
-    - `goal_amount` (number, obligatorio): Meta financiera que el proyecto busca alcanzar.
-    - `deadline` (Date, obligatorio): Fecha límite para recibir contribuciones.
-    - `rewards` (array, obligatorio): Lista de recompensas que ofrece el proyecto.
     - `owner` (string, obligatorio): ID del usuario que crea el proyecto.
+    - `name` (string, obligatorio): Nombre del proyecto.
+    - `description` (string, obligatorio): Descripción detallada del proyecto.
+    - `goal_amount` (number, obligatorio): Meta financiera del proyecto.
+    - `deadline` (Date, opcional): Fecha límite para contribuciones.
+    - `category` (string, obligatorio): Categoría del proyecto (e.g., fintech, health, tech, education, e-Commerce, other).
+    - `status` (string, opcional): Estado del proyecto (opciones: active, inactive, pending, completed, rejected).
+    - `bankDetails` (object, opcional): Información bancaria para el proyecto.
   - **Ejemplo de Solicitud**:
     ```json
     {
+      "owner": "idDelUsuario",
       "name": "Proyecto Innovador",
-      "description": "Este es un proyecto muy interesante.",
-      "category": "Fintech",
-      "img": ["https://imagen1.com", "https://imagen2.com"],
+      "description": "Este es un proyecto de tecnología revolucionaria.",
       "goal_amount": 10000,
       "deadline": "2024-12-31",
-      "rewards": [
-        {
-          "name": "Bronce",
-          "description": "Agradecimiento especial",
-          "category": "Bronce",
-          "amount": 50
-        }
-      ],
-      "owner": "idDelUsuarioCreador"
+      "category": "tech",
+      "status": "active",
+      "bankDetails": {
+        "accountHolder": "Nombre del titular",
+        "accountNumber": "123456789",
+        "bankName": "Banco Ejemplo",
+        "swiftCode": "ABC123"
+      }
     }
     ```
   - **Respuesta Exitosa** (201):
     ```json
     {
-      "message": "El proyecto se ha creado con éxito",
+      "message": "Proyecto creado exitosamente",
       "project": {
+        "_id": "idDelProyecto",
         "name": "Proyecto Innovador",
-        "description": "Este es un proyecto muy interesante.",
-        "category": "Fintech",
-        "img": ["https://imagen1.com", "https://imagen2.com"],
+        "description": "Este es un proyecto de tecnología revolucionaria.",
+        "category": "tech",
         "goal_amount": 10000,
         "current_amount": 0,
         "deadline": "2024-12-31",
-        "rewards": [
-          {
-            "name": "Bronce",
-            "description": "Agradecimiento especial",
-            "category": "Bronce",
-            "amount": 50
-          }
-        ],
-        "owner": "idDelUsuarioCreador"
+        "creation_date": "2023-10-27",
+        "img": "nombreDelArchivo.jpg",
+        "status": "active",
+        "bankDetails": {
+          "accountHolder": "Nombre del titular",
+          "accountNumber": "123456789",
+          "bankName": "Banco Ejemplo",
+          "swiftCode": "ABC123"
+        }
       }
     }
     ```
   - **Errores Comunes**:
     - **400**: Faltan campos obligatorios.
-    - **500**: Error interno del servidor al intentar crear el proyecto.
+    - **500**: Error en la creación del proyecto o al cargar la imagen.
 
 #### 2. Obtener Todos los Proyectos
 
 - **GET** `/projects/getProjects`
-  - **Descripción**: Recupera una lista de todos los proyectos disponibles. Este endpoint devuelve solo los proyectos que no han sido eliminados (borrado lógico).
+  - **Descripción**: Recupera una lista de todos los proyectos disponibles. Solo se devuelven los proyectos activos y no eliminados (borrado lógico).
   - **Respuesta Exitosa** (200):
     ```json
     [
       {
+        "_id": "idDelProyecto1",
         "name": "Proyecto 1",
         "description": "Descripción del proyecto 1",
-        "category": "Fintech",
+        "category": "fintech",
         "goal_amount": 5000,
         "current_amount": 2000,
         "deadline": "2024-12-01",
-        "rewards": [
-          {
-            "name": "Bronce",
-            "description": "Agradecimiento especial",
-            "category": "Bronce",
-            "amount": 50
-          }
-        ]
+        "status": "active",
+        "creation_date": "2023-09-15"
       },
       {
+        "_id": "idDelProyecto2",
         "name": "Proyecto 2",
         "description": "Descripción del proyecto 2",
-        "category": "HealthTech",
+        "category": "health",
         "goal_amount": 10000,
         "current_amount": 5000,
         "deadline": "2024-12-31",
-        "rewards": [
-          {
-            "name": "Silver",
-            "description": "Acceso a contenido exclusivo",
-            "category": "Silver",
-            "amount": 100
-          }
-        ]
+        "status": "pending",
+        "creation_date": "2023-10-01"
       }
     ]
     ```
   - **Errores Comunes**:
-    - **404**: No se encontraron proyectos.
-    - **500**: Error interno al obtener los proyectos.
+    - **404**: No se encontraron proyectos activos.
+    - **500**: Error al recuperar los proyectos.
 
 #### 3. Obtener Proyecto por ID
 
@@ -312,20 +315,16 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
   - **Respuesta Exitosa** (200):
     ```json
     {
+      "_id": "idDelProyecto",
       "name": "Proyecto Innovador",
-      "description": "Este es un proyecto muy interesante.",
-      "category": "Fintech",
+      "description": "Este es un proyecto de tecnología revolucionaria.",
+      "category": "tech",
       "goal_amount": 10000,
       "current_amount": 3000,
       "deadline": "2024-12-31",
-      "rewards": [
-        {
-          "name": "Bronce",
-          "description": "Agradecimiento especial",
-          "category": "Bronce",
-          "amount": 50
-        }
-      ]
+      "creation_date": "2023-10-27",
+      "status": "active",
+      "img": "nombreDelArchivo.jpg"
     }
     ```
   - **Errores Comunes**:
@@ -353,9 +352,11 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
     {
       "message": "El proyecto se ha actualizado exitosamente!",
       "project": {
+        "_id": "idDelProyecto",
         "name": "Nuevo nombre del proyecto",
         "goal_amount": 15000,
-        "deadline": "2025-01-15"
+        "deadline": "2025-01-15",
+        "status": "active"
       }
     }
     ```
@@ -374,6 +375,7 @@ La estructura del proyecto sigue un esquema modular MVC, donde cada funcionalida
     {
       "message": "Proyecto eliminado (lógicamente).",
       "project": {
+        "_id": "idDelProyecto",
         "name": "Proyecto Innovador",
         "isDeleted": true,
         "deletedAt": "2024-12-15T00:00:00Z"
