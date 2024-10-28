@@ -14,10 +14,10 @@ const InvestorList = ({ project }) => {
 
     return (
         <>
-            <h3 className="text-md font-semibold pb-5 md:pt-8">Inversores</h3>
+            <h3 className="text-md font-semibold pb-5 pt-8">Inversores</h3>
             {
                 project?.map(backer => (
-                    <div className="flex items-center gap-6 pb-8" key={backer._id}>
+                    <div className="flex items-center gap-6 pb-4" key={backer.id}>
                         <div className="flex items-center justify-center w-10 h-10 bg-customGreen rounded-full">
                             <FontAwesomeIcon icon={faHandHoldingUsd} className="fa-lg text-customWhite" />
                         </div>
@@ -30,10 +30,12 @@ const InvestorList = ({ project }) => {
                     </div>
                 ))
             }
-            <Button className="w-full text-md font-semibold leading-6 py-1 rounded-full 
-                border-2 shadow-md hover:shadow-lg hover:text-customGreen  border-customGreen">
-                Ver Todo
-            </Button>
+            <div className="pt-4">
+                <Button className="w-full text-md font-semibold leading-6 py-1 rounded-full 
+                    border-2 shadow-md hover:shadow-lg hover:text-customGreen  border-customGreen">
+                    Ver Todo
+                </Button>
+            </div>
         </>
     );
 };
