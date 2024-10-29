@@ -3,17 +3,12 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Container from './components/Container';
 import Button from './components/Button';
-import Modal from './components/Modal';
 import Link from 'next/link';
 import { useUserContext } from './contexts/UserContext';
 
 const Home = () => {
-    const { isLoading, errorMessage, setErrorMessage } = useUserContext();
+    const { isLoading } = useUserContext();
     
-    const closeModal = () => {
-        setErrorMessage('');
-    };
-
     return (
         <>
             <Navbar isLoading={isLoading} />
@@ -37,16 +32,7 @@ const Home = () => {
                     </div>
                 </Container>
             </div>
-            <Footer />    
-            <Modal
-                isOpen={!!errorMessage}
-                onClose={closeModal}
-                title="Error al autenticarse"
-                width={"w-full md:max-w-sm"}
-                margin={"mt-24"}
-                isError={!!errorMessage}>
-                {errorMessage}
-            </Modal>
+            <Footer />
        </>
     );
 };

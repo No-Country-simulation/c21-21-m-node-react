@@ -3,21 +3,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Button from '../components/Button';
 import RedesSociales from './RedesSociales';
-import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'; 
 import { useUserContext } from '../contexts/UserContext';
 
 const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
-    const { user, logout, errorMessage, setErrorMessage } = useUserContext();
+    const { user, logout } = useUserContext();
    
     const handleLogout = () => {
         logout();
         toggleMenu();
-    };
-
-    const closeModal = () => {
-        setErrorMessage('');
     };
 
     return (
@@ -113,15 +108,6 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
                     </div>
                 </div>
             </div>
-            <Modal
-                isOpen={!!errorMessage}
-                onClose={closeModal}
-                title="Error al cerrar sesión"
-                width={"w-full md:max-w-sm"}
-                margin={"mt-24"}
-                isError={!!errorMessage}>
-                {errorMessage}
-            </Modal> 
         </>
     );
 };

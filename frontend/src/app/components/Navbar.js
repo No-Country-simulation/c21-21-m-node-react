@@ -184,7 +184,7 @@ const Navbar = ({ isLoading }) => {
             <Modal
                 isOpen={!!errorMessage}
                 onClose={closeModal}
-                title="Error al cerrar sesión"
+                title="Error"
                 width={"w-full md:max-w-sm"}
                 margin={"mt-24"}
                 isError={!!errorMessage}>
