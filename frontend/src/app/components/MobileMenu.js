@@ -7,11 +7,9 @@ import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'; 
 import { useUserContext } from '../contexts/UserContext';
-import useAuth from '../hooks/useAuth';
 
 const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
-    const { user } = useUserContext(); 
-    const { logout, errorMessage, setErrorMessage } = useAuth();
+    const { user, logout, errorMessage, setErrorMessage } = useUserContext();
    
     const handleLogout = () => {
         logout();

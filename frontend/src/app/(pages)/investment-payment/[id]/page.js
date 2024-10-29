@@ -4,11 +4,11 @@ import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
 import Payment from '@/app/components/investment/Payment';
-import useAuth from '@/app/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/app/contexts/UserContext';
 
 const InvestmentPaymentPage = ({ params }) => {
-    const { isLoading } = useAuth();
+    const { isLoading } = useUserContext();
     const { id } = params;
     const router = useRouter();
     const [queryParams, setQueryParams] = useState({});

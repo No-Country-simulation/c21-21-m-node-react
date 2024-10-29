@@ -3,10 +3,10 @@ import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
 import Dashboard from '@/app/components/Dashboard';
-import useAuth from '@/app/hooks/useAuth';
+import { useUserContext } from '@/app/contexts/UserContext';
 
 const DashboardPage = () => {
-    const { isLoading } = useAuth();
+    const { isLoading } = useUserContext();
 
     return (
         <>

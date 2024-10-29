@@ -4,10 +4,10 @@ import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
 import AboutUs from '@/app/components/AboutUs';
 import Modal from '@/app/components/Modal';
-import useAuth from '@/app/hooks/useAuth';
+import { useUserContext } from '@/app/contexts/UserContext';
 
 const AboutUsPage = () => {
-    const { isLoading, errorMessage, setErrorMessage } = useAuth();
+    const { isLoading, errorMessage, setErrorMessage } = useUserContext();
     
     const closeModal = () => {
         setErrorMessage('');
