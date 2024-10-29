@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const create = async (req, res) => {
   let img = null;
+  console.log(req.headers.authorization?.split(" ")[1]);
   try {
     const {
       owner,
