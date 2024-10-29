@@ -11,8 +11,19 @@ const getProjects = async (setError) => {
     }
 };
 
+const getProjectById = async (id) => {
+    try {
+        const response = await axios.get(`/api/project-detail/${id}`);
+        return response.data;
+        
+    } catch (error) {
+        const errorMessage = 'Error al cargar los proyectos'; 
+    }
+}
+
 const projectsService = {
     getProjects,
+    getProjectById,
 };
 
 export default projectsService;

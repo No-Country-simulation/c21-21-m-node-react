@@ -3,10 +3,10 @@ import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
 import Projects from '@/app/components/projects/Projects';
-import useAuth from '@/app/hooks/useAuth';
+import { useUserContext } from '@/app/contexts/UserContext';
 
 const ProjectsPage = () => {
-    const { isLoading } = useAuth();
+    const { isLoading } = useUserContext();
 
     return (
         <>

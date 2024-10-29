@@ -40,7 +40,7 @@ const Dashboard = () => {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toISOString().split('T')[0];
+        return date.toLocaleDateString('es-ES'); 
     };
 
     const filteredData = data.filter(project => project.status === selectedStatus);

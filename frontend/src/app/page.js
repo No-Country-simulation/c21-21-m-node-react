@@ -4,11 +4,11 @@ import Footer from './components/Footer';
 import Container from './components/Container';
 import Button from './components/Button';
 import Modal from './components/Modal';
-import useAuth from './hooks/useAuth'
 import Link from 'next/link';
+import { useUserContext } from './contexts/UserContext';
 
 const Home = () => {
-    const { isLoading, errorMessage, setErrorMessage } = useAuth();
+    const { isLoading, errorMessage, setErrorMessage } = useUserContext();
     
     const closeModal = () => {
         setErrorMessage('');

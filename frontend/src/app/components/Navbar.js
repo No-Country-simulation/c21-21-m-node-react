@@ -11,11 +11,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useUserContext } from '../contexts/UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import useAuth from '../hooks/useAuth';
 
 const Navbar = ({ isLoading }) => {
-    const { user } = useUserContext();
-    const { logout, errorMessage, setErrorMessage } = useAuth();
+    const { user, logout, errorMessage, setErrorMessage } = useUserContext();
     const [isOpen, setIsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");

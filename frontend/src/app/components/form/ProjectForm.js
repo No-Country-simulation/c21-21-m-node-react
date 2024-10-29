@@ -78,7 +78,7 @@ const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toISOString().split('T')[0]; // Devuelve solo la parte de la fecha
+        return date.toLocaleDateString('es-ES'); 
     };
 
     useEffect(() => {
