@@ -62,9 +62,6 @@ const Projects = () => {
         setCurrentPage(value);
     };
 
-    const pageCount = Math.ceil(data.length / itemsPerPage);
-    const currentItems = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
     const filterByCategory = selectedCategory === "Todos" 
         ? data 
         : data.filter(project => project.category === categoryMap[selectedCategory]);
@@ -72,6 +69,9 @@ const Projects = () => {
     const filterProjects = search.length < 3 
         ? filterByCategory 
         : filterByCategory.filter(project => project.name.toLowerCase().includes(search.toLowerCase()));
+
+    const pageCount = Math.ceil(filterProjects.length / itemsPerPage);
+    const currentItems = filterProjects.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
         <>
