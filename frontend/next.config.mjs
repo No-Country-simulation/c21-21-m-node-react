@@ -36,6 +36,10 @@ const nextConfig = {
                 source: '/api/projects',
                 destination: 'http://localhost:4000/projects/getProjects', 
             },
+            {
+                source: '/api/users',
+                destination: 'http://localhost:4000/user/allUsers', 
+            },
         ];
     },
 }

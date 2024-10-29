@@ -1,11 +1,13 @@
 import axios from "axios";
 
-const getProjects = async () => {
+const getProjects = async (setError) => {
     try {
         const response = await axios.get('/api/projects');
         return response.data;
+        
     } catch (error) {
-        throw new Error("Error al cargar los proyectos.");
+        const errorMessage = 'Error al cargar los proyectos'; 
+        setError(errorMessage);
     }
 };
 

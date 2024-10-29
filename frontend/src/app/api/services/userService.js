@@ -71,9 +71,21 @@ const userLogin = async (accessToken, name, setUser, setApiCalled, setErrorMessa
     }
 };
 
+const allUsers = async (setError) => {
+    try {
+        const res = await axios.get("/api/users");
+        return res.data;
+
+    } catch (error) {
+        const errorMessage = 'Error al obtener a los usuarios'; 
+        setError(errorMessage);
+    }
+};
+
 const userService = {
     userRegister,
     userLogin,
+    allUsers,
 };
 
 export default userService;
