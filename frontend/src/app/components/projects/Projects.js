@@ -6,6 +6,7 @@ import ProjectsCard from "../cards/Projects";
 import LoaderCard from "../loaders/LoaderCard";
 import Button from "../Button";
 import SearchBar from "./SearchBar";
+import PaginationComponent from "../Pagination";
 import CategoryDropdown from "./CategoryDropdown";
 import projectsService from "@/app/api/services/projectsService";
 
@@ -22,6 +23,8 @@ const categoryMap = {
 const categories = Object.keys(categoryMap);
 
 const Projects = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
     const [data, setData] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("Todos");
     const [search, setSearch] = useState("");
@@ -54,6 +57,13 @@ const Projects = () => {
     
         fetchData();
     }, []);
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
+
+    const pageCount = Math.ceil(data.length / itemsPerPage);
+    const currentItems = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const filterByCategory = selectedCategory === "Todos" 
         ? data 
@@ -97,8 +107,8 @@ const Projects = () => {
                         <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center">
                             <p className="text-red-600">{error}</p> {/* utilizar modal */}
                         </div>
-                    ) : filterProjects.length > 0 ? (
-                            filterProjects.map((project, index) => (
+                    ) : currentItems?.length > 0 ? (
+                            currentItems.map((project, index) => (
                                 <Link key={project._id} href={`/project-detail/${project._id}`}>
                                     <Card 
                                         key={project._id || index}
@@ -123,6 +133,11 @@ const Projects = () => {
                     )
                 }
             </div>
+            <PaginationComponent
+                count={pageCount}
+                page={currentPage}
+                onPageChange={handlePageChange}
+            />
         </>
     );
 };
