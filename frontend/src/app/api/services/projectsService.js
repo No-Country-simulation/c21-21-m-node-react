@@ -21,9 +21,20 @@ const getProjectById = async (id) => {
     }
 }
 
+const updatedProject = async (id, data) => {
+    try {
+        const response = await axios.put(`/api/update-project/${id}`, data);
+        return response.data;
+        
+    } catch (error) {
+        const errorMessage = 'Error al cargar los proyectos'; 
+    }
+}
+
 const projectsService = {
     getProjects,
     getProjectById,
+    updatedProject,
 };
 
 export default projectsService;

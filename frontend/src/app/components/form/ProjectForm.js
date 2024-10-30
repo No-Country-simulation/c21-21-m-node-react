@@ -5,6 +5,7 @@ import BankSection from './BankSection';
 import { useUserContext } from '@/app/contexts/UserContext';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
+import projectsService from '@/app/api/services/projectsService';
 
 const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
     const { data: session } = useSession(); 
@@ -123,7 +124,7 @@ const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
         }
     
         try {
-            const response = await axios.put(`/api/update-project/${project?._id}`, formData);
+            const response = await projectsService.updatedProject(project?._id, formData);
             const updatedProject = response.data.project; 
 
             const updatedProjects = user.projects.map(proj => 
