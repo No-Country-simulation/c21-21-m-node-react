@@ -8,6 +8,7 @@ import Button from "../Button";
 import LoaderAdminDashboard from "../loaders/LoaderAdminDashboard";
 import LoaderButton from "../loaders/LoaderButton";
 import StatusDropdown from "./StatusDropdown";
+import useModal from "@/app/hooks/useModal";
 import projectsService from "@/app/api/services/projectsService";
 import userService from "@/app/api/services/userService";
 
@@ -16,12 +17,17 @@ const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(null);
     const [data, setData] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState("Pendiente");
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalTitle, setModalTitle] = useState(""); 
-    const [modalContent, setModalContent] = useState(null); 
-    const [modalWidth, setModalWidth] = useState("");
-    const [modalHeight, setModalHeight] = useState("");
-    const [modalMargin, setModalMargin] = useState("");
+    const {
+        isOpen: isModalOpen,
+        modalTitle,
+        modalContent,
+        modalWidth,
+        modalHeight,
+        modalMargin,
+        isError,
+        openModal,
+        closeModal
+    } = useModal();
     const [error, setError] = useState(null);
 
     const statusMap = {
@@ -44,6 +50,7 @@ const Dashboard = () => {
     };
 
     const filteredData = data.filter(project => project.status === selectedStatus);
+    
     
     useEffect(() => {
         const fetchData = async () => {
@@ -73,6 +80,13 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
+    const updateProjectStatus = (updatedProject) => {
+        const updatedData = data.map(project =>
+            project._id === updatedProject._id ? updatedProject : project
+        );
+        setData(updatedData);
+    };
+
     const users = async (role) => {
         setIsLoading(role)
         try {
@@ -98,21 +112,6 @@ const Dashboard = () => {
         } finally {
             setIsLoading(null);
         }
-    };
-
-    const openModal = (title, content, width, height, margin, isError = false) => {
-        setModalTitle(title);
-        setModalContent(content);
-        setModalWidth(width);
-        setModalHeight(height);
-        setModalMargin(margin)
-        setError(isError);
-        setIsModalOpen(true); 
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false); 
-        setModalContent(null); 
     };
 
     const totalProjects = data.length;
@@ -167,7 +166,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className="w-full">
-                            <Table data={filteredData} admin={true} />
+                            <Table data={filteredData} admin={true} openModal={openModal} updateProjectStatus={updateProjectStatus} closeModal={closeModal} />
                         </div>
                         <Modal
                             isOpen={isModalOpen}
