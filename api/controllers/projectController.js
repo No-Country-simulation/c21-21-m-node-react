@@ -11,7 +11,7 @@ const create = async (req, res) => {
   console.log(req.headers.authorization?.split(" ")[1]);
   try {
     const {
-      owner,
+      //owner, ahora se asigna automaticamente por el authenticate
       name,
       description,
       goal_amount,
@@ -21,7 +21,7 @@ const create = async (req, res) => {
       bankDetails,
     } = req.body;
 
-    if (!(name && owner && category && goal_amount && description)) {
+    if (!(name /* && owner */ && category && goal_amount && description)) {
       return res.status(400).send({
         errMessage:
           "El nombre, owner, meta, descripción y fecha límite son obligatorios.",
@@ -50,7 +50,7 @@ const create = async (req, res) => {
 
     //llamado al servicio
     const newProject = await projectServices.createProject({
-      owner,
+      owner: req.user._id, //asignación automática del usuario autenticado
       name,
       img,
       description,

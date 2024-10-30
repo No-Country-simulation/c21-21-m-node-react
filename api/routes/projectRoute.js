@@ -13,7 +13,7 @@ const router = express.Router();
 //post
 router.post(
   "/createProject",
-  /*  authenticate, */
+  authenticate,
   upload.single("img"),
   projectController.create
 );
@@ -25,11 +25,18 @@ router.get("/getProject/:id", projectController.getProjectById);
 //update
 router.put(
   "/updateProject/:id",
+  /* authenticate, */
+  /* isProjectOwner, */
   upload.single("img"),
   projectController.update
 );
 
 //delete lógico (patch)
-router.patch("/delete-project/:id", projectController.deleteProjectById);
+router.patch(
+  "/delete-project/:id",
+  /* authenticate, */
+  /* isProjectOwner, */
+  projectController.deleteProjectById
+);
 
 export default router;

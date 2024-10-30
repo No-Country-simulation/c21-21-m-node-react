@@ -5,6 +5,8 @@ export const authenticate = async (req, res, next) => {
     //otener el token de los headers de la request
     const token = req.headers.authorization?.split(" ")[1];
 
+    console.log("el token:", token);
+
     if (!token) {
       return res
         .status(403)
