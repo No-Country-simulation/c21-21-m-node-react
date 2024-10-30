@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Card from "../Card";
 import ProjectsCard from "../cards/Projects";
 import LoaderCard from "../loaders/LoaderCard";
 import Button from "../Button";
 import SearchBar from "./SearchBar";
+import PaginationComponent from "../Pagination";
 import CategoryDropdown from "./CategoryDropdown";
 import projectsService from "@/app/api/services/projectsService";
 
@@ -21,6 +23,8 @@ const categoryMap = {
 const categories = Object.keys(categoryMap);
 
 const Projects = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 8;
     const [data, setData] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("Todos");
     const [search, setSearch] = useState("");
@@ -54,6 +58,10 @@ const Projects = () => {
         fetchData();
     }, []);
 
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+    };
+
     const filterByCategory = selectedCategory === "Todos" 
         ? data 
         : data.filter(project => project.category === categoryMap[selectedCategory]);
@@ -61,6 +69,9 @@ const Projects = () => {
     const filterProjects = search.length < 3 
         ? filterByCategory 
         : filterByCategory.filter(project => project.name.toLowerCase().includes(search.toLowerCase()));
+
+    const pageCount = Math.ceil(filterProjects.length / itemsPerPage);
+    const currentItems = filterProjects.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
         <>
@@ -96,18 +107,20 @@ const Projects = () => {
                         <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 text-center">
                             <p className="text-red-600">{error}</p> {/* utilizar modal */}
                         </div>
-                    ) : filterProjects.length > 0 ? (
-                            filterProjects.map((project, index) => (
-                                <Card 
-                                    key={project._id || index}
-                                    img={project?.img ? 
-                                        `http://localhost:4000/uploads/${project.img}` 
-                                        : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
-                                    title={project.name}
-                                    percentage={project.percentage}
-                                    isProjectsPage={true}>
-                                    <ProjectsCard project={project} />
-                                </Card>
+                    ) : currentItems?.length > 0 ? (
+                            currentItems.map((project, index) => (
+                                <Link key={project._id} href={`/project-detail/${project._id}`}>
+                                    <Card 
+                                        key={project._id || index}
+                                        img={project?.img ? 
+                                            `http://localhost:4000/uploads/${project.img}` 
+                                            : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                        title={project.name}
+                                        percentage={project.percentage}
+                                        isProjectsPage={true}>
+                                        <ProjectsCard project={project} />
+                                    </Card>
+                                </Link>
                             )
                         )
                     ) 
@@ -120,6 +133,11 @@ const Projects = () => {
                     )
                 }
             </div>
+            <PaginationComponent
+                count={pageCount}
+                page={currentPage}
+                onPageChange={handlePageChange}
+            />
         </>
     );
 };

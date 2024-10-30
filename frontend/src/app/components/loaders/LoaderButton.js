@@ -5,7 +5,7 @@ const LoaderButton = ({ isLoading, onClick, children, className }) => {
         <button
             onClick={onClick}
             disabled={isLoading}
-            className={`relative px-4 py-2 rounded-lg flex justify-center items-center ${className} ${
+            className={`relative px-4 py-2 rounded-full flex justify-center items-center ${className} ${
             isLoading ? "opacity-50 cursor-not-allowed" : ""}`}>
             {
                 isLoading ? (<ClipLoader size={20} color="#ffffff" />) 

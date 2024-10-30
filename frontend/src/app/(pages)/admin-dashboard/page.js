@@ -2,15 +2,13 @@
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
-import Dashboard from '@/app/components/Dashboard';
-import { useUserContext } from '@/app/contexts/UserContext';
+import Dashboard from '@/app/components/admin/Dashboard';
 
-const DashboardPage = () => {
-    const { isLoading } = useUserContext();
 
+const AdminDashboard = () => {
     return (
         <>
-            <Navbar isLoading={isLoading} />
+            <Navbar />
             <Container>
                 <Dashboard />
             </Container>
@@ -19,4 +17,4 @@ const DashboardPage = () => {
     );
 };
 
-export default DashboardPage;
+export default AdminDashboard;
