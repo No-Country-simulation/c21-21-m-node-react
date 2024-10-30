@@ -4,7 +4,7 @@ import User from "../models/userModel.js";
 const createProject = async (data) => {
   try {
     const {
-      owner,
+      owner, //usuario autenticado
       name,
       img,
       description,
