@@ -70,13 +70,8 @@ const getProfile = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    /* if (req.user.role !== "administrator") {
-            return res
-                .status(403)
-                .send({ message: "No tienes permiso para ver la lista de usuarios" });
-        } */
-
     const users = await User.find();
+
     return res.status(200).send(users);
   } catch (error) {
     return res.status(500).send({

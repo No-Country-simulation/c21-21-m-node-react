@@ -38,7 +38,7 @@ export const authenticate = async (req, res, next) => {
         });
       }
 
-      //guardar la info del usuario a la request y next()
+      //guardar la info del usuario de DB a la request y next()
       req.user = user;
       next();
     } catch (error) {

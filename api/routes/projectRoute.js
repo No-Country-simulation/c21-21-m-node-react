@@ -1,6 +1,11 @@
 import express from "express";
 import projectController from "../controllers/projectController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
+import {
+  isAdmin,
+  isProjectOwner,
+  canManagePromotion,
+} from "../middlewares/permissionsMiddleware.js";
 import upload from "../config/multerConfig.js";
 
 const router = express.Router();
@@ -8,7 +13,7 @@ const router = express.Router();
 //post
 router.post(
   "/createProject",
-  /* authenticate, */
+  /*  authenticate, */
   upload.single("img"),
   projectController.create
 );
