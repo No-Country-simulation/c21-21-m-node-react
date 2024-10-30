@@ -75,33 +75,40 @@ const Table = ({ data, openModal, closeModal, admin = false, updateProjectStatus
                                     {
                                         admin ? (
                                             <>
-                                                <td className="py-3 px-6">Maria</td>
+                                                <td className="py-3 px-6">{obj.owner.name}</td>
                                                 <td className="py-3 px-6">{obj.name}</td>
                                                 <td className="py-3 px-6">{obj.status}</td>
                                                 <td className="py-3 px-6">{obj.creation_date}</td>
                                                 <td className="py-3 px-6">
                                                     <div className="flex space-x-2">
+                                                        {
+                                                            obj.status === 'Pendiente' && (
+                                                                <>
+                                                                    <Button
+                                                                        onClick={() =>
+                                                                            handleAction(
+                                                                                `Aprobar campaña`,
+                                                                                <>Estás seguro de aprobar la campaña <strong>{obj.name}</strong>?</>,
+                                                                                () => handleApprove(obj._id)
+                                                                            )
+                                                                        }
+                                                                        className="w-8 h-8 rounded-full bg-green-500 text-white flex 
+                                                                        items-center justify-center hover:bg-green-600 transition duration-200"
+                                                                        title="Aprobar">
+                                                                        <FontAwesomeIcon icon={faCheck} className="text-sm" />
+                                                                    </Button>
+                                                                    <Button
+                                                                        className="w-8 h-8 rounded-full bg-red-500 text-white flex 
+                                                                        items-center justify-center hover:bg-red-600 transition 
+                                                                        duration-200"
+                                                                        title="Rechazar">
+                                                                        <FontAwesomeIcon icon={faTimes} className="text-sm" />
+                                                                    </Button>
+                                                                </>
+                                                            )
+                                                        }
                                                         <Button
-                                                            onClick={() =>
-                                                                handleAction(
-                                                                    `Aprobar campaña`,
-                                                                    <>Estás seguro de aprobar la campaña <strong>{obj.name}</strong>?</>,
-                                                                    () => handleApprove(obj._id)
-                                                                )
-                                                            }
-                                                            className="w-8 h-8 rounded-full bg-green-500 text-white flex 
-                                                            items-center justify-center hover:bg-green-600 transition duration-200"
-                                                            title="Aprobar">
-                                                            <FontAwesomeIcon icon={faCheck} className="text-sm" />
-                                                        </Button>
-                                                        <Button
-                                                            className="w-8 h-8 rounded-full bg-red-500 text-white flex 
-                                                            items-center justify-center hover:bg-red-600 transition 
-                                                            duration-200"
-                                                            title="Rechazar">
-                                                            <FontAwesomeIcon icon={faTimes} className="text-sm" />
-                                                        </Button>
-                                                        <Button
+                                                            onClick={() => window.open(`/project-detail/${obj._id}`, '_blank')}
                                                             className="w-8 h-8 rounded-full bg-blue-500 text-white flex 
                                                             items-center justify-center hover:bg-blue-600 transition 
                                                             duration-200"
