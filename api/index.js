@@ -31,18 +31,21 @@ const startServer = async () => {
   try {
     await connectDb();
 
-    const PORT = process.env.PORT || 4000;
+    const PORT = process.env.PORT;
 
     //levantar el servidor
     const server = app.listen(PORT, () => {
-      console.log(`El servidor esta corriendo en el puerto ${PORT}`);
+      console.log(`✅ El servidor esta corriendo en el puerto: ${PORT}`);
     });
 
     server.on("error", (err) => {
-      console.error("Error al iniciar el servidor:", err.message);
+      console.error("❌ Error al iniciar el servidor:", err.message);
     });
   } catch (error) {
-    console.error("Error al levantar el servidor:", error.message);
+    console.error(
+      "💥 Error inesperado al levantar el servidor:",
+      error.message
+    );
     process.exit(1); //interrumpir proceso si no puede conectarse a la DB
   }
 };

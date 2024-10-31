@@ -83,10 +83,7 @@ const getProjectByID = async (id) => {
 
 const updateProject = async (id, updateObj, callback) => {
   try {
-    /*
-    Crear un validador user, para que solo el owner pueda actualizar el proyecto
-    */
-
+    // Encontrar el proyecto y validar que no esté eliminado
     const projectUpdate = await Project.findOne({
       _id: id,
       $or: [{ isDeleted: false }, { isDeleted: { $exists: false } }],
@@ -98,7 +95,7 @@ const updateProject = async (id, updateObj, callback) => {
       });
     }
 
-    // Actualiza solo los campos que han sido enviados en updateObj
+    // Preparar los datos de actualización
     const updatedProject = {
       name: updateObj.name || projectUpdate.name,
       description: updateObj.description || projectUpdate.description,
@@ -131,7 +128,13 @@ const updateProject = async (id, updateObj, callback) => {
       { new: true }
     );
 
-    return callback(false, {
+    if (!updatedProjectResult) {
+      return callback({
+        message: "Error al actualizar el proyecto, verifique los datos.",
+      });
+    }
+
+    return callback(null, {
       message: "El proyecto se ha actualizado exitosamente!",
       project: updatedProjectResult,
     });
