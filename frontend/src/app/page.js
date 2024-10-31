@@ -2,6 +2,7 @@
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Container from './components/Container';
+import Onboarding from './components/onboarding/Onboarding';
 import Button from './components/Button';
 import Link from 'next/link';
 import { useUserContext } from './contexts/UserContext';
@@ -30,8 +31,10 @@ const Home = () => {
                             </Button>
                         </Link>
                     </div>
+                    
                 </Container>
             </div>
+            <Onboarding />
             <Footer />
        </>
     );
