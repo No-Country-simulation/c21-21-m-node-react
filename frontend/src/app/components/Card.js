@@ -25,7 +25,7 @@ const Card = ({ img, title, percentage, children, isProjectsPage = false }) => {
                 <p className="font-bold mb-3 truncate overflow-hidden whitespace-nowrap 
                     text-ellipsis">{title}</p>
                 <div className="w-full bg-gray-200 rounded-full mb-2">
-                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${percentage}%` }}></div>
+                    <div className="bg-customGreen h-2 rounded-full" style={{ width: `${percentage}%` }}></div>
                 </div>
                 {children}
             </div>
