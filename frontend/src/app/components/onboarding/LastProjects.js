@@ -38,8 +38,6 @@ const LastProjects = () => {
         fetchData();
     }, []);
 
-    console.log(data)
-
     return (
         <>
             <h1 className="text-customH1 pb-8 font-bold text-customBlack text-center">

@@ -1,8 +1,13 @@
 import Image from "next/image";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const Card = ({ img, title, percentage, children, isProjectsPage = false }) => {
+
+const Card = ({ img, title, percentage, children, isProjectsPage = false, status }) => {
+    const isRejected = status === 'rejected'; 
+
     return (
-        <div className={`w-full mx-auto ${isProjectsPage ? 
+        <div className={`relative w-full mx-auto ${isProjectsPage ? 
             'flex flex-row md:flex-col hover:bg-gray-100 p-2 rounded-lg cursor-pointer transition duration-300' 
             : ''}`}>
             <div className={`relative ${isProjectsPage ? 
@@ -29,6 +34,15 @@ const Card = ({ img, title, percentage, children, isProjectsPage = false }) => {
                 </div>
                 {children}
             </div>
+            {
+                isRejected && ( 
+                    <div className="absolute inset-0 flex items-center justify-center 
+                    bg-black bg-opacity-90 text-white rounded-lg">
+                        <p>Rechazado</p>
+                        <FontAwesomeIcon icon={faTimesCircle} size="lg" className="ml-3 font-customWhite" />
+                    </div>
+                )
+            }
         </div>
     );
 };

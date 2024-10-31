@@ -9,6 +9,7 @@ import ProjectForm from './form/ProjectForm';
 import LoaderDashboard from './loaders/LoaderDashboard';
 import { useUserContext } from '../contexts/UserContext';
 import { useRouter } from 'next/navigation';
+import projectsService from '../api/services/projectsService';
 
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -28,26 +29,46 @@ const Dashboard = () => {
 
     useEffect(() => {
         setRole(user?.role);
-        setProjects(user?.projects);
-        setTotalProjects(user?.projects.length)
+        const userId= user?.id;
+        
+        const fetchData = async () => {
+            try {
+                const projects = await projectsService.getProjects();
+                const filterProjects = projects.filter(project => project.owner.id === userId);
+                setTotalProjects(filterProjects.length)
 
-        const totalCurrentAmount = user?.projects.reduce((total, project) => {
-            return total + (project.current_amount || 0); 
-        }, 0);
-        setTotalAmount(totalCurrentAmount)
+                const totalCurrentAmount = filterProjects.reduce((total, project) => {
+                    return total + (project.current_amount || 0); 
+                }, 0);
+                setTotalAmount(totalCurrentAmount)
+        
+                const updatedProjects = filterProjects.map(project => {
+                    const percentage = Math.floor(((project.current_amount || 0) / (project.goal_amount || 1)) * 100);
+                    return {
+                        ...project,
+                        percentage: percentage,
+                    };
+                });
+        
 
-        const updatedProjects = user?.projects.map(project => {
-            const percentage = Math.floor(((project.current_amount || 0) / (project.goal_amount || 1)) * 100);
-            return {
-                ...project,
-                percentage: percentage,
-            };
-        });
-
-        setProjects(updatedProjects);
-
-        setIsLoading(false)
-
+                setProjects(updatedProjects);
+            } catch (error) {
+                openModal(
+                    "Error",
+                    <div>{error.response?.data?.message || 'Error al cargar los proyectos'}</div>,
+                    "w-full md:max-w-sm",
+                    "h-auto",
+                    "mt-24", 
+                    true
+                );
+            } finally {
+                setIsLoading(false)
+            }
+        };
+    
+        if (userId) {
+            fetchData();
+        }
     }, [user]);
 
     const openModal = (title, content, width, height, margin, isError = false) => {
@@ -116,7 +137,8 @@ const Dashboard = () => {
                                                 `http://localhost:4000/uploads/${project.img}` 
                                                 : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
                                             title={project.name}
-                                            percentage={project.percentage}>
+                                            percentage={project.percentage}
+                                            status={project.status}>
                                             {
                                                 role === 'emprendedor' ? (
                                                     <Entrepreneur 

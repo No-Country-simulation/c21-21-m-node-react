@@ -79,6 +79,7 @@ const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
                 projects: [...user.projects, response.data.project],
             });
         } catch (error) {
+            console.log(error)
             createSubmitResponse("Error", error.response.data.errMessage);
         } finally {
             setIsLoading(false); 
@@ -86,10 +87,9 @@ const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
     };
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES'); 
+        return new Date(dateString).toISOString().split('T')[0]; 
     };
-
+    
     useEffect(() => {
         if (action === 'edit' && project) {
             setData(prevData => ({

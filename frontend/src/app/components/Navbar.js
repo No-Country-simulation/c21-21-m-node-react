@@ -55,7 +55,7 @@ const Navbar = ({ isLoading }) => {
         { label: 'Proyectos', to: '/projects' },
         { label: 'Nosotros', to: '/about-us' },
     ];
-
+    
     // refactorizar
     return (
         <header className="bg-customGray">
