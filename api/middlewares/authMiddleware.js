@@ -5,6 +5,8 @@ export const authenticate = async (req, res, next) => {
     //otener el token de los headers de la request
     const token = req.headers.authorization?.split(" ")[1];
 
+    console.log("el token:", token);
+
     if (!token) {
       return res
         .status(403)
@@ -30,7 +32,6 @@ export const authenticate = async (req, res, next) => {
       }
 
       let user = await User.findOne({ email: googleUser.email });
-      console.log(user);
 
       if (!user) {
         return res.status(404).send({
@@ -38,7 +39,7 @@ export const authenticate = async (req, res, next) => {
         });
       }
 
-      //guardar la info del usuario a la request y next()
+      //guardar la info del usuario de DB a la request y next()
       req.user = user;
       next();
     } catch (error) {

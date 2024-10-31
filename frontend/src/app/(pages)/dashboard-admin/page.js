@@ -1,18 +1,20 @@
+"use client"
 import Navbar from '@/app/components/Navbar';
 import Footer from '@/app/components/Footer';
 import Container from '@/app/components/Container';
-import Payment from '@/app/components/investment/Payment';
+import Dashboard from '@/app/components/admin/Dashboard';
 
-const InvestmentPaymentPage = () => {
+
+const AdminDashboard = () => {
     return (
         <>
             <Navbar />
             <Container>
-                <Payment />
+                <Dashboard />
             </Container>
-            <Footer />
+            <Footer />    
         </>
     );
 };
 
-export default InvestmentPaymentPage;
+export default AdminDashboard;

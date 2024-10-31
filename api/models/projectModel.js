@@ -1,6 +1,21 @@
 import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema({
+  owner: {
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+  },
   name: {
     type: String,
     required: true,
@@ -11,31 +26,18 @@ const projectSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: [
-      "Fintech",
-      "HealthTech",
-      "EdTech",
-      "Social Media",
-      "HRTech",
-      "Videogames",
-      "e-Commerce",
-      "Others",
-    ],
+    enum: ["fintech", "health", "tech", "education", "e-Commerce", "other"],
     required: true,
   },
-  img: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
+  img: {
+    type: String,
+  },
   goal_amount: {
     type: Number,
     required: true,
   },
   current_amount: {
     type: Number,
-    required: true,
     default: 0,
   },
   creation_date: {
@@ -44,12 +46,24 @@ const projectSchema = new mongoose.Schema({
   },
   deadline: {
     type: Date,
-    required: true,
   },
   status: {
     type: String,
-    enum: ["active", "inactive", "pending", "completed"],
-    default: "pending",
+    enum: ["active", "inactive", "pending", "completed", "rejected"],
+  },
+  bankDetails: {
+    accountHolder: {
+      type: String,
+    },
+    accountNumber: {
+      type: String,
+    },
+    bankName: {
+      type: String,
+    },
+    swiftCode: {
+      type: String,
+    },
   },
   backers: [
     {
@@ -70,47 +84,38 @@ const projectSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        required: true,
       },
       description: {
         type: String,
-        require: true,
       },
       category: {
         type: String,
         enum: ["Bronce", "Silver", "Gold", "Platinum"],
-        required: true,
       },
       amount: {
         type: Number,
-        required: true,
       },
       img: {
         type: String,
       },
     },
   ],
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
   updates: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "UpdateProject",
     },
   ],
-  
+
   //isDeleted y deletedAt son campos hechos para la eliminación lógica
-  isDeleted : {
+  isDeleted: {
     type: Boolean,
-    default: false
+    default: false,
   },
   deletedAt: {
     type: Date,
-    default: null
-  }
+    default: null,
+  },
 });
 
 export default mongoose.model("Project", projectSchema);

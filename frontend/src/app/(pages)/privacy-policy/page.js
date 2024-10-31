@@ -5,14 +5,15 @@ import PrivacyPolicy from '@/app/components/PrivacyPolicy';
 
 const PrivacyPolicyPage = () => {
     return (
-        <div
-            className="flex flex-col min-h-screen bg-cover bg-customBlack">
+        <>
             <Navbar />
-            <Container>
-                <PrivacyPolicy />
-            </Container>
+            <div className="bg-cover bg-customBlack">
+                <Container>
+                    <PrivacyPolicy />
+                </Container>
+            </div>
             <Footer />
-        </div>
+        </>
     );
 };
 
