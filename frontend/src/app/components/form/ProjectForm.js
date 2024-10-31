@@ -3,12 +3,11 @@ import LoaderButton from '../loaders/LoaderButton';
 import ProjectDetailsSection from './ProjectDetailsSection';
 import BankSection from './BankSection';
 import { useUserContext } from '@/app/contexts/UserContext';
-import { useSession } from 'next-auth/react';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import projectsService from '@/app/api/services/projectsService';
 
 const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
-    const { data: session } = useSession(); 
     const { user, updateUser } = useUserContext();
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({
@@ -65,7 +64,8 @@ const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
             formData.append(key, data[key]);
         }
 
-        const accessToken = session?.accessToken; 
+        const accessToken = Cookies.get('token'); 
+        console.log(accessToken)
 
         try {
             const response = await axios.post('/api/create-project', formData, {
