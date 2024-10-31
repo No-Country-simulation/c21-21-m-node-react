@@ -175,12 +175,12 @@ const deleteProjectById = async (req, res) => {
       });
     }
 
-    //Se lanza 410 si el proyecto ya ha sido lógicamente eliminado del servidor
+    /*
     if (project.isDeleted === true) {
       return res.status(410).json({
         message: "Este proyecto ya ha sido eliminado.",
       });
-    }
+    }*/
 
     return res.status(200).json({
       message: "Proyecto eliminado (lógicamente).",
@@ -188,8 +188,7 @@ const deleteProjectById = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).send({
-      errMessage: "No se pudo eliminar el proyecto",
-      details: error.message,
+      message: "No se pudo eliminar el proyecto",
     });
   }
 };

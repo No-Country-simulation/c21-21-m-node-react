@@ -5,11 +5,11 @@ export const middleware = (request) => {
     const userCookie = request.cookies.get('user');
     let userObject;
 
-    const user = userCookie ? userCookie.value : null;
-
-    if (!token || !user) {
+    if (!token || !userCookie) {
         return NextResponse.redirect(new URL('/', request.url));
     }
+
+    const user = userCookie ? userCookie.value : null;
 
     try {
         const decodedUser = decodeURIComponent(user); 
@@ -19,9 +19,15 @@ export const middleware = (request) => {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
-    const isAdmin = userObject.role === 'admin';
+    const { role } = userObject;
 
-    if (!isAdmin) {
+    const urlPath = request.nextUrl.pathname;
+
+    if (urlPath.startsWith('/dashboard-admin') && role !== 'admin') {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+
+    if (urlPath.startsWith('/dashboard') && (role !== 'emprendedor' && role !== 'inversor')) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 

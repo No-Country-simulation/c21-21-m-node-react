@@ -35,8 +35,10 @@ const Projects = () => {
         const fetchData = async () => {
             try {
                 const projects = await projectsService.getProjects();
+
+                const activeProjects = projects.filter(project => project.status === "active");
                 
-                const projectsWithPercentage = projects.map(project => {
+                const projectsWithPercentage = activeProjects.map(project => {
                     const goalAmount = project.goal_amount || 1; 
                     const currentAmount = project.current_amount || 0; 
                     const percentage = Math.floor((currentAmount / goalAmount) * 100); 

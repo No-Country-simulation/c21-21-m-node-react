@@ -14,6 +14,7 @@ export const isAdmin = (req, res, next) => {
 //middleware para verificar si el usuario es owner del proyecto
 export const isProjectOwner = async (req, res, next) => {
   try {
+    console.log(req)
     const projectId = req.params.projectId || req.body.projectId;
     const project = await Project.findById(projectId);
 

@@ -3,12 +3,10 @@ import LoaderButton from '../loaders/LoaderButton';
 import ProjectDetailsSection from './ProjectDetailsSection';
 import BankSection from './BankSection';
 import { useUserContext } from '@/app/contexts/UserContext';
-import { useSession } from 'next-auth/react';
-import axios from 'axios';
+import Cookies from 'js-cookie';
 import projectsService from '@/app/api/services/projectsService';
 
-const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
-    const { data: session } = useSession(); 
+const ProjectForm = ({ showToast, action = false, project, closeModal }) => {
     const { user, updateUser } = useUserContext();
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({
@@ -65,31 +63,30 @@ const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
             formData.append(key, data[key]);
         }
 
-        const accessToken = session?.accessToken; 
+        const accessToken = Cookies.get('token'); 
 
         try {
-            const response = await axios.post('/api/create-project', formData, {
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`,
-                },
-            });
-            createSubmitResponse('Creado', response.data.message); 
+            const response = await projectsService.createProject(formData, accessToken); 
+
             updateUser({
                 ...user, 
-                projects: [...user.projects, response.data.project],
+                projects: [...user.projects, response.project],
             });
+
+            closeModal();
+            showToast('Su proyecto ha sido creado exitosamente!', 'success');
         } catch (error) {
-            createSubmitResponse("Error", error.response.data.errMessage);
+            closeModal();
+            showToast('No se ha podido crear su proyecto!', 'error');
         } finally {
             setIsLoading(false); 
         }
     };
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES'); 
+        return new Date(dateString).toISOString().split('T')[0]; 
     };
-
+    
     useEffect(() => {
         if (action === 'edit' && project) {
             setData(prevData => ({
@@ -125,17 +122,19 @@ const ProjectForm = ({ createSubmitResponse, action = false, project }) => {
     
         try {
             const response = await projectsService.updatedProject(project?._id, formData);
-            const updatedProject = response.data.project; 
+            const updatedProject = response.project; 
 
             const updatedProjects = user.projects.map(proj => 
                 proj._id === updatedProject._id ? updatedProject : proj
             );
     
-            createSubmitResponse('Editado', response.data.message);
             updateUser({ ...user, projects: updatedProjects });
-           
+            
+            closeModal();
+            showToast('Su proyecto ha sido editado exitosamente!', 'success');
         } catch (error) {
-            createSubmitResponse("Error", error.response.data.errMessage);  
+            closeModal();
+            showToast('No se ha podido editar su proyecto!', 'error');
         } finally {
             setIsLoading(false);
         }

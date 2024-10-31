@@ -44,6 +44,10 @@ const nextConfig = {
                 source: '/api/project-detail/:id',
                 destination: 'http://localhost:4000/projects/getProject/:id', 
             },
+            {
+                source: '/api/delete-project/:id',
+                destination: 'http://localhost:4000/projects/delete-project/:id', 
+            },
         ];
     },
 }
