@@ -10,9 +10,12 @@ import LoaderDashboard from './loaders/LoaderDashboard';
 import { useUserContext } from '../contexts/UserContext';
 import { useRouter } from 'next/navigation';
 import projectsService from '../api/services/projectsService';
+import Toast from './Toast';
+import useToast from '../hooks/useToast';
 
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
+    const { toast, showToast, setToast } = useToast();
     const { user } = useUserContext();
     const router = useRouter();
     const [projects, setProjects] = useState([]);
@@ -86,11 +89,6 @@ const Dashboard = () => {
         setModalContent(null); 
     };
 
-    const createSubmitResponse = (title, message) => {
-        closeModal();
-        openModal(title, message, 'w-full md:max-w-sm', '', 'mt-24', title === 'Error');
-    };
-
     const title = role === 'emprendedor' ? 'Tus proyectos' : 'Proyectos en los que has invertido';
     const buttonTitle = role === 'emprendedor' ? 'Crear campaña' : 'Ver proyectos para invertir';
     const labelTotalProjects = role === 'emprendedor' ? 'Total proyectos' : 'Total proyectos invertidos';
@@ -111,7 +109,7 @@ const Dashboard = () => {
                                         role === 'emprendedor'
                                         ? openModal(
                                             'Crear campaña',
-                                            <ProjectForm createSubmitResponse={createSubmitResponse} />,
+                                            <ProjectForm closeModal={closeModal} showToast={showToast} />,
                                             'max-w-4xl',
                                             'h-[83vh]',
                                             "mt-3"    
@@ -144,7 +142,8 @@ const Dashboard = () => {
                                                     <Entrepreneur 
                                                         project={project}
                                                         openModal={openModal} 
-                                                        createSubmitResponse={createSubmitResponse} />
+                                                        closeModal={closeModal} 
+                                                        showToast={showToast} />
                                                 ) : (
                                                     <Investor project={project} openModal={openModal} />
                                                 )
@@ -170,7 +169,16 @@ const Dashboard = () => {
                 margin={modalMargin}
                 isError={isError}>
                 {modalContent} 
-            </Modal>     
+            </Modal>    
+            {
+                toast.isVisible && (
+                    <Toast 
+                        message={toast.message} 
+                        type={toast.type} 
+                        onClose={() => setToast({ ...toast, isVisible: false })}
+                    />
+                )
+            } 
         </>
     );
 };

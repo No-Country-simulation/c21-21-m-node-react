@@ -4,8 +4,47 @@ import ActionConfirmation from "../ActionConfirmation";
 import Table from "../Table";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrashAlt, faEye, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import projectsService from "@/app/api/services/projectsService";
+import { useUserContext } from "@/app/contexts/UserContext";
 
-const Entrepreneur = ({ project, openModal, user, updateUser, createSubmitResponse }) => {
+const Entrepreneur = ({ project, openModal, closeModal, showToast }) => {
+    const { user, updateUser } = useUserContext();
+    
+    const handleAction = (title, content, onConfirmAction) => {
+        openModal(
+            title,
+            <ActionConfirmation
+                text={content}
+                action="Confirmar"
+                bgColor="bg-red-500 hover:bg-red-600"
+                onConfirm={onConfirmAction}
+            />,
+            "w-full md:max-w-sm",
+            "",
+            "mt-24",
+        );
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await projectsService.deleteProject(id);
+            if(response.status === 200) {
+                const updatedProjects = user.projects.filter(proj => proj._id !== id);
+                                
+                updateUser({ ...user, projects: updatedProjects });
+
+                closeModal();
+                showToast('Su proyecto se ha eliminado exitosamente!', 'success');
+            } else {
+                throw new Error('Error');
+            }
+
+        } catch (error) {
+            closeModal();
+            showToast('No se ha podido eliminar su proyecto!', 'error')
+        }
+    };
+
     return (
         <>
             <p className="font-bold text-sm mb-5">${project.current_amount || 0} recaudados</p>
@@ -30,11 +69,10 @@ const Entrepreneur = ({ project, openModal, user, updateUser, createSubmitRespon
                             onClick={() =>
                                 openModal(`Editar la campaña`,
                                     <ProjectForm 
-                                        project={project} 
-                                        createSubmitResponse={createSubmitResponse}
-                                        user={user}
-                                        updateUser={updateUser}
-                                        action='edit' />,
+                                        project={project}
+                                        action='edit'
+                                        closeModal={closeModal}
+                                        showToast={showToast} />,
                                     'max-w-4xl',
                                     'h-[83vh]',
                                     "mt-3"
@@ -45,22 +83,14 @@ const Entrepreneur = ({ project, openModal, user, updateUser, createSubmitRespon
                             <FontAwesomeIcon icon={faEdit} className="text-sm" />
                         </Button>
                         <Button
-                            onClick={() =>
-                                openModal(`Eliminar la campaña`,
-                                <ActionConfirmation 
-                                    text={
-                                        <>
-                                            Estás seguro de eliminar la campaña <strong>{project.name}</strong>? 
-                                            No se podrán revertir los cambios y lo recaudado será devuelto.
-                                        </>
-                                    }
-                                    action="Confirmar eliminación" 
-                                    bgColor="bg-red-500 hover:bg-red-600" />,
-                                    "w-full md:max-w-sm",
-                                    "h-[45vh] md:h-[30vh] lg:h-[35vh]",
-                                    "mt-24"
+                            onClick={() => 
+                                handleAction(
+                                    'Eliminar campaña',
+                                    <>Estás seguro de eliminar la campaña <strong>{project.name}</strong>? 
+                                    No se podrán revertir los cambios y lo recaudado será devuelto.</>,
+                                    () => handleDelete(project._id)
                                 )
-                            }
+                            } 
                             className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center 
                             justify-center hover:bg-red-600 transition duration-200">
                             <FontAwesomeIcon icon={faTrashAlt} className="text-sm" />

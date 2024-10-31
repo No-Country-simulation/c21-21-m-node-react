@@ -16,7 +16,7 @@ const getProjectById = async (id) => {
         return response.data;
         
     } catch (error) {
-        const errorMessage = 'Error al cargar detalle del proyecto'; 
+        return null;
     }
 };
 
@@ -26,27 +26,32 @@ const updatedProject = async (id, data) => {
         return response.data;
         
     } catch (error) {
-        const errorMessage = 'Error al actualizar el proyecto'; 
+        return null;
     }
 };
 
 const deleteProject = async (id) => {
     try {
         const response = await axios.patch(`/api/delete-project/${id}`);
-        return response.data;
+        return response;
         
     } catch (error) {
-        const errorMessage = 'Error al eliminar el proyecto'; 
+        return null; 
     }
 };
 
-const createProject = async (id) => {
+const createProject = async (formData, accessToken) => {
     try {
-        const response = await axios.patch(`/api/delete-project/${id}`);
+        const response = await axios.post('/api/create-project', formData, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`,
+            },
+        });
+
         return response.data;
         
     } catch (error) {
-        const errorMessage = 'Error al eliminar el proyecto'; 
+        return null; 
     }
 };
 
