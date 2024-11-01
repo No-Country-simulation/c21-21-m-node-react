@@ -15,8 +15,10 @@ const LastProjects = () => {
         const fetchData = async () => {
             try {
                 const projects = await projectsService.getProjects();
+
+                const activeProjects = projects.filter(project => project.status === "active");
                 
-                const projectsWithPercentage = projects.map(project => {
+                const projectsWithPercentage = activeProjects.map(project => {
                     const goalAmount = project.goal_amount || 1; 
                     const currentAmount = project.current_amount || 0; 
                     const percentage = Math.floor((currentAmount / goalAmount) * 100); 
@@ -38,8 +40,6 @@ const LastProjects = () => {
         fetchData();
     }, []);
 
-    console.log(data)
-
     return (
         <>
             <h1 className="text-customH1 pb-8 font-bold text-customBlack text-center">
@@ -57,9 +57,7 @@ const LastProjects = () => {
                             data.map((project) => (
                                 <Card
                                     key={project._id}
-                                    img={project?.img ? 
-                                        `http://localhost:4000/uploads/${project.img}` 
-                                        : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                    img={project?.img || "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
                                     title={project.name}
                                     percentage={project.percentage}
                                     isProjectsPage={true}>

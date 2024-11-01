@@ -5,24 +5,38 @@ export const middleware = (request) => {
     const userCookie = request.cookies.get('user');
     let userObject;
 
-    const user = userCookie ? userCookie.value : null;
-
-    if (!token || !user) {
+    if (!token || !userCookie) {
         return NextResponse.redirect(new URL('/', request.url));
     }
+
+    const user = userCookie ? userCookie.value : null;
 
     try {
         const decodedUser = decodeURIComponent(user); 
         userObject = JSON.parse(decodedUser); 
     } catch (error) {
-        console.error('Error al parsear la cookie user:', error.message);
         return NextResponse.redirect(new URL('/', request.url));
     }
 
-    const isAdmin = userObject.role === 'admin';
+    const { role } = userObject;
 
-    if (!isAdmin) {
-        return NextResponse.redirect(new URL('/', request.url));
+    const urlPath = request.nextUrl.pathname;
+
+    if (urlPath.startsWith('/dashboard-admin')) {
+        if (role === 'admin') {
+            return NextResponse.next(); 
+        } else {
+            return NextResponse.redirect(new URL('/', request.url)); 
+        }
+    }
+
+    if (urlPath.startsWith('/dashboard')) {
+        if (role === 'emprendedor' || role === 'inversor') {
+            return NextResponse.next(); 
+        } else {
+            console.log('Redirigiendo: Acceso denegado a dashboard');
+            return NextResponse.redirect(new URL('/', request.url)); 
+        }
     }
 
     return NextResponse.next();

@@ -23,6 +23,7 @@ const createProject = async (data) => {
 
     //buscar usuario por su id y obtener name y email
     const ownerData = await User.findById(owner, "name email");
+    console.log(ownerData)
     if (!ownerData) {
       throw new Error("El creador/usuario no existe.");
     }

@@ -28,6 +28,7 @@ const CallToAction = () => {
                         width={400} 
                         height={300} 
                         className="mx-auto"
+                        style={{ width: 'auto', height: 'auto' }}
                     />
                     <div className="pt-16 md:hidden">
                         <Button className="bg-customGray text-white font-bold px-8 py-3 border-2 

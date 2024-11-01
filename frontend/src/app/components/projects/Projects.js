@@ -12,12 +12,12 @@ import projectsService from "@/app/api/services/projectsService";
 
 const categoryMap = {
     "Todos": null,
-    "Fintech": "Fintech", // cambiar
+    "Fintech": "fintech", 
     "Tecnología": "tech",
     "Salud": "health",
     "Educación": "education",
-    "e-Commerce": "ecommerce",
-    "Otros": "Others" // cambiar
+    "e-Commerce": "e-Commerce",
+    "Otros": "other" 
 };
 
 const categories = Object.keys(categoryMap);
@@ -35,8 +35,10 @@ const Projects = () => {
         const fetchData = async () => {
             try {
                 const projects = await projectsService.getProjects();
+
+                const activeProjects = projects.filter(project => project.status === "active");
                 
-                const projectsWithPercentage = projects.map(project => {
+                const projectsWithPercentage = activeProjects.map(project => {
                     const goalAmount = project.goal_amount || 1; 
                     const currentAmount = project.current_amount || 0; 
                     const percentage = Math.floor((currentAmount / goalAmount) * 100); 
@@ -112,9 +114,7 @@ const Projects = () => {
                                 <Link key={project._id} href={`/project-detail/${project._id}`}>
                                     <Card 
                                         key={project._id || index}
-                                        img={project?.img ? 
-                                            `http://localhost:4000/uploads/${project.img}` 
-                                            : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                        img={project?.img || "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
                                         title={project.name}
                                         percentage={project.percentage}
                                         isProjectsPage={true}>
