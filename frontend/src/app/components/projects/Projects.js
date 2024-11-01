@@ -12,12 +12,12 @@ import projectsService from "@/app/api/services/projectsService";
 
 const categoryMap = {
     "Todos": null,
-    "Fintech": "Fintech", // cambiar
+    "Fintech": "fintech", 
     "Tecnología": "tech",
     "Salud": "health",
     "Educación": "education",
-    "e-Commerce": "ecommerce",
-    "Otros": "Others" // cambiar
+    "e-Commerce": "e-Commerce",
+    "Otros": "other" 
 };
 
 const categories = Object.keys(categoryMap);
