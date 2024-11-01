@@ -25,13 +25,13 @@ const Table = ({ data, openModal, closeModal, admin = false, updateProjectStatus
 
     const titles = admin ? adminTitles : userTitles;
 
-    const handleAction = (title, content, onConfirmAction) => {
+    const handleAction = (title, content, onConfirmAction, bgColor) => {
         openModal(
             title,
             <ActionConfirmation
                 text={content}
                 action="Confirmar"
-                bgColor="bg-green-500 hover:bg-green-600"
+                bgColor={bgColor}
                 onConfirm={onConfirmAction}
             />,
             "w-full md:max-w-sm",
@@ -41,18 +41,20 @@ const Table = ({ data, openModal, closeModal, admin = false, updateProjectStatus
         );
     };
 
-    const handleApprove = async (id) => {
+    const handleConfirm = async (id, status) => {
         try {
             const updatedProject = await projectsService.updatedProject(id, {
-                status: 'active',
+                status: status,
             });
             
-            updatedProject.project.status = 'Activo';
+            status === 'active' ? 
+            updatedProject.project.status = 'Activo' : updatedProject.project.status = 'Rechazado'
+
             updateProjectStatus(updatedProject.project);
             closeModal();
-            showToast('Proyecto aprobado con éxito!', 'success');
+            showToast('La acción se ha completado con éxito!', 'success');
         } catch (error) {
-            showToast('Error al aprobar el proyecto', 'error');
+            showToast('Error al completar la acción!', 'error');
         }
     };
 
@@ -88,9 +90,10 @@ const Table = ({ data, openModal, closeModal, admin = false, updateProjectStatus
                                                                     <Button
                                                                         onClick={() =>
                                                                             handleAction(
-                                                                                `Aprobar campaña`,
-                                                                                <>Estás seguro de aprobar la campaña <strong>{obj.name}</strong>?</>,
-                                                                                () => handleApprove(obj._id)
+                                                                                `Aprobar proyecto`,
+                                                                                <>Estás seguro de aprobar el proyecto <strong>{obj.name}</strong>?</>,
+                                                                                () => handleConfirm(obj._id, 'active'),
+                                                                                "bg-green-500 hover:bg-green-600"
                                                                             )
                                                                         }
                                                                         className="w-8 h-8 rounded-full bg-green-500 text-white flex 
@@ -99,6 +102,14 @@ const Table = ({ data, openModal, closeModal, admin = false, updateProjectStatus
                                                                         <FontAwesomeIcon icon={faCheck} className="text-sm" />
                                                                     </Button>
                                                                     <Button
+                                                                        onClick={() =>
+                                                                            handleAction(
+                                                                                `Aprobar proyecto`,
+                                                                                <>Estás seguro de rechazar el proyecto <strong>{obj.name}</strong>?</>,
+                                                                                () => handleConfirm(obj._id, 'rejected'),
+                                                                                "bg-red-500 hover:bg-red-600"
+                                                                            )
+                                                                        }
                                                                         className="w-8 h-8 rounded-full bg-red-500 text-white flex 
                                                                         items-center justify-center hover:bg-red-600 transition 
                                                                         duration-200"
