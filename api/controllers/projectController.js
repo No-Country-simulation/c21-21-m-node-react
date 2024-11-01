@@ -1,14 +1,8 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 import projectServices from "../services/projectServices.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const create = async (req, res) => {
   let img = null;
-  console.log(req.headers.authorization?.split(" ")[1]);
+
   try {
     const {
       //owner, ahora se asigna automaticamente por el authenticate
@@ -46,7 +40,9 @@ const create = async (req, res) => {
       }
     }
 
-    img = req.file ? req.file.filename : null;
+    if (req.file) {
+      img = req.file.path; 
+    }
 
     //llamado al servicio
     const newProject = await projectServices.createProject({
@@ -67,17 +63,6 @@ const create = async (req, res) => {
       project: newProject,
     });
   } catch (error) {
-    console.log(error);
-    if (img) {
-      const imgPath = path.join(__dirname, "../uploads/", img);
-      fs.unlink(imgPath, (err) => {
-        if (err) {
-          console.error("Error al eliminar la imagen:", err);
-        } else {
-          console.log("Imagen eliminada exitosamente:", img);
-        }
-      });
-    }
     return res.status(500).send({
       errMessage: "Error al crear el proyecto.",
       details: error.message,
@@ -145,7 +130,7 @@ const update = async (req, res) => {
       .send({ errMessage: "El objeto de actualización es obligatorio!" });
 
   if (req.file) {
-    updateObj.img = req.file.filename;
+    updateObj.img = req.file.path; 
   }
 
   try {

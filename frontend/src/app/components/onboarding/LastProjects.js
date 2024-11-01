@@ -57,9 +57,7 @@ const LastProjects = () => {
                             data.map((project) => (
                                 <Card
                                     key={project._id}
-                                    img={project?.img ? 
-                                        `http://localhost:4000/uploads/${project.img}` 
-                                        : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                    img={project?.img || "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
                                     title={project.name}
                                     percentage={project.percentage}
                                     isProjectsPage={true}>

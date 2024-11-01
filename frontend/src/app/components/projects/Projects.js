@@ -114,9 +114,7 @@ const Projects = () => {
                                 <Link key={project._id} href={`/project-detail/${project._id}`}>
                                     <Card 
                                         key={project._id || index}
-                                        img={project?.img ? 
-                                            `http://localhost:4000/uploads/${project.img}` 
-                                            : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                        img={project?.img || "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
                                         title={project.name}
                                         percentage={project.percentage}
                                         isProjectsPage={true}>

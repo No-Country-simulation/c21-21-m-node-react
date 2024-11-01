@@ -39,7 +39,7 @@ const ProjectDetail = ({ id }) => {
 
     const queryParams = new URLSearchParams({
         title: project.name,
-        img: project.img ? `http://localhost:4000/uploads/${project.img}` : "",
+        img: project.img || "",
         current_amount: project.current_amount,
         percentage: percentage
     }).toString();
@@ -58,9 +58,7 @@ const ProjectDetail = ({ id }) => {
                             <div className="md:col-span-2 lg:col-span-2">
                                 <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
                                     <Image
-                                        src={project?.img ? 
-                                            `http://localhost:4000/uploads/${project.img}` 
-                                            : "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
+                                        src={project?.img || "https://dummyimage.com/150x150/CCCCCC/FFFFFF&text=Imagen+no+disponible"}
                                         alt={project?.name ? project.name : "imagen proyecto"}
                                         fill
                                         priority 
