@@ -12,44 +12,51 @@ const nextConfig = {
                 port: '4000',
                 pathname: '/uploads/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'boostup-api.onrender.com', 
+                port: '', 
+                pathname: '/uploads/**',
+            },
         ],
     },
     async rewrites() {
         return [
             {
                 source: '/api/user/login', 
-                destination: 'http://localhost:4000/user/profile', 
+                destination: 'https://boostup-api.onrender.com/user/profile',
             },
             {
                 source: '/api/user/auth/register',
-                destination: 'http://localhost:4000/user/auth/register',
+                destination: 'https://boostup-api.onrender.com/user/auth/register',
             },
             {
                 source: '/api/create-project',
-                destination: 'http://localhost:4000/projects/createProject', 
+                destination: 'https://boostup-api.onrender.com/projects/createProject', 
             },
             {
                 source: '/api/update-project/:id', 
-                destination: 'http://localhost:4000/projects/updateProject/:id', 
+                destination: 'https://boostup-api.onrender.com/projects/updateProject/:id', 
             },
             {
                 source: '/api/projects',
-                destination: 'http://localhost:4000/projects/getProjects', 
+                destination: 'https://boostup-api.onrender.com/projects/getProjects', 
             },
             {
                 source: '/api/users',
-                destination: 'http://localhost:4000/user/allUsers', 
+                destination: 'https://boostup-api.onrender.com/user/allUsers', 
             },
             {
                 source: '/api/project-detail/:id',
-                destination: 'http://localhost:4000/projects/getProject/:id', 
+                destination: 'https://boostup-api.onrender.com/projects/getProject/:id', 
             },
             {
                 source: '/api/delete-project/:id',
-                destination: 'http://localhost:4000/projects/delete-project/:id', 
+                destination: 'https://boostup-api.onrender.com/projects/delete-project/:id', 
             },
         ];
     },
 }
 
 export default nextConfig;
+
