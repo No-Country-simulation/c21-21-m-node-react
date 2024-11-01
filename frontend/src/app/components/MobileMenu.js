@@ -9,6 +9,8 @@ import { useUserContext } from '../contexts/UserContext';
 
 const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
     const { user, logout } = useUserContext();
+
+    const dashboardLink = user?.role === 'admin' ? '/dashboard-admin' : '/dashboard';
    
     const handleLogout = () => {
         logout();
@@ -23,7 +25,7 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
                     <div className="flex items-center justify-between pb-2">
                         <Link href="/" className="-m-1.5 p-1.5">
                             <Image
-                                src="/images/logo.webp"
+                                src="/images/black-logo.webp"
                                 alt="BOOSTUP"
                                 width={100}
                                 height={100}
@@ -62,7 +64,7 @@ const MobileMenu = ({ isOpen, toggleMenu, menuItems, openLoginModal }) => {
                                                 </div>
                                             </div>
                                         </div>
-                                            <Link href="/dashboard" className="-mx-3 block rounded-lg 
+                                            <Link href={dashboardLink} className="-mx-3 block rounded-lg 
                                                 px-3 pt-2 font-semibold leading-7 text-customblack">
                                                 Dashboard
                                             </Link>

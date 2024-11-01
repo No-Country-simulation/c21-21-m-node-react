@@ -37,6 +37,7 @@ const Table = ({ data, openModal, closeModal, admin = false, updateProjectStatus
             "w-full md:max-w-sm",
             "",
             "mt-24",
+            false
         );
     };
 

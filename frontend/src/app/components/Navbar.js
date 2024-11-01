@@ -20,6 +20,8 @@ const Navbar = ({ isLoading }) => {
     const [isLogin, setIsLogin] = useState(true);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+    const dashboardLink = user?.role === 'admin' ? '/dashboard-admin' : '/dashboard';
+
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
@@ -139,7 +141,7 @@ const Navbar = ({ isLoading }) => {
                                         <div className="absolute right-0 z-10 mt-2 w-48 rounded-md 
                                             bg-white shadow-lg">
                                             <div className="py-1">
-                                                <Link href="/dashboard" className="block px-4 py-2 
+                                                <Link href={dashboardLink} className="block px-4 py-2 
                                                     text-sm text-gray-700 hover:bg-gray-100"
                                                     onClick={() => setIsDropdownOpen(false)}>
                                                     Dashboard

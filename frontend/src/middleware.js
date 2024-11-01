@@ -15,7 +15,6 @@ export const middleware = (request) => {
         const decodedUser = decodeURIComponent(user); 
         userObject = JSON.parse(decodedUser); 
     } catch (error) {
-        console.error('Error al parsear la cookie user:', error.message);
         return NextResponse.redirect(new URL('/', request.url));
     }
 
@@ -23,12 +22,21 @@ export const middleware = (request) => {
 
     const urlPath = request.nextUrl.pathname;
 
-    if (urlPath.startsWith('/dashboard-admin') && role !== 'admin') {
-        return NextResponse.redirect(new URL('/', request.url));
+    if (urlPath.startsWith('/dashboard-admin')) {
+        if (role === 'admin') {
+            return NextResponse.next(); 
+        } else {
+            return NextResponse.redirect(new URL('/', request.url)); 
+        }
     }
 
-    if (urlPath.startsWith('/dashboard') && (role !== 'emprendedor' && role !== 'inversor')) {
-        return NextResponse.redirect(new URL('/', request.url));
+    if (urlPath.startsWith('/dashboard')) {
+        if (role === 'emprendedor' || role === 'inversor') {
+            return NextResponse.next(); 
+        } else {
+            console.log('Redirigiendo: Acceso denegado a dashboard');
+            return NextResponse.redirect(new URL('/', request.url)); 
+        }
     }
 
     return NextResponse.next();
